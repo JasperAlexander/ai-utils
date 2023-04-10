@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "ESLint config for ai-utils.",
   "author": "Jasper Alexander",
+  "private": true,
   "license": "MIT",
   "main": "index.js",
   "dependencies": {
