@@ -1,5 +1,12 @@
 # file-converter
 
+## 1.0.2
+
+### Patch Changes
+
+- Updated dependencies [88a918e]
+  - file-to-text@1.0.2
+
 ## 1.0.1
 
 ### Patch Changes

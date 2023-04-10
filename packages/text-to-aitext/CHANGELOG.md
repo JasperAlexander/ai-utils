@@ -1,5 +1,11 @@
 # text-to-aitext
 
+## 1.0.2
+
+### Patch Changes
+
+- 88a918e: Fixed package bundle
+
 ## 1.0.1
 
 ### Patch Changes
