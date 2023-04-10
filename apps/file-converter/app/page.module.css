@@ -1,0 +1,103 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    padding: 32px;
+}
+
+.inputContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 600px;
+    height: 300px;
+    padding: 16px;
+    border: 2px dashed var(--color-border-default);
+    border-radius: 16px;
+    transition-property: height, background-color, border;
+    transition-duration: 0.2s;
+    cursor: pointer;
+}
+
+.shrinkInputContainer {
+    height: 100px;
+}
+
+.inputAcceptFile {
+    background-color: var(--color-success-subtle);
+    border: 2px dashed var(--color-success-emphasis);
+}
+
+.inputRejectFile {
+    background-color: var(--color-danger-subtle);
+    border: 2px dashed var(--color-danger-emphasis);
+}
+
+.textContainer {
+    display: flex;
+    flex-direction: column;
+    min-width: 600px;
+    max-width: 400px;
+    border: 2px solid var(--color-border-default);
+    border-radius: 16px;
+}
+
+.textContainerEmpty {
+    display: none;
+}
+
+.textHeader {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 8px;
+    border-bottom: 2px solid var(--color-border-default);
+    gap: 4px;
+}
+
+.textHeaderButton {
+    display: flex;
+    padding: 8px;
+    border-radius: 8px;
+    color: var(--color-svg-muted);
+    transition-duration: 0.2s;
+}
+
+.textHeaderButton:hover {
+    background-color: var(--color-button-hover);
+}
+
+.textHeaderButton:active,
+.textHeaderButtonActive {
+    background-color: var(--color-button-active);
+    
+}
+
+.copyButtonActive {
+    color: var(--color-success-fg);
+}
+
+.textHeaderButtonSvg {
+    width: 16px;
+    height: 16px;
+}
+
+.textContent {
+    padding: 20px;
+}
+
+.textSpan {
+    display: inline;
+    min-width: 0px;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+.tooltip {
+    background-color: var(--color-button-hover) !important;
+    opacity: 1 !important;
+    transition-duration: 0.2s !important;
+    border-radius: 8px;
+}

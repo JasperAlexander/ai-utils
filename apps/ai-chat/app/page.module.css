@@ -1,0 +1,269 @@
+.container {
+    display: flex;
+    justify-content: center;
+}
+
+.messages {
+    display: flex;
+    flex-direction: column;
+    width: 800px;
+    height: 100%;
+    gap: 16px;
+    padding: 16px 16px 0px;
+}
+
+.messages * {
+    overflow-anchor: none;
+}
+
+.anchor {
+    overflow-anchor: auto;
+    height: 176px;
+}
+
+.message {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--color-border-default);
+    border-radius: 16px;
+    width: 80%;
+}
+
+.messageOfUser {
+    align-self: flex-end;
+}
+
+.messageHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 16px;
+    background-color: var(--color-canvas-subtle);
+    border-bottom: 1px solid var(--color-border-default);
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.messageHeaderText {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.messageHeaderButtons {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.messageHeaderButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    color: var(--color-btn-text);
+    border-radius: 8px;
+    transition-property: color;
+    transition-duration: 0.2s;
+}
+
+.messageHeaderButton:hover {
+    color: var(--color-text-default);
+}
+
+.messageHeaderButton:active,
+.messageHeaderButtonActive,
+.messageHeaderButton:focus-within {
+    color: var(--color-text-default);
+    outline: none;
+}
+
+.messageHeaderButtonSvg {
+    width: 16px;
+    height: 16px;
+}
+
+.copyButtonActive {
+    color: var(--color-success-fg) !important;
+}
+
+.copyButtonError {
+    color: var(--color-danger-fg) !important;
+}
+
+.messageContent {
+    padding: 8px 16px;
+    position: relative;
+}
+
+.messageContentText {
+    display: inline;
+    min-width: 0px;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+.tooltip {
+    background-color: var(--color-button-hover) !important;
+    opacity: 1 !important;
+    transition-duration: 0.2s !important;
+    border-radius: 8px;
+}
+
+.footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    bottom: 0;
+    padding-top: 16px;
+    padding-bottom: 32px;
+    width: calc(100% - 32px);
+    background-color: var(--color-background-default);
+}
+
+.inputContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 512px;
+    border: 1px solid var(--color-border-default);
+    border-radius: 16px;
+    transition-property: height, background-color, border;
+    transition-duration: 0.2s;
+    cursor: text;
+    position: relative;
+    overflow: scroll;
+    gap: 16px;
+}
+
+.inputContainer:focus-within {
+    border-color: var(--color-svg-muted);
+    outline: none;
+}
+
+@media screen and (min-width: 800px) {
+    .inputContainer {
+        width: 768px !important;
+    }
+}
+
+.shrinkInputContainer {
+    height: 128px;
+}
+
+.inputTextarea {
+    width: 100%;
+    height: 100%;
+    /* I don't know why textarea has to overflow to be able to horizontally scroll .files */
+    padding: 16px 48px 90.5px 16px;
+    /* padding: 16px 48px 90px 16px; */
+    background-color: inherit;
+    border: none;
+    background-color: transparent;
+    font: inherit;
+    outline: none;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    resize: none;
+    font-size: 16px;
+    line-height: 20px;
+    position: relative;
+    overflow: scroll;
+}
+
+.inputTextarea:focus-within {
+    outline: none;
+}
+
+.inputAcceptFile {
+    background-color: var(--color-success-subtle);
+    border: 1px dashed var(--color-success-emphasis);
+}
+
+.inputRejectFile {
+    background-color: var(--color-danger-subtle);
+    border: 1px dashed var(--color-danger-emphasis);
+}
+
+.inputSubmitButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background-color: transparent;
+    border-radius: 8px;
+    padding: 8px;
+}
+
+.inputSubmitButton:hover:not(:disabled) {
+    background-color: var(--color-button-hover);
+}
+
+.inputSubmitButton:active:not(:disabled),
+.inputSubmitButton:focus-within:not(:disabled) {
+    background-color: var(--color-button-active);
+    outline: none;
+}
+
+.inputSubmitButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.inputSubmitButtonSvg {
+    width: 16px;
+    height: 16px;
+    fill: none;
+    stroke: var(--color-svg-muted);
+}
+
+.filesContainer {
+    height: 54px;
+    position: relative;
+    margin-left: -8px;
+    margin-right: -8px;
+}
+
+.files {
+    position: absolute;
+    white-space: nowrap;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    overflow-x: scroll;
+    scroll-behavior: smooth;
+    gap: 8px;
+    padding: 8px;
+    background-color: transparent;
+    pointer-events: none;
+}
+
+.files::-webkit-scrollbar {
+    display: none;
+}
+
+.file {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    border: 1px solid var(--color-border-default);
+    border-radius: 8px;
+    padding: 8px;
+    gap: 4px;
+    background-color: var(--color-canvas-subtle);
+    pointer-events: all;
+}
+
+.fileRmButtonSvg {
+    width: 16px;
+    height: 16px;
+}

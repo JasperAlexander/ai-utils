@@ -1,0 +1,46 @@
+{
+  "name": "text-to-aitext",
+  "version": "1.0.0",
+  "description": "A utility to convert text to AI-generated text.",
+  "author": "Jasper Alexander",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "files": [
+    "dist/**/*"
+  ],
+  "scripts": {
+    "build": "webpack",
+    "lint": "eslint src/*.ts*"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JasperAlexander/ai-utils.git"
+  },
+  "keywords": [
+    "ai",
+    "text",
+    "convert",
+    "converter",
+    "gpt"
+  ],
+  "bugs": {
+    "url": "https://github.com/JasperAlexander/ai-utils/issues"
+  },
+  "homepage": "https://github.com/JasperAlexander/ai-utils/tree/main/packages/text-to-aitext/README.md",
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-custom": "workspace:*",
+    "typescript": "^4.5.2"
+  },
+  "dependencies": {
+    "@types/node": "^17.0.12",
+    "eventsource-parser": "^1.0.0",
+    "ts-loader": "^9.4.2",
+    "webpack": "^5.77.0",
+    "webpack-cli": "^5.0.1"
+  }
+}

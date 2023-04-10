@@ -1,0 +1,74 @@
+:root {
+  --color-success-fg: rgb(63, 185, 80);
+  --color-success-emphasis: rgb(35, 134, 54);
+  --color-success-subtle: rgba(46, 160, 67, 0.15);
+
+  --color-danger-fg: rgb(248 ,81, 73);
+  --color-danger-emphasis: rgb(218, 54, 51);
+  --color-danger-subtle: rgba(248, 81, 73, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background-default: rgb(13, 17, 23);
+    --color-background-overlay: rgba(22, 27, 34);
+    --color-text-default: rgb(230, 237, 243);
+    --color-text-muted: rgb(125, 133, 144);
+    
+    --color-border-default: rgb(48, 54, 61);
+    --color-border-muted: rgb(33, 38, 45);
+
+    --color-btn-text: rgb(201, 209, 217);
+    --color-btn-bg: rgb(33, 38, 45);
+    --color-btn-border: rgba(240, 246, 252, 0.1);
+    --color-btn-hover-bg: rgb(48, 54, 61);
+    --color-btn-hover-border: rgb(139, 148, 158);
+    --color-btn-active-bg: hsla(212,12%,18%,1);
+    --color-btn-active-border: rgb(110, 118, 129);
+
+    --color-button-hover: rgb(48, 54, 61);
+    --color-button-active: rgb(40, 46, 51);
+
+    --color-svg-muted: rgb(125, 133, 144);
+
+    --color-canvas-subtle: rgb(22, 27, 34);
+  }
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  overflow-x: hidden;
+  background-color: var(--color-background-default);
+  height: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  background-color: inherit;
+  border: none;
+  cursor: pointer;
+}
+
+svg {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+  user-select: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+}

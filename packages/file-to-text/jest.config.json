@@ -1,0 +1,8 @@
+{
+    "preset": "ts-jest",
+    "modulePathIgnorePatterns": ["<rootDir>/dist/"],
+    "testEnvironment": "jsdom",
+    "moduleNameMapper": {
+        "pdfjs-dist/build/pdf": "pdfjs-dist/legacy/build/pdf"
+    }
+}

@@ -1,0 +1,36 @@
+{
+  "name": "ai-chat",
+  "version": "1.0.0",
+  "description": "An app that allows users to chat with AI using the OpenAI API.",
+  "author": "Jasper Alexander",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@types/marked": "^4.0.8",
+    "file-to-text": "workspace:*",
+    "highlight.js": "^11.7.0",
+    "marked": "^4.3.0",
+    "next": "^13.2.4",
+    "react": "18.2.0",
+    "react-cookie": "^4.1.1",
+    "react-dom": "18.2.0",
+    "react-dropzone": "^14.2.3",
+    "react-tooltip": "^5.10.5",
+    "text-to-aitext": "workspace:*"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "@types/node": "^17.0.12",
+    "@types/react": "^18.0.22",
+    "@types/react-dom": "^18.0.7",
+    "eslint": "7.32.0",
+    "eslint-config-custom": "workspace:*",
+    "typescript": "^4.5.3"
+  }
+}
