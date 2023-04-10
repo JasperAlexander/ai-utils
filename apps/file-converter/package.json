@@ -1,6 +1,6 @@
 {
   "name": "file-converter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "An app that allows users to convert a file to plain text.",
   "author": "Jasper Alexander",
   "license": "MIT",
