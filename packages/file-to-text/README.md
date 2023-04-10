@@ -48,8 +48,8 @@ export default function Input() {
 
 ## Contributing
 
-If you're interested in contributing, please read the [contributing docs](https://github.com/JasperAlexander/ai-utils/blob/main/CONTRIBUTING.md) before submitting a pull request.
+If you're interested in contributing, please read the [contributing docs](../../CONTRIBUTING.md) before submitting a pull request.
 
 ## License
 
-This package is licensed under the MIT License. See [LICENSE](LICENSE.md) for more information.
+This package is licensed under the MIT License. See [LICENSE](../../LICENSE.md) for more information.
