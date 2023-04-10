@@ -1,6 +1,6 @@
 {
   "name": "file-to-text",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A utility to extract the text out of a file.",
   "author": "Jasper Alexander",
   "license": "MIT",
