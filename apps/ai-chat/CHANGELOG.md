@@ -1,5 +1,11 @@
 # ai-chat
 
+## 1.0.3
+
+### Patch Changes
+
+- 297abdd: Added ability to remove messages from the chat.
+
 ## 1.0.2
 
 ### Patch Changes
