@@ -90,7 +90,8 @@
     color: var(--color-success-fg) !important;
 }
 
-.copyButtonError {
+.copyButtonError,
+.rmMsgButtonActive {
     color: var(--color-danger-fg) !important;
 }
 

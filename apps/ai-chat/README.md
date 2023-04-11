@@ -5,7 +5,8 @@ An app that allows users to chat with AI using the OpenAI API. Features:
 - Add files to your messages. The plain text is extracted and added to the prompt following the OpenAI best practises on seperating instruction and context.
 - Receive messages in a stream.
 - View messages in markdown with code syntax highlighting.
-- Copy the plain text of each message.
+- Copy the plain text of a message.
+- Remove messages from the chat.
 
 ## Installation
 

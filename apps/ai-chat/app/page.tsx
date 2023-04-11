@@ -166,7 +166,13 @@ export default function IndexPage() {
     <div className={styles.container}>
       <div className={styles.messages}>
         {localMessages.map(({ content, role }, index) => (
-          <Message key={index} content={content} role={role} />
+          <Message
+            key={index}
+            content={content}
+            role={role}
+            setAIMessages={setAIMessages}
+            setLocalMessages={setLocalMessages}
+          />
         ))}
         <div className={styles.anchor} ref={bottomAnchor} />
       </div>

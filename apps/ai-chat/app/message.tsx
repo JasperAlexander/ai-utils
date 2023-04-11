@@ -3,7 +3,9 @@
 import { marked } from 'marked'
 import { CopyButton } from './copyButton'
 import { extractFileNames } from '@/utils/extractFileNames'
-import { useMemo } from 'react'
+import { Dispatch, SetStateAction, useMemo } from 'react'
+import { ChatMessage } from '@/types'
+import { RmMessageButton } from './rmMessageButton'
 import styles from './page.module.css'
 import hljs from 'highlight.js'
 import 'highlight.js/styles/github-dark.css'
@@ -22,7 +24,17 @@ marked.setOptions({
   xhtml: false,
 })
 
-export function Message({ content, role }: { content: string; role: string }) {
+export function Message({
+  content,
+  role,
+  setAIMessages,
+  setLocalMessages,
+}: {
+  content: string
+  role: string
+  setAIMessages: Dispatch<SetStateAction<ChatMessage[]>>
+  setLocalMessages: Dispatch<SetStateAction<ChatMessage[]>>
+}) {
   const fileNames = extractFileNames(content)
 
   const contentWithoutFileNames = content.replace(/file: [^;]+;?/g, '').trim()
@@ -39,6 +51,12 @@ export function Message({ content, role }: { content: string; role: string }) {
           <span>{role.charAt(0).toUpperCase() + role.slice(1)}</span>
         </div>
         <div className={styles.messageHeaderButtons}>
+          <RmMessageButton
+            content={content}
+            role={role}
+            setAIMessages={setAIMessages}
+            setLocalMessages={setLocalMessages}
+          />
           <CopyButton filesText={contentWithoutFileNames} />
         </div>
       </div>
