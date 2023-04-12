@@ -1,10 +1,10 @@
 'use client'
 
-import { Dispatch, SetStateAction, useEffect, useId, useState } from 'react'
+import 'react-tooltip/dist/react-tooltip.css'
+import styles from './page.module.css'
+import { Dispatch, SetStateAction, useId, useState } from 'react'
 import { Tooltip } from 'react-tooltip'
 import { ChatMessage } from '@/types'
-import styles from './page.module.css'
-import 'react-tooltip/dist/react-tooltip.css'
 
 export function ResendMessageButton({
   index,
@@ -28,6 +28,28 @@ export function ResendMessageButton({
       type='button'
       onClick={async () => {
         setLoading(true)
+
+        // Uncomment the following code to test
+        // setAIMessages((AIMessages) => {
+        //   return [
+        //     ...AIMessages.slice(0, index),
+        //     {
+        //       role: 'assistant',
+        //       content: 'Testing',
+        //     } as ChatMessage,
+        //   ]
+        // })
+        // setLocalMessages((localMessages) => {
+        //   return [
+        //     ...localMessages.slice(0, index + 1),
+        //     {
+        //       role: 'assistant',
+        //       content: 'Testing',
+        //     } as ChatMessage,
+        //   ]
+        // })
+
+        // Comment the following code to test
         const response = await fetch('/api/openai', {
           method: 'POST',
           headers: {
@@ -81,26 +103,9 @@ export function ResendMessageButton({
             })
           }
         }
-        setLoading(false)
+        // Comment till here if you want to test
 
-        // setAIMessages((AIMessages) => {
-        //   return [
-        //     ...AIMessages.slice(0, index + 1),
-        //     {
-        //       role: 'assistant',
-        //       content: 'Testing',
-        //     } as ChatMessage,
-        //   ]
-        // })
-        // setLocalMessages((localMessages) => {
-        //   return [
-        //     ...localMessages.slice(0, index + 1),
-        //     {
-        //       role: 'assistant',
-        //       content: 'Testing',
-        //     } as ChatMessage,
-        //   ]
-        // })
+        setLoading(false)
       }}
       className={`
         ${styles.messageHeaderButton}`}

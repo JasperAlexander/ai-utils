@@ -1,10 +1,10 @@
 'use client'
 
+import 'react-tooltip/dist/react-tooltip.css'
+import styles from './page.module.css'
 import { Dispatch, SetStateAction, useId } from 'react'
 import { Tooltip } from 'react-tooltip'
 import { ChatMessage } from '@/types'
-import styles from './page.module.css'
-import 'react-tooltip/dist/react-tooltip.css'
 
 export function EditMessageButton({
   content,

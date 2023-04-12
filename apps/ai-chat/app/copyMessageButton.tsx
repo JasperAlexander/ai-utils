@@ -1,9 +1,9 @@
 'use client'
 
+import 'react-tooltip/dist/react-tooltip.css'
+import styles from './page.module.css'
 import { useCallback, useEffect, useId, useState } from 'react'
 import { Tooltip } from 'react-tooltip'
-import styles from './page.module.css'
-import 'react-tooltip/dist/react-tooltip.css'
 
 export function CopyButton({ filesText }: { filesText: string }) {
   const id = useId()

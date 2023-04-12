@@ -13,6 +13,7 @@ import { Tooltip } from 'react-tooltip'
 const COOKIE_NAME = 'ai-chat'
 
 export default function IndexPage() {
+  // Length of AIMessages and localMessages should stay the same because index is being used
   const [AIMessages, setAIMessages] = useState<ChatMessage[]>([
     {
       role: 'system',
@@ -43,6 +44,12 @@ export default function IndexPage() {
       setCookie(COOKIE_NAME, randomId)
     }
   }, [cookie, setCookie])
+
+  // Uncomment the following code to test
+  // useEffect(() => {
+  //   console.log('AIMessages: ', AIMessages)
+  //   console.log('localMessages: ', localMessages)
+  // }, [AIMessages, localMessages])
 
   useEffect(() => {
     if (bottomAnchor.current) bottomAnchor.current.scrollIntoView()
@@ -85,7 +92,7 @@ export default function IndexPage() {
     setInput('')
     setFiles([])
 
-    // Use the following code if you want to test
+    // Uncomment the following code to test
     // setAIMessages([
     //   ...newAIMessages,
     //   { role: 'assistant', content: 'Testing' } as ChatMessage,
@@ -94,16 +101,8 @@ export default function IndexPage() {
     //   ...newLocalMessages,
     //   { role: 'assistant', content: 'Testing' } as ChatMessage,
     // ])
-    // console.log('newAIMessages: ', [
-    //   ...newAIMessages,
-    //   { role: 'assistant', content: 'Testing' } as ChatMessage,
-    // ])
-    // console.log('newLocalMessages: ', [
-    //   ...newLocalMessages,
-    //   { role: 'assistant', content: 'Testing' } as ChatMessage,
-    // ])
 
-    // Comment the following code if you want to test
+    // Comment the following code to test
     const response = await fetch('/api/openai', {
       method: 'POST',
       headers: {

@@ -1,16 +1,16 @@
 'use client'
 
+import 'highlight.js/styles/github-dark.css'
+import styles from './page.module.css'
+import hljs from 'highlight.js'
 import { marked } from 'marked'
-import { CopyButton } from './copyButton'
+import { CopyButton } from './copyMessageButton'
 import { extractFileNames } from '@/utils/extractFileNames'
 import { Dispatch, SetStateAction, useMemo, useState } from 'react'
 import { ChatMessage } from '@/types'
 import { RmMessageButton } from './rmMessageButton'
 import { EditMessageButton } from './editMessageButton'
 import { ResendMessageButton } from './resendMessageButton'
-import styles from './page.module.css'
-import hljs from 'highlight.js'
-import 'highlight.js/styles/github-dark.css'
 
 marked.setOptions({
   renderer: new marked.Renderer(),
@@ -81,8 +81,7 @@ export function Message({
             newMessageContent={newMessageContent}
           />
           <RmMessageButton
-            content={content}
-            role={role}
+            index={index}
             setAIMessages={setAIMessages}
             setLocalMessages={setLocalMessages}
           />

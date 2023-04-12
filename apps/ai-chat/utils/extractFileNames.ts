@@ -11,8 +11,8 @@ export function extractFileNames(content: string) {
   if (!matches) return []
 
   for (const match of matches) {
-    const fileName = match.replace(/file ([^:]+): """[^"]*"""/, '$1');
-    extractedFileNames.push(fileName);
+    const fileName = match.replace(/file ([^:]+): """[^"]*"""/, '$1')
+    extractedFileNames.push(fileName)
   }
 
   return extractedFileNames

@@ -1,19 +1,17 @@
 'use client'
 
+import 'react-tooltip/dist/react-tooltip.css'
+import styles from './page.module.css'
 import { Dispatch, SetStateAction, useEffect, useId, useState } from 'react'
 import { Tooltip } from 'react-tooltip'
 import { ChatMessage } from '@/types'
-import styles from './page.module.css'
-import 'react-tooltip/dist/react-tooltip.css'
 
 export function RmMessageButton({
-  content,
-  role,
+  index,
   setAIMessages,
   setLocalMessages,
 }: {
-  content: string
-  role: string
+  index: number
   setAIMessages: Dispatch<SetStateAction<ChatMessage[]>>
   setLocalMessages: Dispatch<SetStateAction<ChatMessage[]>>
 }) {
@@ -26,15 +24,9 @@ export function RmMessageButton({
   useEffect(() => {
     if (removeMessage) {
       timer = setTimeout(() => {
-        setAIMessages((aiMessages) =>
-          aiMessages.filter(function (msg) {
-            return msg.content !== content && msg.role !== role
-          })
-        )
+        setAIMessages((AIMessages) => AIMessages.filter((_, i) => i !== index))
         setLocalMessages((localMessages) =>
-          localMessages.filter(function (msg) {
-            return msg.content !== content && msg.role !== role
-          })
+          localMessages.filter((_, i) => i !== index)
         )
         setRemoveMessage(false)
       }, 5000)
