@@ -1,5 +1,13 @@
 # ai-chat
 
+## 1.1.0
+
+### Minor Changes
+
+- 3775333: Added functionality to resend and edit messages.
+  Updated how files are included in the prompt.
+  Updated styling of tooltip and input area.
+
 ## 1.0.3
 
 ### Patch Changes
