@@ -1,5 +1,11 @@
 # ai-chat
 
+## 1.1.1
+
+### Patch Changes
+
+- 02a3df4: Fixed bug at removing messages. Updated import sorting.
+
 ## 1.1.0
 
 ### Minor Changes
