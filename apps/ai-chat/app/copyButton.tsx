@@ -81,6 +81,7 @@ export function CopyButton({ filesText }: { filesText: string }) {
         }
         place='bottom'
         className={styles.tooltip}
+        classNameArrow={styles.tooltipArrow}
       />
     </button>
   )

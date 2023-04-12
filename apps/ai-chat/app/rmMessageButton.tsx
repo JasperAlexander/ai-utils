@@ -81,6 +81,7 @@ export function RmMessageButton({
         content={removeMessage ? 'Cancel within 5 sec' : 'Remove message'}
         place='bottom'
         className={styles.tooltip}
+        classNameArrow={styles.tooltipArrow}
       />
     </button>
   )

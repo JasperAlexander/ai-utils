@@ -16,12 +16,12 @@ export default function IndexPage() {
   const [AIMessages, setAIMessages] = useState<ChatMessage[]>([
     {
       role: 'system',
-      content: `An AI assistant that can have an inspiring and humorous conversation. 
-          AI assistant is a brand new, powerful, human-like artificial intelligence. 
-          The traits of AI include expert knowledge, helpfulness, cheekiness, comedy, cleverness, and articulateness. 
-          AI is a well-behaved and well-mannered individual. 
-          AI is not a therapist, but instead an engineer and developer. 
-          AI is always friendly, kind, and inspiring, and he is eager to provide vivid and thoughtful responses to the user. 
+      content: `An AI assistant that can have an inspiring and humorous conversation.
+          AI assistant is a brand new, powerful, human-like artificial intelligence.
+          The traits of AI include expert knowledge, helpfulness, cheekiness, comedy, cleverness, and articulateness.
+          AI is a well-behaved and well-mannered individual.
+          AI is not a therapist, but instead an engineer and developer.
+          AI is always friendly, kind, and inspiring, and he is eager to provide vivid and thoughtful responses to the user.
           AI has the sum of all knowledge in their brain, and is able to accurately answer nearly any question about any topic in conversation.`,
     },
   ])
@@ -55,16 +55,14 @@ export default function IndexPage() {
 
   const sendMessage = async (message: string) => {
     let fileTexts = ''
-    let filesNames = ''
     if (files.length > 0) {
       const fileTextPromises = files.map(async (file) => {
         const fileText = await fileToText(file)
-        return `file ${file.name}: """${fileText}"""`
+        return ` file ${file.name}: """${fileText}"""`
       })
       const allFileTexts = await Promise.all(fileTextPromises)
 
       fileTexts = allFileTexts.join('\n\n')
-      filesNames = files.map((file) => `file: ${file.name}`).join('; ')
     }
 
     const newAIMessages = [
@@ -78,7 +76,7 @@ export default function IndexPage() {
       ...localMessages,
       {
         role: 'user',
-        content: message + filesNames,
+        content: message + fileTexts,
       } as ChatMessage,
     ]
 
@@ -93,6 +91,14 @@ export default function IndexPage() {
     //   { role: 'assistant', content: 'Testing' } as ChatMessage,
     // ])
     // setLocalMessages([
+    //   ...newLocalMessages,
+    //   { role: 'assistant', content: 'Testing' } as ChatMessage,
+    // ])
+    // console.log('newAIMessages: ', [
+    //   ...newAIMessages,
+    //   { role: 'assistant', content: 'Testing' } as ChatMessage,
+    // ])
+    // console.log('newLocalMessages: ', [
     //   ...newLocalMessages,
     //   { role: 'assistant', content: 'Testing' } as ChatMessage,
     // ])
@@ -168,8 +174,11 @@ export default function IndexPage() {
         {localMessages.map(({ content, role }, index) => (
           <Message
             key={index}
+            index={index}
             content={content}
             role={role}
+            cookie={cookie}
+            AIMessages={AIMessages}
             setAIMessages={setAIMessages}
             setLocalMessages={setLocalMessages}
           />
@@ -220,34 +229,46 @@ export default function IndexPage() {
             content={'Send message'}
             place='bottom'
             className={styles.tooltip}
+            classNameArrow={styles.tooltipArrow}
           />
-          <div className={styles.files}>
-            {files &&
-              files.map((file, index) => (
-                <div key={index} className={styles.file}>
-                  <span>{file.name}</span>
-                  <button
-                    type='button'
-                    onClick={() =>
-                      setFiles((oldFiles) =>
-                        oldFiles.filter((oldFile) => {
-                          return oldFile !== file
-                        })
-                      )
-                    }
-                    className={styles.fileRmButton}
-                  >
-                    <svg
-                      className={styles.fileRmButtonSvg}
-                      aria-hidden='true'
-                      viewBox='0 0 16 16'
-                      data-view-component='true'
+          <div className={styles.filesContainer}>
+            <div className={styles.files}>
+              {files &&
+                files.map((file, index) => (
+                  <div key={index} className={styles.file}>
+                    <span>{file.name}</span>
+                    <button
+                      type='button'
+                      onClick={() =>
+                        setFiles((oldFiles) =>
+                          oldFiles.filter((oldFile) => {
+                            return oldFile !== file
+                          })
+                        )
+                      }
+                      className={styles.fileRmButton}
+                      data-tooltip-id={`rmfile-tooltip-${index}`}
                     >
-                      <path d='M11 1.75V3h2.25a.75.75 0 0 1 0 1.5H2.75a.75.75 0 0 1 0-1.5H5V1.75C5 .784 5.784 0 6.75 0h2.5C10.216 0 11 .784 11 1.75ZM4.496 6.675l.66 6.6a.25.25 0 0 0 .249.225h5.19a.25.25 0 0 0 .249-.225l.66-6.6a.75.75 0 0 1 1.492.149l-.66 6.6A1.748 1.748 0 0 1 10.595 15h-5.19a1.75 1.75 0 0 1-1.741-1.575l-.66-6.6a.75.75 0 1 1 1.492-.15ZM6.5 1.75V3h3V1.75a.25.25 0 0 0-.25-.25h-2.5a.25.25 0 0 0-.25.25Z'></path>
-                    </svg>
-                  </button>
-                </div>
-              ))}
+                      <svg
+                        className={styles.fileRmButtonSvg}
+                        aria-hidden='true'
+                        viewBox='0 0 16 16'
+                        data-view-component='true'
+                      >
+                        <path d='M11 1.75V3h2.25a.75.75 0 0 1 0 1.5H2.75a.75.75 0 0 1 0-1.5H5V1.75C5 .784 5.784 0 6.75 0h2.5C10.216 0 11 .784 11 1.75ZM4.496 6.675l.66 6.6a.25.25 0 0 0 .249.225h5.19a.25.25 0 0 0 .249-.225l.66-6.6a.75.75 0 0 1 1.492.149l-.66 6.6A1.748 1.748 0 0 1 10.595 15h-5.19a1.75 1.75 0 0 1-1.741-1.575l-.66-6.6a.75.75 0 1 1 1.492-.15ZM6.5 1.75V3h3V1.75a.25.25 0 0 0-.25-.25h-2.5a.25.25 0 0 0-.25.25Z'></path>
+                      </svg>
+                    </button>
+                    <Tooltip
+                      id={`rmfile-tooltip-${index}`}
+                      content={'Remove file'}
+                      place='bottom'
+                      className={styles.tooltip}
+                      classNameArrow={styles.tooltipArrow}
+                      positionStrategy='fixed'
+                    />
+                  </div>
+                ))}
+            </div>
           </div>
         </div>
       </div>
