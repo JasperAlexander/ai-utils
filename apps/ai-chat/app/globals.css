@@ -32,6 +32,7 @@
     --color-svg-muted: rgb(125, 133, 144);
 
     --color-canvas-subtle: rgb(22, 27, 34);
+    --color-fg-muted: rgb(125, 133, 144);
   }
 }
 
@@ -71,4 +72,48 @@ svg {
   html {
     color-scheme: dark;
   }
+}
+
+/* Tooltip */
+.styles-module_tooltip__mnnfp {
+  visibility: hidden;
+  width: max-content;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 8px 16px;
+  border-radius: 3px;
+  font-size: 90%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+  will-change: opacity, visibility;
+  z-index: 2;
+  background-color: var(--color-btn-active-border);
+  border-radius: 8px;
+}
+
+.styles-module_fixed__7ciUi {
+  position: fixed;
+}
+
+.styles-module_arrow__K0L3T {
+  position: absolute;
+  background: inherit;
+  width: 8px;
+  height: 8px;
+  transform: rotate(45deg);
+}
+
+.styles-module_noArrow__T8y2L {
+  display: none;
+}
+
+.styles-module_clickable__Bv9o7 {
+  pointer-events: auto;
+}
+
+.styles-module_show__2NboJ {
+  visibility: visible;
+  opacity: 1;
 }

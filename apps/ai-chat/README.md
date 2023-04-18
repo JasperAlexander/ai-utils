@@ -5,7 +5,9 @@ An app that allows users to chat with AI using the OpenAI API. Features:
 - Add files to your messages. The plain text is extracted and added to the prompt following the OpenAI best practises on seperating instruction and context.
 - Receive messages in a stream.
 - View messages in markdown with code syntax highlighting.
-- Resend, edit, remove and copy messages.
+- Edit, remove and copy messages.
+- Categorize chats.
+- Save chats to a MongoDB database.
 
 ## Installation
 
@@ -17,7 +19,7 @@ pnpm install
 
 ## Usage
 
-1. Add an OpenAI API key to the .env.example file.
+1. Add an OpenAI API key en MongoDB URI to the .env.example file.
 
 2. Rename .env.example to .env.local. You can do this by running the following command in the root directory of this app.
 
