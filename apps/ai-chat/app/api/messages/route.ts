@@ -12,9 +12,22 @@ export async function POST(req: Request) {
         chat_id: request.chat_id,
         role: request.role,
         content: request.content,
+        parent: request.parent,
+        children: [],
         updated_at: new Date(),
         created_at: new Date()
     })
+
+    if(request.parent) {
+        await messagesCollection.updateOne({
+            // @ts-ignore
+            _id: request.parent
+        }, {
+            $push: {
+                children: inserted.insertedId
+            }
+        })
+    }
     
     return new Response(JSON.stringify(inserted.insertedId))
 }

@@ -18,6 +18,8 @@ export interface MessageType {
     chat_id: string
     role: string
     content: string
+    parent?: MessageType | string | null
+    children?: MessageType[]
     updated_at?: string
     created_at?: string
 }

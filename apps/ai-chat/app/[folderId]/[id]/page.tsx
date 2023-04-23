@@ -2,7 +2,6 @@
 
 import './markdown.css'
 import styles from './page.module.css'
-import { fileToText } from 'file-to-text'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { useCookies } from 'react-cookie'
@@ -11,30 +10,43 @@ import { Tooltip } from 'react-tooltip'
 import { useGlobalStore } from '@/state/store'
 import { useParams } from 'next/navigation'
 import { MessageType } from '@/types'
+import { filesToText } from '@/utils/filesToText'
+import { getSelectedNodes } from '@/utils/getSelectedNodes'
+import { arrayToTree } from '@/utils/arrayToTree'
+import { getLastItemInPath } from '@/utils/getLastItemInPath'
 
 const COOKIE_NAME = 'ai-chat'
 
 export default function ChatPage() {
   const params = useParams()
-
   const chats = useGlobalStore((state) => state.chats)
-
-  const title = chats.find((chat) => chat._id === params.id)?.title || 'Chat'
-
-  const [messages, setMessages] = useState<MessageType[]>([])
-  useEffect(() => {
-    fetch(`http://localhost:3000/api/messages/${params.id}`)
-      .then((res) => res.json())
-      .then((data) => setMessages(data))
-  }, [params.id])
-
   const [cookie, setCookie] = useCookies([COOKIE_NAME])
 
+  const [messages, setMessages] = useState<MessageType[]>([])
+  const [messagesTree, setMessagesTree] = useState<MessageType[]>([])
   const [input, setInput] = useState('')
   const [files, setFiles] = useState<File[]>([])
+  const [selectedChildIndices, setSelectedChildIndices] = useState<{
+    [id: string]: number
+  }>({})
 
   const sidebarButtonOn = useRef<HTMLButtonElement>(null)
   const bottomAnchor = useRef<HTMLDivElement>(null)
+
+  const title = chats.find((chat) => chat._id === params.id)?.title || 'Chat'
+
+  useEffect(() => {
+    async function fetchData() {
+      const res = await fetch(`http://localhost:3000/api/messages/${params.id}`)
+      const data = await res.json()
+      setMessages(data)
+    }
+    fetchData()
+  }, [params.id])
+
+  useEffect(() => {
+    setMessagesTree(arrayToTree(messages))
+  }, [messages])
 
   useEffect(() => {
     if (!cookie[COOKIE_NAME]) {
@@ -47,61 +59,67 @@ export default function ChatPage() {
     if (bottomAnchor.current) bottomAnchor.current.scrollIntoView()
   }, [])
 
-  const onDrop = useCallback(async (newFiles: File[]) => {
-    if (newFiles.length === 0) return
-    setFiles((currentFiles) => [...currentFiles, ...newFiles])
-  }, [])
-
   const sendMessage = async (message: string) => {
-    let fileTexts = ''
-    if (files.length > 0) {
-      const fileTextPromises = files.map(async (file) => {
-        const fileText = await fileToText(file)
-        return ` file ${file.name}: """${fileText}"""`
-      })
-      const allFileTexts = await Promise.all(fileTextPromises)
+    const fileTexts = await filesToText(files)
 
-      fileTexts = allFileTexts.join('\n\n')
-    }
+    setInput('')
+    setFiles([])
 
-    const newMessages = [
-      ...messages,
-      {
-        chat_id: params.id,
-        role: 'user',
-        content: message + fileTexts,
-      },
-    ]
+    const lastItemInPath = getLastItemInPath(messagesTree, selectedChildIndices)
 
-    await fetch(`/api/messages`, {
+    const response = await fetch(`http://localhost:3000/api/messages`, {
       method: 'POST',
       body: JSON.stringify({
         chat_id: params.id,
         role: 'user',
         content: message + fileTexts,
+        parent: lastItemInPath?._id || null,
       }),
     })
-
+    const insertedId = await response.json()
+    const newMessages = [
+      ...messages,
+      {
+        _id: insertedId,
+        chat_id: params.id,
+        role: 'user',
+        content: message + fileTexts,
+        parent: lastItemInPath?._id || null,
+      },
+    ]
     setMessages(newMessages)
-    setInput('')
-    setFiles([])
 
     // Uncomment the following code to test
-    // await fetch(`/api/messages`, {
+    // const newResponse = await fetch(`/api/messages`, {
     //   method: 'POST',
     //   body: JSON.stringify({
     //     chat_id: params.id,
     //     role: 'assistant',
     //     content: 'Testing',
+    //     parent: insertedId,
     //   }),
     // })
-    // setMessages([
+    // const newInsertedId = await newResponse.json()
+    // const newMessageArray = [
     //   ...newMessages,
-    //   { chat_id: params.id, role: 'assistant', content: 'Testing' },
-    // ])
+    //   {
+    //     _id: newInsertedId,
+    //     chat_id: params.id,
+    //     role: 'assistant',
+    //     content: 'Testing',
+    //     parent: insertedId,
+    //   },
+    // ]
+    // setMessages(newMessageArray)
 
     // Comment the following code to test
-    const response = await fetch('/api/openai', {
+    const newMessageTree = arrayToTree(newMessages)
+    const selectedNodes = getSelectedNodes(
+      newMessageTree[0],
+      selectedChildIndices
+    )
+
+    const promptResponse = await fetch('/api/openai', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -110,15 +128,15 @@ export default function ChatPage() {
         apiUrl: 'https://api.openai.com/v1/chat/completions',
         user: cookie[COOKIE_NAME],
         model: 'gpt-3.5-turbo',
-        prompt: newMessages,
+        prompt: selectedNodes,
         maxTokens: 32,
         stream: true,
       }),
     })
-    if (!response.ok)
-      throw new Error(`Error fetching data: ${response.statusText}`)
+    if (!promptResponse.ok)
+      throw new Error(`Error fetching data: ${promptResponse.statusText}`)
 
-    const data = response.body
+    const data = promptResponse.body
     if (!data) return
 
     const reader = data.getReader()
@@ -127,6 +145,17 @@ export default function ChatPage() {
 
     let lastMessage = ''
 
+    const newResponse = await fetch(`http://localhost:3000/api/messages`, {
+      method: 'POST',
+      body: JSON.stringify({
+        chat_id: params.id,
+        role: 'assistant',
+        content: lastMessage,
+        parent: insertedId,
+      }),
+    })
+    const newInsertedId = await newResponse.json()
+
     while (!done) {
       const { value, done: doneReading } = await reader.read()
       done = doneReading
@@ -134,23 +163,33 @@ export default function ChatPage() {
       if (value) {
         const chunkValue = decoder.decode(value)
         lastMessage = lastMessage + chunkValue
-        setMessages([
+        const newMessageArray = [
           ...newMessages,
-          { chat_id: params.id, role: 'assistant', content: lastMessage },
-        ])
+          {
+            _id: newInsertedId,
+            chat_id: params.id,
+            role: 'assistant',
+            content: lastMessage,
+            parent: insertedId,
+          },
+        ]
+        setMessages(newMessageArray)
       }
     }
 
-    await fetch(`/api/messages`, {
-      method: 'POST',
+    await fetch(`http://localhost:3000/api/messages/${newInsertedId}`, {
+      method: 'PATCH',
       body: JSON.stringify({
-        chat_id: params.id,
-        role: 'assistant',
         content: lastMessage,
       }),
     })
     // Comment till here if you want to test
   }
+
+  const onDrop = useCallback(async (newFiles: File[]) => {
+    if (newFiles.length === 0) return
+    setFiles((currentFiles) => [...currentFiles, ...newFiles])
+  }, [])
 
   const {
     getRootProps,
@@ -199,16 +238,17 @@ export default function ChatPage() {
         <span className={styles.chatPageHeaderTitle}>{title}</span>
       </div>
       <div className={styles.messages}>
-        {messages.map(({ _id, content, role }, index) => (
+        {messagesTree.map((message, index) => (
           <Message
             key={index}
             index={index}
-            id={_id!}
-            content={content}
-            role={role}
+            messagesTree={messagesTree}
+            data={message}
             cookie={cookie}
             messages={messages}
             setMessages={setMessages}
+            selectedChildIndices={selectedChildIndices}
+            setSelectedChildIndices={setSelectedChildIndices}
           />
         ))}
         <div className={styles.anchor} ref={bottomAnchor} />

@@ -235,6 +235,12 @@
     gap: 8px;
 }
 
+.messageHeaderButtonsBranch {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
 .messageHeaderButton {
     display: flex;
     align-items: center;
