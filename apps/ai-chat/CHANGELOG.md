@@ -1,5 +1,11 @@
 # ai-chat
 
+## 1.2.1
+
+### Patch Changes
+
+- 61aacc0: Added resend functionality and branches.
+
 ## 1.2.0
 
 ### Minor Changes
