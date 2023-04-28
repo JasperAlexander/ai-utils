@@ -1,5 +1,11 @@
 # ai-chat
 
+## 1.2.2
+
+### Patch Changes
+
+- 79c6c8d: Moved code to the server. Fixed fetching issues.
+
 ## 1.2.1
 
 ### Patch Changes
