@@ -1,7 +1,8 @@
 import './globals.css'
-import { ReactNode } from 'react'
+import { ReactNode, Suspense } from 'react'
 import { Inter } from 'next/font/google'
 import { Sidebar } from './sidebar'
+import { SidebarSkeleton } from './sidebarSkeleton'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -18,8 +19,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang='en' className={inter.className}>
       <body>
         <div className='container'>
-          {/* @ts-ignore */}
-          <Sidebar />
+          <Suspense fallback={<SidebarSkeleton />}>
+            {/* @ts-ignore */}
+            <Sidebar />
+          </Suspense>
           <main className='main'>{children}</main>
         </div>
       </body>

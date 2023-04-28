@@ -7,7 +7,7 @@ import { Messages } from './messages'
 import { InputSkeleton } from './inputSkeleton'
 
 async function getChats() {
-  const res = await fetch(`http://localhost:3000/api/chats`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/chats`, {
     cache: 'no-store',
   })
   if (!res.ok) throw new Error('Failed to fetch chats')
@@ -16,9 +16,12 @@ async function getChats() {
 }
 
 async function getMessages(id: string) {
-  const res = await fetch(`http://localhost:3000/api/messages/${id}`, {
-    cache: 'no-store',
-  })
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE}/api/messages/${id}`,
+    {
+      cache: 'no-store',
+    }
+  )
   if (!res.ok) throw new Error('Failed to fetch messages')
 
   return res.json()

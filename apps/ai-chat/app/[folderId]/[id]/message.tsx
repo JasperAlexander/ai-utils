@@ -83,7 +83,7 @@ export function Message({
   useEffect(() => {
     if (removeMessage) {
       const timer = setTimeout(async () => {
-        await fetch(`http://localhost:3000/api/chats/${_id}`, {
+        await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/chats/${_id}`, {
           method: 'DELETE',
         })
         setRemoveMessage(false)
@@ -127,7 +127,7 @@ export function Message({
     setLoadingNewMessages(true)
 
     // Uncomment the following code to test
-    // const newResponse = await fetch(`/api/messages`, {
+    // const newResponse = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/messages`, {
     //   method: 'POST',
     //   body: JSON.stringify({
     //     chat_id: params.id,
@@ -155,20 +155,23 @@ export function Message({
 
     // Comment the following code to test
     const selectedNodes = getSelectedNodes(messageTree[0], selectedChildIndices)
-    const promptResponse = await fetch('/api/openai', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        apiUrl: 'https://api.openai.com/v1/chat/completions',
-        user: cookie['ai-chat'],
-        model: 'gpt-3.5-turbo',
-        prompt: selectedNodes.slice(0, index + 1),
-        maxTokens: 32,
-        stream: true,
-      }),
-    })
+    const promptResponse = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE}/api/openai`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          apiUrl: 'https://api.openai.com/v1/chat/completions',
+          user: cookie['ai-chat'],
+          model: 'gpt-3.5-turbo',
+          prompt: selectedNodes.slice(0, index + 1),
+          maxTokens: 32,
+          stream: true,
+        }),
+      }
+    )
     if (!promptResponse.ok)
       throw new Error(`Error fetching data: ${promptResponse.statusText}`)
 
@@ -182,15 +185,18 @@ export function Message({
     let done = false
     let switched = false
 
-    const response = await fetch(`/api/messages`, {
-      method: 'POST',
-      body: JSON.stringify({
-        chat_id: params.id,
-        role: 'assistant',
-        content: lastMessage,
-        parent: _id,
-      }),
-    })
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE}/api/messages`,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          chat_id: params.id,
+          role: 'assistant',
+          content: lastMessage,
+          parent: _id,
+        }),
+      }
+    )
     const insertedId = await response.json()
 
     while (!done) {
@@ -218,12 +224,15 @@ export function Message({
       }
     }
 
-    await fetch(`/api/messages/${insertedId}`, {
-      method: 'PATCH',
-      body: JSON.stringify({
-        content: lastMessage,
-      }),
-    })
+    await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE}/api/messages/${insertedId}`,
+      {
+        method: 'PATCH',
+        body: JSON.stringify({
+          content: lastMessage,
+        }),
+      }
+    )
     // Comment till here if you want to test
 
     setLoadingNewMessages(false)
@@ -303,12 +312,15 @@ export function Message({
               onClick={async () => {
                 if (editingMessage) {
                   //  PATCH
-                  fetch(`http://localhost:3000/api/messages/${_id}`, {
-                    method: 'PATCH',
-                    body: JSON.stringify({
-                      content: newMessageContent,
-                    }),
-                  })
+                  fetch(
+                    `${process.env.NEXT_PUBLIC_API_BASE}/api/messages/${_id}`,
+                    {
+                      method: 'PATCH',
+                      body: JSON.stringify({
+                        content: newMessageContent,
+                      }),
+                    }
+                  )
                   setMessages(
                     messages.map((message) => {
                       if (message._id === _id)
@@ -323,7 +335,7 @@ export function Message({
                   router.refresh()
 
                   // POST, NOT WORKING YET
-                  // const response = await fetch(`/api/messages`, {
+                  // const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/messages`, {
                   //   method: 'POST',
                   //   body: JSON.stringify({
                   //     chat_id: params.id,

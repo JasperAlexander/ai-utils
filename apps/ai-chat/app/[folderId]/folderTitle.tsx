@@ -1,7 +1,7 @@
 'use client'
 
 import styles from './page.module.css'
-import { Fragment, useEffect, useState, useTransition } from 'react'
+import { Fragment, useState, useTransition } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 
 export function FolderTitle({
@@ -14,10 +14,6 @@ export function FolderTitle({
 
   const [editingFolderTitle, setEditingFolderTitle] = useState(false)
   const [tempFolderTitle, setTempFolderTitle] = useState(folderTitle)
-
-  useEffect(() => {
-    setTempFolderTitle(folderTitle)
-  }, [folderTitle])
 
   const [isPending, startTransition] = useTransition()
 
@@ -38,14 +34,17 @@ export function FolderTitle({
         type='button'
         onClick={() => {
           if (editingFolderTitle && tempFolderTitle) {
-            console.log('params.folderId in folderTitle.tsx: ', params.folderId)
-            fetch(`http://localhost:3000/api/folders/${params.folderId}`, {
-              method: 'PATCH',
-              body: JSON.stringify({
-                title: tempFolderTitle,
-              }),
-            })
+            fetch(
+              `${process.env.NEXT_PUBLIC_API_BASE}/api/folders/${params.folderId}`,
+              {
+                method: 'PATCH',
+                body: JSON.stringify({
+                  title: tempFolderTitle,
+                }),
+              }
+            )
             startTransition(() => {
+              setEditingFolderTitle(false)
               router.refresh()
             })
           }

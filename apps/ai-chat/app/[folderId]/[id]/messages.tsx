@@ -60,15 +60,18 @@ export function Messages({ messages }: { messages: MessageType[] }) {
       selectedChildIndices
     )
 
-    const response = await fetch(`http://localhost:3000/api/messages`, {
-      method: 'POST',
-      body: JSON.stringify({
-        chat_id: params.id,
-        role: 'user',
-        content: message + fileTexts,
-        parent: lastItemInPath?._id || null,
-      }),
-    })
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE}/api/messages`,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          chat_id: params.id,
+          role: 'user',
+          content: message + fileTexts,
+          parent: lastItemInPath?._id || null,
+        }),
+      }
+    )
     const insertedId = await response.json()
     const newMessages = [
       ...messages,
@@ -83,7 +86,7 @@ export function Messages({ messages }: { messages: MessageType[] }) {
     setLocalMessages(newMessages)
 
     // Uncomment the following code to test
-    // const newResponse = await fetch(`/api/messages`, {
+    // const newResponse = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/messages`, {
     //   method: 'POST',
     //   body: JSON.stringify({
     //     chat_id: params.id,
@@ -112,20 +115,23 @@ export function Messages({ messages }: { messages: MessageType[] }) {
       selectedChildIndices
     )
 
-    const promptResponse = await fetch('/api/openai', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        apiUrl: 'https://api.openai.com/v1/chat/completions',
-        user: cookie[COOKIE_NAME],
-        model: 'gpt-3.5-turbo',
-        prompt: selectedNodes,
-        maxTokens: 32,
-        stream: true,
-      }),
-    })
+    const promptResponse = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE}/api/openai`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          apiUrl: 'https://api.openai.com/v1/chat/completions',
+          user: cookie[COOKIE_NAME],
+          model: 'gpt-3.5-turbo',
+          prompt: selectedNodes,
+          maxTokens: 32,
+          stream: true,
+        }),
+      }
+    )
     if (!promptResponse.ok)
       throw new Error(`Error fetching data: ${promptResponse.statusText}`)
 
@@ -138,15 +144,18 @@ export function Messages({ messages }: { messages: MessageType[] }) {
 
     let lastMessage = ''
 
-    const newResponse = await fetch(`http://localhost:3000/api/messages`, {
-      method: 'POST',
-      body: JSON.stringify({
-        chat_id: params.id,
-        role: 'assistant',
-        content: lastMessage,
-        parent: insertedId,
-      }),
-    })
+    const newResponse = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE}/api/messages`,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          chat_id: params.id,
+          role: 'assistant',
+          content: lastMessage,
+          parent: insertedId,
+        }),
+      }
+    )
     const newInsertedId = await newResponse.json()
 
     while (!done) {
@@ -170,12 +179,15 @@ export function Messages({ messages }: { messages: MessageType[] }) {
       }
     }
 
-    await fetch(`http://localhost:3000/api/messages/${newInsertedId}`, {
-      method: 'PATCH',
-      body: JSON.stringify({
-        content: lastMessage,
-      }),
-    })
+    await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE}/api/messages/${newInsertedId}`,
+      {
+        method: 'PATCH',
+        body: JSON.stringify({
+          content: lastMessage,
+        }),
+      }
+    )
     // Comment till here if you want to test
   }
 

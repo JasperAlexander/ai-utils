@@ -9,16 +9,19 @@ import { FolderTitleSkeleton } from './folderTitleSkeleton'
 import { ChatRowSkeleton } from './chatRowSkeleton'
 
 async function getFolder(id: string) {
-  const res = await fetch(`http://localhost:3000/api/folders/${id}`, {
-    cache: 'no-store',
-  })
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE}/api/folders/${id}`,
+    {
+      cache: 'no-store',
+    }
+  )
   if (!res.ok) throw new Error('Failed to fetch folder')
 
   return res.json()
 }
 
 async function getChats() {
-  const res = await fetch('http://localhost:3000/api/chats', {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/chats`, {
     cache: 'no-store',
   })
   if (!res.ok) throw new Error('Failed to fetch chats')
@@ -42,7 +45,7 @@ export default async function FolderPage({
         <Suspense fallback={<SidebarButtonSkeleton />}>
           <SidebarButton />
         </Suspense>
-        <Suspense fallback={<FolderTitleSkeleton folderTitle={folder.title} />}>
+        <Suspense fallback={<FolderTitleSkeleton folderTitle='Folder' />}>
           <FolderTitle folderTitle={folder.title} />
         </Suspense>
       </div>
@@ -56,16 +59,18 @@ export default async function FolderPage({
           </tr>
         </thead>
         <tbody>
-          {folderChats.map((chat) => (
-            <Suspense
-              key={chat._id}
-              fallback={
-                <ChatRowSkeleton chat={chat} folderId={params.folderId} />
-              }
-            >
-              <ChatRow key={chat._id} chat={chat} />
-            </Suspense>
-          ))}
+          <Suspense>
+            {folderChats.map((chat) => (
+              <Suspense
+                key={chat._id}
+                fallback={
+                  <ChatRowSkeleton chat={chat} folderId={params.folderId} />
+                }
+              >
+                <ChatRow key={chat._id} chat={chat} />
+              </Suspense>
+            ))}
+          </Suspense>
         </tbody>
       </table>
     </div>

@@ -31,7 +31,7 @@ export function ChatRow({ chat }: { chat: ChatType }) {
   useEffect(() => {
     if (removeChat) {
       const timer = setTimeout(async () => {
-        await fetch(`http://localhost:3000/api/chats/${_id}`, {
+        await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/chats/${_id}`, {
           method: 'DELETE',
         })
         setRemoveChat(false)
@@ -90,7 +90,7 @@ export function ChatRow({ chat }: { chat: ChatType }) {
             type='button'
             onClick={() => {
               if (editingChatTitle) {
-                fetch(`http://localhost:3000/api/chats/${_id}`, {
+                fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/chats/${_id}`, {
                   method: 'PATCH',
                   body: JSON.stringify({
                     title: tempChatTitle,

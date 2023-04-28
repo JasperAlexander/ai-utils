@@ -63,7 +63,7 @@ export function AddButton({ folders }: { folders: FolderType[] }) {
                     let folderId = folders[0]?._id
                     if (folders.length === 0) {
                       const response = await fetch(
-                        `http://localhost:3000/api/folders`,
+                        `${process.env.NEXT_PUBLIC_API_BASE}/api/folders`,
                         {
                           method: 'POST',
                         }
@@ -72,12 +72,15 @@ export function AddButton({ folders }: { folders: FolderType[] }) {
                       router.refresh()
                     }
 
-                    await fetch(`http://localhost:3000/api/chats`, {
-                      method: 'POST',
-                      body: JSON.stringify({
-                        folder_id: folderId,
-                      }),
-                    })
+                    await fetch(
+                      `${process.env.NEXT_PUBLIC_API_BASE}/api/chats`,
+                      {
+                        method: 'POST',
+                        body: JSON.stringify({
+                          folder_id: folderId,
+                        }),
+                      }
+                    )
                     setTooltipMenuOpen(false)
                     router.refresh()
                   }}
@@ -96,9 +99,12 @@ export function AddButton({ folders }: { folders: FolderType[] }) {
                 <button
                   type='button'
                   onClick={async () => {
-                    await fetch(`http://localhost:3000/api/folders`, {
-                      method: 'POST',
-                    })
+                    await fetch(
+                      `${process.env.NEXT_PUBLIC_API_BASE}/api/folders`,
+                      {
+                        method: 'POST',
+                      }
+                    )
                     setTooltipMenuOpen(false)
                     router.refresh()
                   }}

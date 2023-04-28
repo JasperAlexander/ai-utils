@@ -18,7 +18,7 @@ export function Folder({
   const router = useRouter()
 
   function onDrop(chatId: string) {
-    fetch(`http://localhost:3000/api/chats/${chatId}`, {
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/chats/${chatId}`, {
       method: 'PATCH',
       body: JSON.stringify({
         folder_id: folderId,

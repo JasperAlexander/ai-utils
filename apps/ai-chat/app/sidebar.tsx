@@ -9,7 +9,7 @@ import { Suspense } from 'react'
 import { HideSidebarButton } from './hideSidebarButton'
 
 async function getFolders() {
-  const res = await fetch('http://localhost:3000/api/folders', {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/folders`, {
     cache: 'no-store',
   })
   if (!res.ok) throw new Error('Failed to fetch folders')
@@ -18,7 +18,7 @@ async function getFolders() {
 }
 
 async function getChats() {
-  const res = await fetch('http://localhost:3000/api/chats', {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/chats`, {
     cache: 'no-store',
   })
   if (!res.ok) throw new Error('Failed to fetch chats')
