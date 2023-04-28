@@ -1,5 +1,11 @@
 # ai-chat
 
+## 1.2.3
+
+### Patch Changes
+
+- 92bb193: Added API base to .env. Added more loading UI.
+
 ## 1.2.2
 
 ### Patch Changes
