@@ -41,3 +41,20 @@ export async function PATCH(
         return new Response(JSON.stringify(inserted.upsertedId))
     }
 }
+
+export async function DELETE(
+    req: Request, 
+    { params }: { params: { 
+        id: string
+    }}
+) {
+    const client = await getMongoDBClient()
+    const database = client.db('ai-chat')
+    const messagesCollection = database.collection('messages')
+    
+    const deleted = await messagesCollection.deleteOne({
+        // @ts-ignore
+        _id: params.id
+    })
+    return new Response(JSON.stringify(deleted.deletedCount))
+}

@@ -15,7 +15,6 @@ export async function GET(
         // @ts-ignore
         _id: params.id
     })
-    if(!folder) return
 
     const res = JSON.stringify(folder)
     return new Response(res)

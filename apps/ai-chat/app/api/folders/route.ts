@@ -7,7 +7,6 @@ export async function GET() {
     const foldersCollection = database.collection('folders')
     
     const folders = await foldersCollection.find().toArray()
-    if(!folders) return
 
     const res = JSON.stringify(folders)
     return new Response(res)

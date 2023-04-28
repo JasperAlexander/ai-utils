@@ -1,24 +1,33 @@
 'use client'
 
-import Link from 'next/link'
 import styles from './page.module.css'
+import Link from 'next/link'
 import { ReactNode, DragEvent, useState } from 'react'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 
 export function Folder({
   folderId,
   title,
   children,
-  onDrop,
 }: {
   folderId: string | undefined
   title: string
   children: ReactNode
-  onDrop?: (chatId: string) => void
 }) {
   const params = useParams()
+  const router = useRouter()
 
-  const [isOpen, setIsOpen] = useState(false)
+  function onDrop(chatId: string) {
+    fetch(`http://localhost:3000/api/chats/${chatId}`, {
+      method: 'PATCH',
+      body: JSON.stringify({
+        folder_id: folderId,
+      }),
+    })
+    router.refresh()
+  }
+
+  const [isOpen, setIsOpen] = useState(true)
   const toggleFolder = () => {
     setIsOpen(!isOpen)
   }

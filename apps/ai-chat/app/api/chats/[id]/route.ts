@@ -15,7 +15,6 @@ export async function GET(
         // @ts-ignore
         _id: params.id
     })
-    if(!chat) return
 
     const res = JSON.stringify(chat)
     return new Response(res)

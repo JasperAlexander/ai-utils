@@ -7,7 +7,6 @@ export async function GET() {
     const chatsCollection = database.collection('chats')
     
     const chats = await chatsCollection.find().toArray()
-    if(!chats) return
 
     const res = JSON.stringify(chats)
     return new Response(res)

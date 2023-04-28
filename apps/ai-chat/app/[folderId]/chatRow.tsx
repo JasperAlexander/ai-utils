@@ -1,49 +1,53 @@
 'use client'
 
-import Link from 'next/link'
 import styles from './page.module.css'
+import Link from 'next/link'
 import { useState, useEffect } from 'react'
-import { useGlobalStore } from '@/state/store'
 import { relativeTimeFormat } from '@/utils/relativeTimeFormat'
 import { Tooltip } from 'react-tooltip'
+import { useParams, useRouter } from 'next/navigation'
+import { ChatType } from '@/types'
 
-export function ChatRow({
-  id,
-  folderId,
-  title,
-  updatedAt,
-  createdAt,
-}: {
-  id: string
-  folderId: string | undefined
-  title: string
-  updatedAt: string | undefined
-  createdAt: string
-}) {
-  const chats = useGlobalStore((state) => state.chats)
-  const setChats = useGlobalStore((state) => state.setChats)
+export function ChatRow({ chat }: { chat: ChatType }) {
+  const params = useParams()
+  const router = useRouter()
+
+  const { _id, title } = chat
 
   const [editingChatTitle, setEditingChatTitle] = useState(false)
   const [tempChatTitle, setTempChatTitle] = useState(title)
   const [removeChat, setRemoveChat] = useState(false)
   const [removeChatTimer, setRemoveChatTimer] = useState<NodeJS.Timeout>()
+  const [updatedAt, setUpdatedAt] = useState('')
+  const [createdAt, setCreatedAt] = useState('')
+
+  useEffect(() => {
+    if (chat.updated_at && chat.created_at) {
+      setUpdatedAt(chat.updated_at)
+      setCreatedAt(chat.created_at)
+    }
+  }, [chat.updated_at, chat.created_at, setUpdatedAt, setCreatedAt])
 
   useEffect(() => {
     if (removeChat) {
       const timer = setTimeout(async () => {
-        const response = await fetch(`http://localhost:3000/api/chats/${id}`, {
+        await fetch(`http://localhost:3000/api/chats/${_id}`, {
           method: 'DELETE',
         })
-        const deletedCount = await response.json()
-        if (deletedCount > 0) {
-          setChats(chats.filter((chat) => chat._id !== id))
-        }
         setRemoveChat(false)
+        router.refresh()
       }, 5000)
       setRemoveChatTimer(timer)
       return () => clearTimeout(removeChatTimer)
     }
-  }, [removeChat, setRemoveChat, setChats, chats, id, removeChatTimer])
+  }, [
+    removeChat,
+    _id,
+    setRemoveChat,
+    router,
+    setRemoveChatTimer,
+    removeChatTimer,
+  ])
 
   return (
     <tr className={styles.tableBodyRow}>
@@ -60,7 +64,10 @@ export function ChatRow({
               className={styles.chatEditInput}
             />
           ) : (
-            <Link href={`/${folderId}/${id}`} className={styles.chatTitleLink}>
+            <Link
+              href={`/${params.folderId}/${_id}`}
+              className={styles.chatTitleLink}
+            >
               {title}
             </Link>
           )}
@@ -83,30 +90,20 @@ export function ChatRow({
             type='button'
             onClick={() => {
               if (editingChatTitle) {
-                fetch(`http://localhost:3000/api/chats/${id}`, {
+                fetch(`http://localhost:3000/api/chats/${_id}`, {
                   method: 'PATCH',
                   body: JSON.stringify({
                     title: tempChatTitle,
                   }),
                 })
-                setChats(
-                  chats.map((chat) =>
-                    chat._id === id
-                      ? {
-                          ...chat,
-                          title: tempChatTitle,
-                          updated_at: new Date().toString(),
-                        }
-                      : chat
-                  )
-                )
               }
               setEditingChatTitle(!editingChatTitle)
+              router.refresh()
             }}
             className={`${styles.chatEditButton} ${
               editingChatTitle && styles.chatEditButtonActive
             }`}
-            data-tooltip-id={`editchatname-tooltip-${id}`}
+            data-tooltip-id={`editchatname-tooltip-${_id}`}
           >
             {editingChatTitle ? (
               <svg
@@ -139,7 +136,7 @@ export function ChatRow({
                 setRemoveChat(true)
               }
             }}
-            data-tooltip-id={`rmchat-tooltip-${id}`}
+            data-tooltip-id={`rmchat-tooltip-${_id}`}
           >
             {removeChat ? (
               <svg
@@ -161,12 +158,12 @@ export function ChatRow({
             )}
           </button>
           <Tooltip
-            id={`editchatname-tooltip-${id}`}
+            id={`editchatname-tooltip-${_id}`}
             content={editingChatTitle ? 'Save chat name' : 'Edit chat name'}
             place='bottom'
           />
           <Tooltip
-            id={`rmchat-tooltip-${id}`}
+            id={`rmchat-tooltip-${_id}`}
             content={removeChat ? 'Cancel within 5 sec' : 'Remove chat'}
             place='bottom'
           />

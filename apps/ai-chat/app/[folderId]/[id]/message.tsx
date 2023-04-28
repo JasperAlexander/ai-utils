@@ -5,18 +5,10 @@ import styles from './page.module.css'
 import hljs from 'highlight.js'
 import { marked } from 'marked'
 import { extractFileNames } from '@/utils/extractFileNames'
-import {
-  Dispatch,
-  Fragment,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react'
+import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
 import { MessageType } from '@/types'
 import { Tooltip } from 'react-tooltip'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { getSelectedNodes } from '@/utils/getSelectedNodes'
 
 marked.setOptions({
@@ -35,7 +27,7 @@ marked.setOptions({
 
 export function Message({
   index,
-  messagesTree,
+  messageTree,
   data,
   cookie,
   messages,
@@ -44,21 +36,20 @@ export function Message({
   setSelectedChildIndices,
 }: {
   index: number
-  messagesTree: MessageType[]
+  messageTree: MessageType[]
   data: MessageType
   cookie: any
   messages: MessageType[]
-  setMessages: Dispatch<SetStateAction<MessageType[]>>
+  setMessages: (newMessages: MessageType[]) => void
   selectedChildIndices: {
     [id: string]: number
   }
-  setSelectedChildIndices: Dispatch<
-    SetStateAction<{
-      [id: string]: number
-    }>
-  >
+  setSelectedChildIndices: (newSelectedChildIndices: {
+    [id: string]: number
+  }) => void
 }) {
   const params = useParams()
+  const router = useRouter()
 
   const { _id, role, content, parent, children } = data
 
@@ -91,14 +82,27 @@ export function Message({
 
   useEffect(() => {
     if (removeMessage) {
-      const timer = setTimeout(() => {
-        setMessages((messages) => messages.filter((_, i) => i !== index))
+      const timer = setTimeout(async () => {
+        await fetch(`http://localhost:3000/api/chats/${_id}`, {
+          method: 'DELETE',
+        })
         setRemoveMessage(false)
+        setMessages(messages.filter((_, i) => i !== index))
+        router.refresh()
       }, 5000)
       setRemoveChatTimer(timer)
       return () => clearTimeout(removeChatTimer)
     }
-  }, [removeMessage, setRemoveMessage, setMessages, index, removeChatTimer])
+  }, [
+    removeMessage,
+    _id,
+    setRemoveMessage,
+    setMessages,
+    messages,
+    index,
+    router,
+    removeChatTimer,
+  ])
 
   const handleSiblingSwitch = (parentId: string, index: number) =>
     setSelectedChildIndices({ ...selectedChildIndices, [parentId]: index })
@@ -150,10 +154,7 @@ export function Message({
     // )
 
     // Comment the following code to test
-    const selectedNodes = getSelectedNodes(
-      messagesTree[0],
-      selectedChildIndices
-    )
+    const selectedNodes = getSelectedNodes(messageTree[0], selectedChildIndices)
     const promptResponse = await fetch('/api/openai', {
       method: 'POST',
       headers: {
@@ -308,7 +309,7 @@ export function Message({
                       content: newMessageContent,
                     }),
                   })
-                  setMessages((messages) =>
+                  setMessages(
                     messages.map((message) => {
                       if (message._id === _id)
                         return {
@@ -319,6 +320,7 @@ export function Message({
                       return message
                     })
                   )
+                  router.refresh()
 
                   // POST, NOT WORKING YET
                   // const response = await fetch(`/api/messages`, {
@@ -516,7 +518,7 @@ export function Message({
       {selectedChild && (
         <Message
           index={index + 1}
-          messagesTree={messagesTree}
+          messageTree={messageTree}
           data={selectedChild}
           cookie={cookie}
           messages={messages}

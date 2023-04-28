@@ -4,9 +4,7 @@ import { textToAItext } from 'text-to-aitext'
 
 // if (!process.env.OPENAI_API_KEY) throw new Error('Missing environment variable OPENAI_API_KEY')
 
-export const config = {
-  runtime: 'edge',
-}
+export const runtime = 'edge'
 
 export async function POST(req: Request) {
   const body = await req.json()

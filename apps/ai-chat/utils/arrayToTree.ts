@@ -18,7 +18,7 @@ export function arrayToTree(messages: MessageType[]) {
         tree.push(lookup[item._id!])
       } else {
         // @ts-ignore
-        lookup[item.parent].children?.push(lookup[item._id!])
+        lookup[item.parent]?.children?.push(lookup[item._id!])
       }
     })
 

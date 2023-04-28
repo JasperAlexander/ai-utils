@@ -1,7 +1,7 @@
 'use client'
 
-import Link from 'next/link'
 import styles from './page.module.css'
+import Link from 'next/link'
 import { DragEvent } from 'react'
 import { useParams } from 'next/navigation'
 
@@ -9,14 +9,16 @@ export function Chat({
   id,
   folderId,
   title,
-  onDragStart,
 }: {
   id: string
   folderId: string | undefined
   title: string
-  onDragStart: (chatId: string) => void
 }) {
   const params = useParams()
+
+  function onDragStart(chatId: string) {
+    // Implement any visual effect or state update while dragging
+  }
 
   const handleDragStart = (e: DragEvent<HTMLLIElement>) => {
     e.dataTransfer.setData('chatId', id)
