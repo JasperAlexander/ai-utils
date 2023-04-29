@@ -1,5 +1,11 @@
 # ai-chat
 
+## 1.3.0
+
+### Minor Changes
+
+- cfc436f: Added header, authentication and authorization. Fixed MongoDB connection error.
+
 ## 1.2.3
 
 ### Patch Changes
