@@ -12,6 +12,36 @@
     gap: 8px;
 }
 
+.table {
+    width: 100%;
+    border: 1px solid var(--color-border-default);
+    border-radius: 8px;
+    border-spacing: 0px;
+    overflow: hidden;
+    table-layout: fixed;
+}
+
+.tableHeader {
+    height: 40px;
+    background-color: var(--color-canvas-subtle);
+}
+
+.tableHeaderRow {
+    color: var(--color-btn-hover-border);
+    height: 40px;
+    font-size: 12px;
+    text-align: left;
+}
+
+.tableHeaderRow :nth-child(1) {
+    width: 60%;
+}
+
+.tableHeaderRowCell {
+    padding-left: 16px;
+}
+
+/* sidebarButton.tsx */
 .sidebarOpenButton {
     display: none;
     align-items: center;
@@ -33,6 +63,7 @@
     height: 16px;
 }
 
+/* folderTitle.tsx */
 .folderEditInput {
     display: flex;
     background-color: transparent;
@@ -71,35 +102,6 @@
     width: 16px;
     height: 16px;
     flex-shrink: 0;
-}
-
-.table {
-    width: 100%;
-    border: 1px solid var(--color-border-default);
-    border-radius: 8px;
-    border-spacing: 0px;
-    overflow: hidden;
-    table-layout: fixed;
-}
-
-.tableHeader {
-    height: 40px;
-    background-color: var(--color-canvas-subtle);
-}
-
-.tableHeaderRow {
-    color: var(--color-btn-hover-border);
-    height: 40px;
-    font-size: 12px;
-    text-align: left;
-}
-
-.tableHeaderRow :nth-child(1) {
-    width: 60%;
-}
-
-.tableHeaderRowCell {
-    padding-left: 16px;
 }
 
 /* chat.tsx */

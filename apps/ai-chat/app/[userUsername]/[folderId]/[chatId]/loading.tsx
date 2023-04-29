@@ -1,6 +1,5 @@
 import styles from './page.module.css'
 import { SidebarButtonSkeleton } from '../sidebarButtonSkeleton'
-import { InputSkeleton } from './inputSkeleton'
 
 export default function Loading() {
   return (
@@ -9,10 +8,6 @@ export default function Loading() {
         <SidebarButtonSkeleton />
 
         <span className={styles.chatPageHeaderTitle}>Chat</span>
-      </div>
-
-      <div className={styles.footer}>
-        <InputSkeleton />
       </div>
     </div>
   )

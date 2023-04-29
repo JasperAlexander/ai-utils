@@ -1,17 +1,28 @@
 import { MongoClient } from 'mongodb'
 import { v4 as uuidv4 } from 'uuid'
 
-let mongodbClient: MongoClient
+if (!process.env.MONGODB_URI) throw new Error('Invalid/Missing environment variable: "MONGODB_URI"')
 
-async function getMongoDBClient() {
-    if(!mongodbClient) {
-        // if (!process.env.MONGODB_URI) throw new Error('Missing environment variable MONGODB_URI')
-        mongodbClient = new MongoClient(process.env.MONGODB_URI!, {
-            pkFactory: { createPk: () => uuidv4() }
-        })
-        await mongodbClient.connect()
-    }
-    return mongodbClient
+const uri = process.env.MONGODB_URI
+const options = {
+    pkFactory: { createPk: () => uuidv4() }
 }
 
-export { getMongoDBClient }
+let client
+let mongoDBClient: Promise<MongoClient>
+
+if (process.env.NODE_ENV === 'development') {
+  let globalWithMongo = global as typeof globalThis & {
+    _mongoClientPromise: Promise<MongoClient>
+  }
+  if (!globalWithMongo._mongoClientPromise) {
+    client = new MongoClient(uri, options)
+    globalWithMongo._mongoClientPromise = client.connect()
+  }
+  mongoDBClient = globalWithMongo._mongoClientPromise
+} else {
+  client = new MongoClient(uri, options)
+  mongoDBClient = client.connect()
+}
+
+export { mongoDBClient }

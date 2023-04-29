@@ -1,28 +1,12 @@
-import { getMongoDBClient } from '@/utils/mongodb'
-import { BSON, WithId } from 'mongodb'
+import { mongoDBClient } from '@/utils/mongodb'
 
-// id param should be chat_id
-export async function GET(req: Request, { params }: { params: { id: string }}) {
-    const client = await getMongoDBClient()
-
-    const database = client.db('ai-chat')
-    const messagesCollection = database.collection('messages')
-    const messages: WithId<BSON.Document>[] = await messagesCollection.find({ 
-        chat_id: params.id
-    }).toArray()
-
-    const res = JSON.stringify(messages)
-    return new Response(res)
-}
-
-// id param should be message id
 export async function PATCH(
     req: Request, 
     { params }: { params: { 
         id: string
     }}
 ) {
-    const client = await getMongoDBClient()
+    const client = await mongoDBClient
     const database = client.db('ai-chat')
     const messagesCollection = database.collection('messages')
     
@@ -48,7 +32,7 @@ export async function DELETE(
         id: string
     }}
 ) {
-    const client = await getMongoDBClient()
+    const client = await mongoDBClient
     const database = client.db('ai-chat')
     const messagesCollection = database.collection('messages')
     

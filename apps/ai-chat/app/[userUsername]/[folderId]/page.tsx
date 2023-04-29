@@ -7,6 +7,8 @@ import { ChatRow } from './chatRow'
 import { SidebarButtonSkeleton } from './sidebarButtonSkeleton'
 import { FolderTitleSkeleton } from './folderTitleSkeleton'
 import { ChatRowSkeleton } from './chatRowSkeleton'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '../../api/auth/[...nextauth]/route'
 
 async function getFolder(id: string) {
   const res = await fetch(
@@ -20,10 +22,13 @@ async function getFolder(id: string) {
   return res.json()
 }
 
-async function getChats() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/chats`, {
-    cache: 'no-store',
-  })
+async function getChats(folder_id: string) {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE}/api/folders/${folder_id}/chats`,
+    {
+      cache: 'no-store',
+    }
+  )
   if (!res.ok) throw new Error('Failed to fetch chats')
 
   return res.json()
@@ -32,12 +37,18 @@ async function getChats() {
 export default async function FolderPage({
   params,
 }: {
-  params: { folderId: string }
+  params: {
+    userUsername: string
+    folderId: string
+  }
 }) {
-  const folder: FolderType = await getFolder(params.folderId)
-  const chats: ChatType[] = await getChats()
+  const session = await getServerSession(authOptions)
 
-  const folderChats = chats.filter((chat) => chat.folder_id === params.folderId)
+  const folder: FolderType = await getFolder(params.folderId)
+  const chats: ChatType[] = await getChats(params.folderId)
+
+  const folderCreatedByCurrentUser =
+    folder?.created_by === session?.user.username
 
   return (
     <div className={styles.folderPage}>
@@ -46,7 +57,10 @@ export default async function FolderPage({
           <SidebarButton />
         </Suspense>
         <Suspense fallback={<FolderTitleSkeleton folderTitle='Folder' />}>
-          <FolderTitle folderTitle={folder.title} />
+          <FolderTitle
+            folderTitle={folder?.title || 'Not found'}
+            folderCreatedBy={folder?.created_by}
+          />
         </Suspense>
       </div>
 
@@ -55,19 +69,29 @@ export default async function FolderPage({
           <tr className={styles.tableHeaderRow}>
             <th className={styles.tableHeaderRowCell}>Name</th>
             <th className={styles.tableHeaderRowCell}>Last update</th>
-            <th className={styles.tableHeaderRowCell}>Actions</th>
+            {folderCreatedByCurrentUser && (
+              <th className={styles.tableHeaderRowCell}>Actions</th>
+            )}
           </tr>
         </thead>
         <tbody>
           <Suspense>
-            {folderChats.map((chat) => (
+            {chats.map((chat) => (
               <Suspense
                 key={chat._id}
                 fallback={
-                  <ChatRowSkeleton chat={chat} folderId={params.folderId} />
+                  <ChatRowSkeleton
+                    chat={chat}
+                    folderId={params.folderId}
+                    folderCreatedByCurrentUser={folderCreatedByCurrentUser}
+                  />
                 }
               >
-                <ChatRow key={chat._id} chat={chat} />
+                <ChatRow
+                  key={chat._id}
+                  chat={chat}
+                  folderCreatedByCurrentUser={folderCreatedByCurrentUser}
+                />
               </Suspense>
             ))}
           </Suspense>

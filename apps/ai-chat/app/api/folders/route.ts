@@ -1,24 +1,26 @@
-import { getMongoDBClient } from '@/utils/mongodb'
+import { mongoDBClient } from '@/utils/mongodb'
 import { InsertOneResult } from 'mongodb'
 
 export async function GET() {
-    const client = await getMongoDBClient()
+    const client = await mongoDBClient
     const database = client.db('ai-chat')
     const foldersCollection = database.collection('folders')
     
     const folders = await foldersCollection.find().toArray()
 
-    const res = JSON.stringify(folders)
-    return new Response(res)
+    return new Response(JSON.stringify(folders))
 }
 
-export async function POST() {
-    const client = await getMongoDBClient()
+export async function POST(req: Request) {
+    const client = await mongoDBClient
     const database = client.db('ai-chat')
     const foldersCollection = database.collection('folders')
+
+    const request = await req.json()
     
     const inserted: InsertOneResult<Document> = await foldersCollection.insertOne({
         title: 'New folder',
+        created_by: request.created_by,
         updated_at: new Date(),
         created_at: new Date()
     })

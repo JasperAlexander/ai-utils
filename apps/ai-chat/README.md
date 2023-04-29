@@ -19,7 +19,7 @@ pnpm install
 
 ## Usage
 
-1. Add an OpenAI API key en MongoDB URI to the .env.example file.
+1. Add the missing variables to the .env.example file.
 
 2. Rename .env.example to .env.local. You can do this by running the following command in the root directory of this app.
 

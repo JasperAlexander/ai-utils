@@ -1,143 +1,130 @@
-/* page.tsx */
-.indexPage {
-    padding: 32px;
+/* layout.tsx */
+.layout {
+    display: flex;
+    flex-direction: column;
 }
 
-.indexPageTitle {
+@media screen and (min-width: 768px) {
+    .layout {
+        flex-direction: row;
+    }
+}
+
+/* page.tsx */
+.page {
+    display: flex;
+    flex-grow: 1;
+}
+
+.section {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 64px 32px;
+}
+
+.sectionLeft,
+.sectionRight {
+    display: flex;
+    flex-direction: column;
+}
+
+.title,
+.subtitle {
+    color: var(--color-text-default);
+    font-weight: 500;
+    -webkit-font-smoothing: antialiased;
+}
+
+.title {
+    font-size: 40px;
+    line-height: 44px;
+}
+
+.subtitle {
+    font-size: 24px;
+    line-height: 28px;
+}
+
+.userList {
+    display: flex;
+    flex-direction: column;
+}
+
+/* header.tsx */
+.header {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    border-bottom: 1px solid var(--color-border-default);
+    padding: 0px 16px;
+    background-color: var(--color-canvas-subtle);
     color: var(--color-text-default);
 }
 
-/* sidebar.tsx */
-.sidebarContainer {
-    display: flex;
-    width: 100%;
-    position: relative;
-}
-
-.sidebar {
-    position: sticky;
-    --pane-width: 256px;
-    --pane-min-width: 256px;
-    --pane-max-width-diff: 511px;
-    --pane-max-width: calc(100vw - var(--pane-max-width-diff));
-    width: 100%;
-}
-
-.sidebarContent {
-    display: flex;
-    flex-grow: 1;
-    flex-direction: column;
-    height: 100%;
-}
-
-.sidebarHeader {
+.headerLeft {
     display: flex;
     align-items: center;
-    padding: 16px;
-    gap: 16px;
+    gap: 8px;
+    font-size: 16px;
+    line-height: 20px;
 }
 
-.sidebarCloseButton {
+.headerLogo {
     display: flex;
     align-items: center;
-    justify-content: center;
-    color: var(--color-btn-hover-border);
-    background-color: var(--color-canvas-subtle);
+    gap: 8px;
+    margin-right: 8px;
+}
+
+.headerLogoSvg {
     width: 32px;
     height: 32px;
-    border-radius: 8px;
 }
 
-.sidebarCloseButton:hover {
-    background-color: var(--color-btn-hover-bg);
-    color: var(--color-btn-hover-border);
-}
-
-.sidebarCloseButtonSvg {
-    width: 16px;
-    height: 16px;
-}
-
-.sidebarHeaderTitle {
-    display: inline-flex;
-    flex-grow: 1;
+.headerLogoSpan {
     font-size: 20px;
-    font-weight: 600;
+    line-height: 24px;
+}
+
+.headerLeftLink:hover {
     color: var(--color-btn-text);
 }
 
-.addChatButton {
+.headerRight {
     display: flex;
     align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    background-color: var(--color-btn-bg);
-    color: var(--color-btn-active-border);
-    border: 1px solid var(--color-btn-border);
-    outline: none;
-}
-
-.addChatButton:hover {
-    border-color: var(--color-btn-hover-border);
-    background-color: var(--color-btn-hover-bg);
-}
-
-.addChatButton:active,
-.addChatButton:focus-within {
-    border-color: var(--color-btn-active-border);
-    background-color: var(--color-button-active);
-}
-
-.searchbar {
-    display: flex;
-    align-items: center;
-    color: var(--color-btn-hover-border);
-    margin: 0px 24px;
-    background-color: var(--color-background-default);
-    border: 1px solid var(--color-border-default);
-    border-radius: 6px;
-    height: 32px;
     gap: 8px;
-    padding: 0px 8px;
 }
 
-.searchbarSvg {
-    width: 16px;
-    height: 16px;
-}
-
-.searchbarInput {
+.headerRightLink {
     display: flex;
-    flex-grow: 1;
-    background-color: transparent;
-    border: none;
-    outline: none;
-    height: 100%;
+    border: 1px solid var(--color-border-default);
+    border-radius: 8px;
+    padding: 8px;
+    font-size: 16px;
+    line-height: 20px;
+    transition-property: opacity;
+    transition-duration: 0.2s;
 }
 
-.sidebarChats {
+.headerRightLink:hover {
+    opacity: 0.75;
+}
+
+.headerAvatarButton {
     display: flex;
-    flex-direction: column;
-    padding: 16px;
+    align-items: center;
 }
 
-.resizerContainer {
-    width: 1px;
-    height: 100%;
-    position: relative;
-    background-color: var(--color-border-default);
+.headerAvatarImg {
+    border-radius: 12px;
 }
 
-.resizer {
-    position: absolute;
-    z-index: 1;
-    inset: 0px -4px;
-    cursor: col-resize;
-    background-color: transparent;
-}
-
+/* accountButton.tsx */
 .tooltipMenu {
     background-color: transparent;
 }
@@ -147,6 +134,14 @@
     box-shadow: rgb(48, 54, 61) 0px 0px 0px 1px, rgba(1, 4, 9, 0.85) 0px 16px 32px;
     padding: 8px 0px;
     border-radius: 8px;
+}
+
+.tooltipMenuListItemHeaderContainer {
+    display: flex;
+    margin: 0px 8px;
+    border-radius: 8px;
+    width: calc(100% - 16px);
+    padding-bottom: 8px;
 }
 
 .tooltipMenuListItemContainer {
@@ -166,6 +161,17 @@
     background-color: rgba(177, 186, 196, 0.2);
 }
 
+.tooltipMenuListItemHeader {
+    display: flex;
+    flex-direction: column;
+    padding: 6px 8px 8px;
+    width: 100%;
+    text-decoration: none;
+    gap: 2px;
+    color: var(--color-btn-text);
+    border-bottom: 1px solid var(--color-border-default);
+}
+
 .tooltipMenuListItem {
     display: flex;
     flex-grow: 1;
@@ -178,176 +184,18 @@
     color: var(--color-btn-text);
 }
 
+.tooltipMenuListItemSpan {
+    font-size: 14px;
+    line-height: 18px;
+}
+
+.tooltipMenuListItemSpanBold {
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 700;   
+}
+
 .tooltipMenuListItemSvg {
     width: 16px;
     height: 16px;
-}
-
-@media screen and (min-width: 768px) {
-    .sidebarContainer {
-        width: auto;
-        height: 100vh;
-    }
-
-    .sidebar {
-        flex-direction: column;
-        width: clamp(var(--pane-min-width),var(--pane-width),var(--pane-max-width));
-    }
-}
-
-@media screen and (min-width: 1280px) {
-    .sidebar {
-        --pane-max-width-diff: 959px;
-    }
-}
-
-/* folder.tsx */
-.folder {
-    display: flex;
-    flex-direction: column;
-    border-radius: 8px;
-}
-
-.folderDraggedOver {
-    background-color: rgba(177, 186, 196, 0.12);
-}
-
-.folderTitle {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    height: 32px;
-    gap: 8px;
-    border-radius: 8px;
-}
-
-.folderTitle:hover {
-    background-color: rgba(177, 186, 196, 0.12);
-}
-
-.folderTitle:active,
-.folderTitle[aria-current='true'] {
-    background-color: rgba(177, 186, 196, 0.08);
-}
-
-.spacer {
-    flex-shrink: 0;
-    width: 8px;
-    height: 100%;
-    border-right-color: transparent;
-    border-right-width: 1px;
-    border-right-style: solid;
-    transition-duration: 0.2s;
-    transition-property: border-color;
-}
-
-.folderTitleButton {
-    display: flex;
-    flex-shrink: 0;
-    align-items: center;
-    justify-content: center;
-    width: 16px;
-    height: 100%;
-    color: var(--color-btn-hover-border);
-    border-top-left-radius: 8px;
-    border-bottom-left-radius: 8px;
-    background-color: transparent;
-}
-
-.folderTitleButton:hover {
-    background-color: rgba(177, 186, 196, 0.12);
-}
-
-.folderTitleButtonSvg {
-    width: 12px;
-    height: 12px;
-}
-
-.folderTitleLink {
-    display: flex;
-    flex-grow: 1;
-    align-items: center;
-    height: 100%;
-    width: 100%;
-    gap: 8px;
-    border-top-right-radius: 8px;
-    border-bottom-right-radius: 8px;
-    overflow: hidden;
-}
-
-.folderTitleLinkSvg {
-    flex-shrink: 0;
-    width: 16px;
-    height: 16px;
-    color: var(--color-btn-hover-border);
-}
-
-.folderTitleSpan {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
-
-.folderChildren:hover .spacer {
-    border-color:rgba(240, 246, 252, 0.1);
-}
-
-/* chat.tsx */
-.chat {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    height: 32px;
-    border-radius: 8px;
-    cursor: grab;
-    user-select: none;
-    list-style-type: none;
-}
-
-.chat:hover {
-    background-color: rgba(177, 186, 196, 0.12);
-}
-
-.chat:active {
-    cursor: grabbing;
-}
-
-.chat[aria-current='true'] {
-    background-color: rgba(177, 186, 196, 0.08);
-}
-
-.chatButton {
-    display: flex;
-    flex-shrink: 0;
-    align-items: center;
-    justify-content: center;
-    width: 16px;
-    height: 100%;
-    color: var(--color-btn-hover-border);
-    border-top-left-radius: 8px;
-    border-bottom-left-radius: 8px;
-    background-color: transparent;
-}
-
-.chatLink {
-    display: flex;
-    flex-grow: 1;
-    align-items: center;
-    height: 100%;
-    gap: 8px;
-    padding: 0px 8px;
-    overflow: hidden;
-}
-
-.chatLinkSvg {
-    flex-shrink: 0;
-    width: 16px;
-    height: 16px;
-    color: var(--color-btn-hover-border);
-}
-
-.chatTitle {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }

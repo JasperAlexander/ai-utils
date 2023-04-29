@@ -87,7 +87,10 @@ export function Folder({
             </svg>
           )}
         </button>
-        <Link href={`/${folderId}`} className={styles.folderTitleLink}>
+        <Link
+          href={`/${params.userUsername}/${folderId}`}
+          className={styles.folderTitleLink}
+        >
           {isOpen ? (
             <svg
               aria-hidden='true'

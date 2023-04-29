@@ -1,6 +1,7 @@
 import styles from './page.module.css'
+import Link from 'next/link'
 
-export function SidebarSkeleton() {
+export function SidebarSkeleton({ userUsername }: { userUsername: string }) {
   return (
     <aside className={styles.sidebarContainer}>
       <div className={styles.sidebar}>
@@ -16,13 +17,12 @@ export function SidebarSkeleton() {
                 <path d='M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25H9.5v-13Zm12.5 13a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25H11v13Z'></path>
               </svg>
             </button>
-            <h2 className={styles.sidebarHeaderTitle}>Chats</h2>
-
-            <button type='button' className={styles.addChatButton}>
-              <svg aria-hidden='true' viewBox='0 0 16 16'>
-                <path d='M7.75 2a.75.75 0 0 1 .75.75V7h4.25a.75.75 0 0 1 0 1.5H8.5v4.25a.75.75 0 0 1-1.5 0V8.5H2.75a.75.75 0 0 1 0-1.5H7V2.75A.75.75 0 0 1 7.75 2Z'></path>
-              </svg>
-            </button>
+            <Link
+              href={`/${userUsername}`}
+              className={styles.sidebarHeaderTitle}
+            >
+              {userUsername}
+            </Link>
           </div>
           <div className={styles.searchbar}>
             <svg

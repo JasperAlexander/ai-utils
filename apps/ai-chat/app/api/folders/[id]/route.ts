@@ -1,4 +1,4 @@
-import { getMongoDBClient } from '@/utils/mongodb'
+import { mongoDBClient } from '@/utils/mongodb'
 import { BSON, WithId } from 'mongodb'
 
 export async function GET(
@@ -7,7 +7,7 @@ export async function GET(
         id: string 
     }}
 ) {
-    const client = await getMongoDBClient()
+    const client = await mongoDBClient
     const database = client.db('ai-chat')
     const foldersCollection = database.collection('folders')
     
@@ -16,8 +16,7 @@ export async function GET(
         _id: params.id
     })
 
-    const res = JSON.stringify(folder)
-    return new Response(res)
+    return new Response(JSON.stringify(folder))
 }
 
 export async function PATCH(
@@ -26,7 +25,7 @@ export async function PATCH(
         id: string
     }}
 ) {
-    const client = await getMongoDBClient()
+    const client = await mongoDBClient
     const database = client.db('ai-chat')
     const foldersCollection = database.collection('folders')
     
@@ -38,6 +37,7 @@ export async function PATCH(
         }, {
             $set: { title: request.title, updated_at: new Date() }
         })
+        
         return new Response(JSON.stringify(inserted.upsertedId))
     }
 }

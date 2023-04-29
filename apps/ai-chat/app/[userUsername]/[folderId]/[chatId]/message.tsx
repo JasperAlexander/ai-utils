@@ -10,6 +10,7 @@ import { MessageType } from '@/types'
 import { Tooltip } from 'react-tooltip'
 import { useParams, useRouter } from 'next/navigation'
 import { getSelectedNodes } from '@/utils/getSelectedNodes'
+import { useSession } from 'next-auth/react'
 
 marked.setOptions({
   renderer: new marked.Renderer(),
@@ -29,7 +30,7 @@ export function Message({
   index,
   messageTree,
   data,
-  cookie,
+  chatCreatedByCurrentUser,
   messages,
   setMessages,
   selectedChildIndices,
@@ -38,7 +39,7 @@ export function Message({
   index: number
   messageTree: MessageType[]
   data: MessageType
-  cookie: any
+  chatCreatedByCurrentUser: boolean
   messages: MessageType[]
   setMessages: (newMessages: MessageType[]) => void
   selectedChildIndices: {
@@ -50,6 +51,7 @@ export function Message({
 }) {
   const params = useParams()
   const router = useRouter()
+  const session = useSession()
 
   const { _id, role, content, parent, children } = data
 
@@ -130,7 +132,7 @@ export function Message({
     // const newResponse = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/messages`, {
     //   method: 'POST',
     //   body: JSON.stringify({
-    //     chat_id: params.id,
+    //     chat_id: params.chatId,
     //     role: 'assistant',
     //     content: 'Testing',
     //     parent: _id,
@@ -141,7 +143,7 @@ export function Message({
     //   ...messages,
     //   {
     //     _id: newInsertedId,
-    //     chat_id: params.id,
+    //     chat_id: params.chatId,
     //     role: 'assistant',
     //     content: 'Testing',
     //     parent: _id,
@@ -164,7 +166,7 @@ export function Message({
         },
         body: JSON.stringify({
           apiUrl: 'https://api.openai.com/v1/chat/completions',
-          user: cookie['ai-chat'],
+          user: session.data?.user._id,
           model: 'gpt-3.5-turbo',
           prompt: selectedNodes.slice(0, index + 1),
           maxTokens: 32,
@@ -190,7 +192,7 @@ export function Message({
       {
         method: 'POST',
         body: JSON.stringify({
-          chat_id: params.id,
+          chat_id: params.chatId,
           role: 'assistant',
           content: lastMessage,
           parent: _id,
@@ -210,7 +212,7 @@ export function Message({
           ...messages,
           {
             _id: insertedId,
-            chat_id: params.id,
+            chat_id: params.chatId,
             role: 'assistant',
             content: lastMessage,
             parent: _id,
@@ -290,137 +292,142 @@ export function Message({
               </div>
             )}
 
-            <button
-              type='button'
-              onClick={async () => await resendMessage()}
-              className={`
+            {chatCreatedByCurrentUser && (
+              <Fragment>
+                <button
+                  type='button'
+                  onClick={async () => await resendMessage()}
+                  className={`
         ${styles.messageHeaderButton}`}
-              data-tooltip-id={`resend-tooltip-${_id}`}
-            >
-              <svg
-                aria-hidden='true'
-                viewBox='0 0 16 16'
-                className={`${styles.messageHeaderButtonSvg} ${
-                  loadingNewMessages && styles.resendMsgButtonActive
-                }`}
-              >
-                <path d='M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z'></path>
-              </svg>
-            </button>
-            <button
-              type='button'
-              onClick={async () => {
-                if (editingMessage) {
-                  //  PATCH
-                  fetch(
-                    `${process.env.NEXT_PUBLIC_API_BASE}/api/messages/${_id}`,
-                    {
-                      method: 'PATCH',
-                      body: JSON.stringify({
-                        content: newMessageContent,
-                      }),
-                    }
-                  )
-                  setMessages(
-                    messages.map((message) => {
-                      if (message._id === _id)
-                        return {
-                          ...message,
-                          content: newMessageContent,
+                  data-tooltip-id={`resend-tooltip-${_id}`}
+                >
+                  <svg
+                    aria-hidden='true'
+                    viewBox='0 0 16 16'
+                    className={`${styles.messageHeaderButtonSvg} ${
+                      loadingNewMessages && styles.resendMsgButtonActive
+                    }`}
+                  >
+                    <path d='M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z'></path>
+                  </svg>
+                </button>
+
+                <button
+                  type='button'
+                  onClick={async () => {
+                    if (editingMessage) {
+                      //  PATCH
+                      fetch(
+                        `${process.env.NEXT_PUBLIC_API_BASE}/api/messages/${_id}`,
+                        {
+                          method: 'PATCH',
+                          body: JSON.stringify({
+                            content: newMessageContent,
+                          }),
                         }
+                      )
+                      setMessages(
+                        messages.map((message) => {
+                          if (message._id === _id)
+                            return {
+                              ...message,
+                              content: newMessageContent,
+                            }
 
-                      return message
-                    })
-                  )
-                  router.refresh()
+                          return message
+                        })
+                      )
+                      router.refresh()
 
-                  // POST, NOT WORKING YET
-                  // const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/messages`, {
-                  //   method: 'POST',
-                  //   body: JSON.stringify({
-                  //     chat_id: params.id,
-                  //     role: 'user',
-                  //     content: newMessageContent,
-                  //     parent: parent,
-                  //   }),
-                  // })
-                  // const insertedId = await response.json()
-                  // const newMessages = [
-                  //   ...messages,
-                  //   {
-                  //     _id: insertedId,
-                  //     chat_id: params.id,
-                  //     role: 'user',
-                  //     content: newMessageContent,
-                  //     parent: parent,
-                  //   },
-                  // ]
-                  // setMessages(newMessages)
-                  // await resendMessage()
+                      // POST, NOT WORKING YET
+                      // const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/messages`, {
+                      //   method: 'POST',
+                      //   body: JSON.stringify({
+                      //     chat_id: params.chatId,
+                      //     role: 'user',
+                      //     content: newMessageContent,
+                      //     parent: parent,
+                      //   }),
+                      // })
+                      // const insertedId = await response.json()
+                      // const newMessages = [
+                      //   ...messages,
+                      //   {
+                      //     _id: insertedId,
+                      //     chat_id: params.chatId,
+                      //     role: 'user',
+                      //     content: newMessageContent,
+                      //     parent: parent,
+                      //   },
+                      // ]
+                      // setMessages(newMessages)
+                      // await resendMessage()
 
-                  setEditingMessage(false)
-                } else {
-                  setEditingMessage(true)
-                }
-              }}
-              className={`
+                      setEditingMessage(false)
+                    } else {
+                      setEditingMessage(true)
+                    }
+                  }}
+                  className={`
         ${styles.messageHeaderButton}
         ${editingMessage && styles.editMsgButtonActive}`}
-              data-tooltip-id={`edit-tooltip-${_id}`}
-            >
-              {editingMessage ? (
-                <svg
-                  aria-hidden='true'
-                  viewBox='0 0 16 16'
-                  className={styles.messageHeaderButtonSvg}
+                  data-tooltip-id={`edit-tooltip-${_id}`}
                 >
-                  <path d='M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z'></path>
-                </svg>
-              ) : (
-                <svg
-                  aria-hidden='true'
-                  viewBox='0 0 16 16'
-                  className={styles.messageHeaderButtonSvg}
-                >
-                  <path d='M11.013 1.427a1.75 1.75 0 0 1 2.474 0l1.086 1.086a1.75 1.75 0 0 1 0 2.474l-8.61 8.61c-.21.21-.47.364-.756.445l-3.251.93a.75.75 0 0 1-.927-.928l.929-3.25c.081-.286.235-.547.445-.758l8.61-8.61Zm.176 4.823L9.75 4.81l-6.286 6.287a.253.253 0 0 0-.064.108l-.558 1.953 1.953-.558a.253.253 0 0 0 .108-.064Zm1.238-3.763a.25.25 0 0 0-.354 0L10.811 3.75l1.439 1.44 1.263-1.263a.25.25 0 0 0 0-.354Z'></path>
-                </svg>
-              )}
-            </button>
+                  {editingMessage ? (
+                    <svg
+                      aria-hidden='true'
+                      viewBox='0 0 16 16'
+                      className={styles.messageHeaderButtonSvg}
+                    >
+                      <path d='M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z'></path>
+                    </svg>
+                  ) : (
+                    <svg
+                      aria-hidden='true'
+                      viewBox='0 0 16 16'
+                      className={styles.messageHeaderButtonSvg}
+                    >
+                      <path d='M11.013 1.427a1.75 1.75 0 0 1 2.474 0l1.086 1.086a1.75 1.75 0 0 1 0 2.474l-8.61 8.61c-.21.21-.47.364-.756.445l-3.251.93a.75.75 0 0 1-.927-.928l.929-3.25c.081-.286.235-.547.445-.758l8.61-8.61Zm.176 4.823L9.75 4.81l-6.286 6.287a.253.253 0 0 0-.064.108l-.558 1.953 1.953-.558a.253.253 0 0 0 .108-.064Zm1.238-3.763a.25.25 0 0 0-.354 0L10.811 3.75l1.439 1.44 1.263-1.263a.25.25 0 0 0 0-.354Z'></path>
+                    </svg>
+                  )}
+                </button>
 
-            <button
-              type='button'
-              onClick={() => {
-                if (removeMessage) {
-                  clearTimeout(removeChatTimer)
-                  setRemoveMessage(false)
-                } else {
-                  setRemoveMessage(true)
-                }
-              }}
-              className={`
+                <button
+                  type='button'
+                  onClick={() => {
+                    if (removeMessage) {
+                      clearTimeout(removeChatTimer)
+                      setRemoveMessage(false)
+                    } else {
+                      setRemoveMessage(true)
+                    }
+                  }}
+                  className={`
         ${styles.messageHeaderButton}
         ${removeMessage && styles.rmMsgButtonActive}`}
-              data-tooltip-id={`rm-tooltip-${_id}`}
-            >
-              {removeMessage ? (
-                <svg
-                  aria-hidden='true'
-                  viewBox='0 0 16 16'
-                  className={styles.messageHeaderButtonSvg}
+                  data-tooltip-id={`rm-tooltip-${_id}`}
                 >
-                  <path d='M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.749.749 0 0 1 1.275.326.749.749 0 0 1-.215.734L9.06 8l3.22 3.22a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L8 9.06l-3.22 3.22a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06Z'></path>
-                </svg>
-              ) : (
-                <svg
-                  className={styles.messageHeaderButtonSvg}
-                  aria-hidden='true'
-                  viewBox='0 0 16 16'
-                  data-view-component='true'
-                >
-                  <path d='M11 1.75V3h2.25a.75.75 0 0 1 0 1.5H2.75a.75.75 0 0 1 0-1.5H5V1.75C5 .784 5.784 0 6.75 0h2.5C10.216 0 11 .784 11 1.75ZM4.496 6.675l.66 6.6a.25.25 0 0 0 .249.225h5.19a.25.25 0 0 0 .249-.225l.66-6.6a.75.75 0 0 1 1.492.149l-.66 6.6A1.748 1.748 0 0 1 10.595 15h-5.19a1.75 1.75 0 0 1-1.741-1.575l-.66-6.6a.75.75 0 1 1 1.492-.15ZM6.5 1.75V3h3V1.75a.25.25 0 0 0-.25-.25h-2.5a.25.25 0 0 0-.25.25Z'></path>
-                </svg>
-              )}
-            </button>
+                  {removeMessage ? (
+                    <svg
+                      aria-hidden='true'
+                      viewBox='0 0 16 16'
+                      className={styles.messageHeaderButtonSvg}
+                    >
+                      <path d='M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.749.749 0 0 1 1.275.326.749.749 0 0 1-.215.734L9.06 8l3.22 3.22a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L8 9.06l-3.22 3.22a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06Z'></path>
+                    </svg>
+                  ) : (
+                    <svg
+                      className={styles.messageHeaderButtonSvg}
+                      aria-hidden='true'
+                      viewBox='0 0 16 16'
+                      data-view-component='true'
+                    >
+                      <path d='M11 1.75V3h2.25a.75.75 0 0 1 0 1.5H2.75a.75.75 0 0 1 0-1.5H5V1.75C5 .784 5.784 0 6.75 0h2.5C10.216 0 11 .784 11 1.75ZM4.496 6.675l.66 6.6a.25.25 0 0 0 .249.225h5.19a.25.25 0 0 0 .249-.225l.66-6.6a.75.75 0 0 1 1.492.149l-.66 6.6A1.748 1.748 0 0 1 10.595 15h-5.19a1.75 1.75 0 0 1-1.741-1.575l-.66-6.6a.75.75 0 1 1 1.492-.15ZM6.5 1.75V3h3V1.75a.25.25 0 0 0-.25-.25h-2.5a.25.25 0 0 0-.25.25Z'></path>
+                    </svg>
+                  )}
+                </button>
+              </Fragment>
+            )}
 
             <button
               type='button'
@@ -532,7 +539,7 @@ export function Message({
           index={index + 1}
           messageTree={messageTree}
           data={selectedChild}
-          cookie={cookie}
+          chatCreatedByCurrentUser={chatCreatedByCurrentUser}
           messages={messages}
           setMessages={setMessages}
           selectedChildIndices={selectedChildIndices}

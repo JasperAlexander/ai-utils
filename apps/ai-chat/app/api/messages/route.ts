@@ -1,8 +1,8 @@
-import { getMongoDBClient } from '@/utils/mongodb'
+import { mongoDBClient } from '@/utils/mongodb'
 import { InsertOneResult } from 'mongodb'
 
 export async function POST(req: Request) {
-    const client = await getMongoDBClient()    
+    const client = await mongoDBClient  
     const database = client.db('ai-chat')
     const messagesCollection = database.collection('messages')
     

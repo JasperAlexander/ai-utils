@@ -1,4 +1,4 @@
-import { getMongoDBClient } from '@/utils/mongodb'
+import { mongoDBClient } from '@/utils/mongodb'
 import { BSON, WithId } from 'mongodb'
 
 export async function GET(
@@ -7,7 +7,7 @@ export async function GET(
         id: string 
     }}
 ) {
-    const client = await getMongoDBClient()
+    const client = await mongoDBClient
     const database = client.db('ai-chat')
     const chatsCollection = database.collection('chats')
     
@@ -26,7 +26,7 @@ export async function PATCH(
         id: string
     }}
 ) {
-    const client = await getMongoDBClient()
+    const client = await mongoDBClient
     const database = client.db('ai-chat')
     const chatsCollection = database.collection('chats')
     
@@ -64,7 +64,7 @@ export async function DELETE(
         id: string
     }}
 ) {
-    const client = await getMongoDBClient()
+    const client = await mongoDBClient
     const database = client.db('ai-chat')
     const chatsCollection = database.collection('chats')
     

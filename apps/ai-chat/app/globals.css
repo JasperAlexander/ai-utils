@@ -74,27 +74,6 @@ svg {
   }
 }
 
-/* layout.tsx */
-.container {
-    display: flex;
-    flex-direction: column;
-}
-
-.main {
-    display: flex;
-    flex-grow: 1;
-    flex-direction: column;
-    height: 100vh;
-    position: relative;
-    overflow: hidden;
-}
-
-@media screen and (min-width: 768px) {
-    .container {
-        flex-direction: row;
-    }
-}
-
 /* Tooltip */
 .styles-module_tooltip__mnnfp {
   visibility: hidden;
