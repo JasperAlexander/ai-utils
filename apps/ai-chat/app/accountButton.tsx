@@ -2,11 +2,11 @@
 
 import styles from './page.module.css'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Fragment, useEffect, useState } from 'react'
 import { Tooltip } from 'react-tooltip'
 import { createPortal } from 'react-dom'
 import { signOut, useSession } from 'next-auth/react'
-import Image from 'next/image'
 
 export function AccountButton() {
   const session = useSession()

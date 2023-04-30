@@ -118,7 +118,7 @@ export async function Sidebar({ userUsername }: { userUsername: string }) {
                   .map((chat) => (
                     <Chat
                       key={chat._id}
-                      id={chat._id!}
+                      id={chat._id}
                       title={chat.title}
                       folderId={chat.folder_id}
                     />

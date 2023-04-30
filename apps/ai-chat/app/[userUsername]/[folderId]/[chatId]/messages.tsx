@@ -32,9 +32,19 @@ export function Messages({
   const [files, setFiles] = useState<File[]>([])
 
   const bottomAnchor = useRef<HTMLDivElement>(null)
+  const messagesRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (bottomAnchor.current) bottomAnchor.current.scrollIntoView()
+    const messagesElement = messagesRef.current
+    if (!messagesElement) return
+
+    const observer = new MutationObserver(() => {
+      messagesElement.scrollTop = messagesElement.scrollHeight
+    })
+
+    observer.observe(messagesElement, { childList: true })
+
+    return () => observer.disconnect()
   }, [])
 
   useEffect(() => {
@@ -77,6 +87,9 @@ export function Messages({
         role: 'user',
         content: message + fileTexts,
         parent: lastItemInPath?._id || null,
+        children: [],
+        updated_at: new Date().toString(),
+        created_at: new Date().toString(),
       },
     ]
     setLocalMessages(newMessages)
@@ -169,6 +182,9 @@ export function Messages({
             role: 'assistant',
             content: lastMessage,
             parent: insertedId,
+            children: [],
+            updated_at: new Date().toString(),
+            created_at: new Date().toString(),
           },
         ]
         setLocalMessages(newMessageArray)
@@ -212,7 +228,7 @@ export function Messages({
 
   return (
     <Fragment>
-      <div className={styles.messages}>
+      <div className={styles.messages} ref={messagesRef}>
         {localMessagesTree.map((message, index) => (
           <Message
             key={index}

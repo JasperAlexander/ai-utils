@@ -64,7 +64,7 @@ export function Message({
   const [removeChatTimer, setRemoveChatTimer] = useState<NodeJS.Timeout>()
 
   const fileNames = extractFileNames(content)
-  const selectedIndex = selectedChildIndices?.[_id!] || 0
+  const selectedIndex = selectedChildIndices?.[_id] || 0
   const selectedChild =
     children && children.length > 0 ? children[selectedIndex] : null
 
@@ -151,8 +151,8 @@ export function Message({
     // ]
     // setMessages(newMessageArray)
     // handleSiblingSwitch(
-    //   _id!,
-    //   (selectedIndex + 1) % (children!.length + 1)
+    //   _id,
+    //   (selectedIndex + 1) % (children.length + 1)
     // )
 
     // Comment the following code to test
@@ -216,11 +216,14 @@ export function Message({
             role: 'assistant',
             content: lastMessage,
             parent: _id,
+            children: [],
+            updated_at: new Date().toString(),
+            created_at: new Date().toString(),
           },
         ]
         setMessages(newMessageArray)
         if (!switched) {
-          handleSiblingSwitch(_id!, children!.length)
+          handleSiblingSwitch(_id, children.length)
           switched = true
         }
       }
@@ -257,8 +260,8 @@ export function Message({
                 <button
                   onClick={() =>
                     handleSiblingSwitch(
-                      _id!,
-                      (selectedIndex - 1 + children.length) % children!.length
+                      _id,
+                      (selectedIndex - 1 + children.length) % children.length
                     )
                   }
                   className={styles.messageHeaderButton}
@@ -271,12 +274,12 @@ export function Message({
                     <path d='M9.78 12.78a.75.75 0 0 1-1.06 0L4.47 8.53a.75.75 0 0 1 0-1.06l4.25-4.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042L6.06 8l3.72 3.72a.75.75 0 0 1 0 1.06Z'></path>
                   </svg>
                 </button>
-                <span>{selectedIndex + 1 + '/' + children!.length}</span>
+                <span>{selectedIndex + 1 + '/' + children.length}</span>
                 <button
                   onClick={() =>
                     handleSiblingSwitch(
-                      _id!,
-                      (selectedIndex + 1) % children!.length
+                      _id,
+                      (selectedIndex + 1) % children.length
                     )
                   }
                   className={styles.messageHeaderButton}
@@ -473,7 +476,7 @@ export function Message({
               className={styles.messageContentTextarea}
               contentEditable={true}
               suppressContentEditableWarning={true}
-              onBlur={(e) => setNewMessageContent(e.currentTarget.innerText!)}
+              onBlur={(e) => setNewMessageContent(e.currentTarget.innerText)}
             >
               {newMessageContent}
             </div>
