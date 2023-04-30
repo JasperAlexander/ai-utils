@@ -1,5 +1,11 @@
 # ai-chat
 
+## 1.3.1
+
+### Patch Changes
+
+- 33b71c3: Updated types. Fixed scrolling to bottom issue.
+
 ## 1.3.0
 
 ### Minor Changes
