@@ -1,0 +1,52 @@
+{
+  "name": "text-to-chunks",
+  "version": "0.0.0",
+  "description": "A utility to split text into multiple chunks.",
+  "author": "Jasper Alexander",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "files": [
+    "dist/**/*"
+  ],
+  "scripts": {
+    "build": "webpack",
+    "lint": "eslint src/*.ts*",
+    "test": "jest"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JasperAlexander/ai-utils.git"
+  },
+  "keywords": [
+    "text",
+    "convert",
+    "converter",
+    "chunk",
+    "chunks",
+    "split",
+    "splitter",
+    "ai"
+  ],
+  "bugs": {
+    "url": "https://github.com/JasperAlexander/ai-utils/issues"
+  },
+  "homepage": "https://github.com/JasperAlexander/ai-utils/tree/main/packages/text-to-chunks/README.md",
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-custom": "workspace:*",
+    "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "@types/jest": "^29.5.0",
+    "@types/node": "^17.0.45",
+    "jest": "^29.5.0",
+    "ts-jest": "^29.1.0",
+    "ts-loader": "^9.4.2",
+    "webpack": "^5.79.0",
+    "webpack-cli": "^5.0.1"
+  }
+}
