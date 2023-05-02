@@ -50,7 +50,7 @@ export default function IndexPage() {
       const markdown = marked.parse(combinedFilesText)
       setFilesTextMarkdown(markdown)
     },
-    [filesTextPlain, setFilesTextPlain, filesTextMarkdown, setFilesTextMarkdown]
+    [filesTextPlain, setFilesTextPlain, setFilesTextMarkdown]
   )
 
   const { getRootProps, getInputProps, isDragAccept, isDragReject } =

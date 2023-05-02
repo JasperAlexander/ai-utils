@@ -22,9 +22,11 @@ pnpm add file-to-text
 ## Usage
 
 ```tsx
+'use client'
+
 import { fileToText } from 'file-to-text'
 
-export default function Input() {
+export default function Page() {
   const [text, setText] = useState('')
 
   async function handleFileChange(event: ChangeEvent<HTMLInputElement>) {

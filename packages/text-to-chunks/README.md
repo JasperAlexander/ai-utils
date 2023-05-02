@@ -13,9 +13,11 @@ pnpm add text-to-chunks
 ## Usage
 
 ```tsx
+'use client'
+
 import { textToChunks } from 'text-to-chunks'
 
-export default function Input() {
+export default function Page() {
   const [text, setText] = useState('')
   const [chunks, setChunks] = useState<string[]>([])
 
