@@ -1,6 +1,6 @@
 {
   "name": "text-to-aitext",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A utility to convert text to AI-generated text.",
   "author": "Jasper Alexander",
   "license": "MIT",

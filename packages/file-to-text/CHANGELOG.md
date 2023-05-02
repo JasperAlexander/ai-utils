@@ -1,5 +1,11 @@
 # file-to-text
 
+## 1.0.3
+
+### Patch Changes
+
+- df495d2: Bumped dependencies version
+
 ## 1.0.2
 
 ### Patch Changes
