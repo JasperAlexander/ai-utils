@@ -1,5 +1,13 @@
 # ai-chat
 
+## 1.3.2
+
+### Patch Changes
+
+- Updated dependencies [df495d2]
+  - text-to-aitext@1.0.3
+  - file-to-text@1.0.3
+
 ## 1.3.1
 
 ### Patch Changes
