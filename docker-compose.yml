@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: ai-chat
+    build: 
+      context: .
+      dockerfile: ./apps/ai-chat/Dockerfile
+    ports:
+      - '3000:3000'
+    depends_on:
+      - db
+    environment:
+      - MONGODB_URI=mongodb://db:27017
+    env_file:
+      - ./apps/ai-chat/.env.local
+
+  db:
+    container_name: ai-chat-db
+    build:
+      context: .
+      dockerfile: ./databases/mongodb/Dockerfile
+    ports:
+      - '27017:27017'
+    volumes:
+      - db_data:/data/db
+
+volumes:
+  db_data:
+

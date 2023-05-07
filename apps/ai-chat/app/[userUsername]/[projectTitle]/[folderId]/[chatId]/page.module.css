@@ -61,17 +61,9 @@
     height: 128px;
     border: 1px solid var(--color-border-default);
     border-radius: 16px;
-    transition-property: height, background-color, border;
-    transition-duration: 0.2s;
     cursor: text;
     position: relative;
-    /* overflow: scroll; */
     gap: 16px;
-}
-
-.inputContainer:focus-within {
-    border-color: var(--color-svg-muted);
-    outline: none;
 }
 
 .inputAcceptFile {
@@ -92,17 +84,13 @@
     background-color: transparent;
     border: none;
     font: inherit;
-    outline: none;
+    border-radius: 16px;
     white-space: pre-wrap;
     overflow-wrap: break-word;
     resize: none;
     font-size: 16px;
     line-height: 20px;
     overflow: scroll;
-}
-
-.inputTextarea:focus-within {
-    outline: none;
 }
 
 .inputSubmitButton {

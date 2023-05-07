@@ -13,43 +13,176 @@
 /* page.tsx */
 .page {
     display: flex;
+    flex-direction: column;
     flex-grow: 1;
+    -webkit-font-smoothing: antialiased;
 }
 
 .section {
     display: flex;
+    flex-direction: column;
     flex-grow: 1;
     align-items: center;
     justify-content: space-evenly;
-    padding: 64px 32px;
+    text-align: center;
+    gap: 32px;
+}
+
+.sectionOne,
+.sectionTwo {
+    padding: 32px;
 }
 
 .sectionLeft,
 .sectionRight {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    width: min-content;
+    gap: 8px;
 }
 
 .title,
 .subtitle {
     color: var(--color-text-default);
     font-weight: 500;
-    -webkit-font-smoothing: antialiased;
 }
 
 .title {
-    font-size: 40px;
-    line-height: 44px;
+    font-size: 88px;
+    line-height: 96px;
 }
 
 .subtitle {
+    font-size: 32px;
+    line-height: 36px;
+    color: var(--color-btn-hover-border);
+}
+
+.primaryButton {
+    display: flex;
+    width: max-content;
+    align-items: center;
+    padding: 8px 16px;
+    margin: 8px 0px;
+    gap: 4px;
+    border: 1px solid var(--color-border-default);
+    border-radius: 8px;
+    background-color: var(--color-canvas-subtle);
+    transition-property: background-color;
+    transition-duration: 0.2s;
+}
+
+.primaryButton:hover {
+    background-color: var(--color-background-default);
+}
+
+.primaryButtonArrow {
+    transition: transform 0.2s ease-out;
+}
+
+.primaryButton:hover .primaryButtonArrow {
+    transform: translateX(4px);
+}
+
+.messages {
+    display: flex;
+    flex-direction: column;
+    width: 280px;
+    gap: 8px;
+}
+
+.message {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    min-height: 40px;
+    border: 1px solid var(--color-border-default);
+    border-radius: 8px;
+}
+
+.message:nth-child(2n) {
+    align-self: flex-end;
+}
+
+.messageHeader {
+    display: flex;
+    background-color: var(--color-canvas-subtle);
+    border-bottom: 1px solid var(--color-border-default);
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    height: 16px;
+}
+
+.messageContent {
+    text-align: left;
+    padding: 4px;
+    font-size: 12px;
+    line-height: 14px;
+}
+
+.sectionTop,
+.sectionBottom {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.box {
+    display: flex;
+    flex-grow: 1;
+    min-height: 240px;
+    min-width: 240px;
+    background-color: var(--color-canvas-subtle);
+    border-radius: 16px;
+    padding: 8px;
+}
+
+.boxContent {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+}
+
+.boxText {
+    color: var(--color-btn-hover-border);
     font-size: 24px;
     line-height: 28px;
 }
 
-.userList {
+.boxSvg {
+    width: 152px;
+    height: 152px;
+}
+
+.streamingText {
     display: flex;
-    flex-direction: column;
+    width: 300px;
+}
+
+@media screen and (min-width: 768px) {
+    .section {
+        flex-direction: row;
+        text-align: left;
+    }
+
+    .sectionOne {
+        padding: 152px 32px 184px;
+    }
+
+    .sectionTwo {
+        padding: 112px 32px;
+        flex-direction: column;
+    }
+
+    .sectionLeft,
+    .sectionRight {
+        align-items: flex-start;
+    }
 }
 
 /* header.tsx */

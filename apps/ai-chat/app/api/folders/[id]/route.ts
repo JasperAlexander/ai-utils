@@ -1,3 +1,4 @@
+import { UpdateFolderType } from '@/types'
 import { mongoDBClient } from '@/utils/mongodb'
 import { BSON, WithId } from 'mongodb'
 
@@ -28,16 +29,18 @@ export async function PATCH(
     const client = await mongoDBClient
     const database = client.db('ai-chat')
     const foldersCollection = database.collection('folders')
-    
+
     const request = await req.json()
-    if(request.title) {
-        const inserted = await foldersCollection.updateOne({
-            // @ts-ignore
-            _id: params.id
-        }, {
-            $set: { title: request.title, updated_at: new Date() }
-        })
-        
-        return new Response(JSON.stringify(inserted.upsertedId))
-    }
+    
+    const updates: UpdateFolderType = {}
+    if(request.title) updates.title = request.title
+    updates.updated_at = new Date().toString()
+
+    const inserted = await foldersCollection.updateOne({
+        // @ts-ignore
+        _id: params.id
+    }, {
+        $set: updates
+    })
+    return new Response(JSON.stringify(inserted.upsertedId))
 }

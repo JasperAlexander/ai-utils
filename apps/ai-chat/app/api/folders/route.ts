@@ -20,6 +20,7 @@ export async function POST(req: Request) {
     
     const inserted: InsertOneResult<Document> = await foldersCollection.insertOne({
         title: 'New folder',
+        part_of: request.part_of,
         created_by: request.created_by,
         updated_at: new Date(),
         created_at: new Date()

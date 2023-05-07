@@ -19,9 +19,9 @@ export async function POST(req: Request) {
     const request = await req.json()
     
     const inserted: InsertOneResult<Document> = await projectsCollection.insertOne({
-        title: 'Project',
-        description: '',
-        private: true,
+        title: request.title,
+        description: request.description,
+        visibility: request.visibility,
         created_by: request.created_by,
         updated_at: new Date(),
         created_at: new Date()

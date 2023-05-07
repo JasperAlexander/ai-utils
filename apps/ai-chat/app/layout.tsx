@@ -6,6 +6,7 @@ import { Header } from './header'
 import { HeaderSkeleton } from './headerSkeleton'
 import { getServerSession } from 'next-auth'
 import { Providers } from './providers'
+import { authOptions } from './api/auth/[...nextauth]/route'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -22,7 +23,7 @@ export default async function RootLayout({
 }: {
   children: ReactNode
 }) {
-  const session = await getServerSession()
+  const session = await getServerSession(authOptions)
 
   return (
     <html lang='en' className={inter.className}>

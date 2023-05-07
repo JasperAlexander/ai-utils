@@ -3,9 +3,10 @@ import Link from 'next/link'
 import { getServerSession } from 'next-auth'
 import { Fragment } from 'react'
 import { AccountButton } from './accountButton'
+import { authOptions } from './api/auth/[...nextauth]/route'
 
 export async function Header() {
-  const session = await getServerSession()
+  const session = await getServerSession(authOptions)
 
   return (
     <header className={styles.header}>
@@ -26,8 +27,14 @@ export async function Header() {
           {/* <span className={styles.headerLogoSpan}>DeerChat</span> */}
         </Link>
 
-        <Link href='/' className={styles.headerLeftLink}>
+        <Link
+          href={`/${session?.user.username}`}
+          className={styles.headerLeftLink}
+        >
           Chats
+        </Link>
+        <Link href='/explore' className={styles.headerLeftLink}>
+          Explore
         </Link>
       </div>
 

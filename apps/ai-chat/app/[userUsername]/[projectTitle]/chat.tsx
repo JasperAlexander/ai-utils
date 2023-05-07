@@ -35,7 +35,7 @@ export function Chat({
       {folderId && <div className={styles.spacer} />}
       <div className={styles.chatButton} />
       <Link
-        href={`/${params.userUsername}/${folderId}/${id}`}
+        href={`/${params.userUsername}/${params.projectTitle}/${folderId}/${id}`}
         className={styles.chatLink}
       >
         <svg viewBox='0 0 16 16' className={styles.chatLinkSvg}>

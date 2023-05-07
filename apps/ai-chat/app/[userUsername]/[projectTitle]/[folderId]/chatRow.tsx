@@ -71,7 +71,7 @@ export function ChatRow({
             />
           ) : (
             <Link
-              href={`/${params.userUsername}/${params.folderId}/${_id}`}
+              href={`/${params.userUsername}/${params.projectTitle}/${params.folderId}/${_id}`}
               className={styles.chatTitleLink}
             >
               {title}

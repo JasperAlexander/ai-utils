@@ -1,3 +1,4 @@
+import { UpdateChatType } from '@/types'
 import { mongoDBClient } from '@/utils/mongodb'
 import { BSON, WithId } from 'mongodb'
 
@@ -31,31 +32,19 @@ export async function PATCH(
     const chatsCollection = database.collection('chats')
     
     const request = await req.json()
-    if(request.title) {
-        const inserted = await chatsCollection.updateOne({
-            // @ts-ignore
-            _id: params.id
-        }, {
-            $set: { title: request.title }
-        })
-        return new Response(JSON.stringify(inserted.upsertedId))
-    } else if(request.folder_id) {
-        const inserted = await chatsCollection.updateOne({
-            // @ts-ignore
-            _id: params.id
-        }, {
-            $set: { folder_id: request.folder_id }
-        })
-        return new Response(JSON.stringify(inserted.upsertedId))
-    } else if(request.messages) {
-        const inserted = await chatsCollection.updateOne({
-            // @ts-ignore
-            _id: params.id
-        }, {
-            $set: { messages: request.messages, updated_at: new Date() }
-        })
-        return new Response(JSON.stringify(inserted.upsertedId))
-    }
+    
+    const updates: UpdateChatType = {}
+    if(request.title) updates.title = request.title
+    if(request.folder_id) updates.folder_id = request.folder_id
+    updates.updated_at = new Date().toString()
+
+    const inserted = await chatsCollection.updateOne({
+        // @ts-ignore
+        _id: params.id
+    }, {
+        $set: updates
+    })
+    return new Response(JSON.stringify(inserted.upsertedId))
 }
 
 export async function DELETE(

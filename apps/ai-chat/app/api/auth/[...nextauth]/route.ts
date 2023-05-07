@@ -26,20 +26,20 @@ export const authOptions: NextAuthOptions = {
             const usersCollection = db.collection('users')
         
             // Check if user with same username already exists
-            let checkUserUsername = await usersCollection.findOne({
-                username: profile!.login
-            })
+            // let checkUserUsername = await usersCollection.findOne({
+            //     username: profile!.login
+            // })
 
-            let username
-            if(checkUserUsername) {
-                let newUsername
-                do {
-                    newUsername = `${profile!.login}${Math.floor(Math.random() * 1000)}`
-                    checkUserUsername = await usersCollection.findOne({ username: newUsername })
-                } while (checkUserUsername)
+            // let username
+            // if(checkUserUsername) {
+            //     let newUsername
+            //     do {
+            //         newUsername = `${profile!.login}${Math.floor(Math.random() * 1000)}`
+            //         checkUserUsername = await usersCollection.findOne({ username: newUsername })
+            //     } while (checkUserUsername)
 
-                username = newUsername
-            }
+            //     username = newUsername
+            // }
         
             // Check if user with same email adress already exists
             const checkUserEmail = await usersCollection.findOne({
@@ -52,7 +52,8 @@ export const authOptions: NextAuthOptions = {
                 await usersCollection.insertOne({
                     email: user.email,
                     name: user.name,
-                    username,
+                    username: profile!.login,
+                    bio: '',
                     image: user.image !== null ? user.image : 'https://abs.twimg.com/sticky/default_profile_images/default_profile_200x200.png',
                     updated_at: new Date(),
                     created_at: new Date(),
@@ -61,11 +62,10 @@ export const authOptions: NextAuthOptions = {
             }
         },
         
-        async session({ session, token, user }) { 
+        async session({ session }) { 
             if (!session || !session.user) return session
         
             const client = await mongoDBClient
-            await client.connect()
             const db = client.db('ai-chat')
             const collection = db.collection('users')
         
@@ -74,8 +74,6 @@ export const authOptions: NextAuthOptions = {
             })
         
             session.user._id = userData?._id
-            session.user.email = userData?.email
-            session.user.name = userData?.name
             session.user.username = userData?.username
             session.user.image = userData?.image
         

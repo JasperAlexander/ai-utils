@@ -3,7 +3,7 @@
 import styles from './page.module.css'
 import { Fragment, useEffect, useState } from 'react'
 import { Tooltip } from 'react-tooltip'
-import { useRouter } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { FolderType } from '@/types'
 import { createPortal } from 'react-dom'
 import { useSession } from 'next-auth/react'
@@ -11,6 +11,7 @@ import { useSession } from 'next-auth/react'
 export function AddButton({ folders }: { folders: FolderType[] }) {
   const router = useRouter()
   const session = useSession()
+  const params = useParams()
 
   const [tooltipMenuOpen, setTooltipMenuOpen] = useState(false)
   const [documentReady, setDocumentReady] = useState(false)
@@ -69,6 +70,7 @@ export function AddButton({ folders }: { folders: FolderType[] }) {
                         {
                           method: 'POST',
                           body: JSON.stringify({
+                            part_of: params.projectTitle,
                             created_by: session.data?.user.username,
                           }),
                         }

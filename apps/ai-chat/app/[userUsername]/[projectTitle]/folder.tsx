@@ -88,7 +88,7 @@ export function Folder({
           )}
         </button>
         <Link
-          href={`/${params.userUsername}/${folderId}`}
+          href={`/${params.userUsername}/${params.projectTitle}/${folderId}`}
           className={styles.folderTitleLink}
         >
           {isOpen ? (

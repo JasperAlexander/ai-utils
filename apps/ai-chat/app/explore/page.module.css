@@ -1,0 +1,13 @@
+/* page.tsx */
+.page {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    flex-direction: column;
+    padding: 32px;
+    gap: 8px;
+}
+
+.title {
+    color: var(--color-text-default);
+}

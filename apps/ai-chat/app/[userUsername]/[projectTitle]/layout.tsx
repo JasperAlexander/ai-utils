@@ -8,15 +8,26 @@ export default function Layout({
   params,
 }: {
   children: ReactNode
-  params: { userUsername: string }
+  params: {
+    userUsername: string
+    projectTitle: string
+  }
 }) {
   return (
     <Fragment>
       <Suspense
-        fallback={<SidebarSkeleton userUsername={params.userUsername} />}
+        fallback={
+          <SidebarSkeleton
+            userUsername={params.userUsername}
+            projectTitle={params.projectTitle}
+          />
+        }
       >
         {/* @ts-ignore */}
-        <Sidebar userUsername={params.userUsername} />
+        <Sidebar
+          userUsername={params.userUsername}
+          projectTitle={params.projectTitle}
+        />
       </Suspense>
       <main className={styles.main}>{children}</main>
     </Fragment>

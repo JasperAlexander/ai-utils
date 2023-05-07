@@ -9,46 +9,52 @@ import { AddButton } from './addButton'
 import { Suspense } from 'react'
 import { HideSidebarButton } from './hideSidebarButton'
 import { getServerSession } from 'next-auth'
-import { authOptions } from '../api/auth/[...nextauth]/route'
+import { authOptions } from '../../api/auth/[...nextauth]/route'
 
-async function getFolders(created_by: string) {
+async function getFolders(created_by: string, title: string) {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE}/api/users/${created_by}/folders`,
+    `${process.env.NEXT_PUBLIC_API_BASE}/api/users/${created_by}/projects/${title}/folders`,
     {
       cache: 'no-store',
     }
   )
-  if (!res.ok) throw new Error('Failed to fetch folders')
+  if (!res.ok) throw new Error('Failed to fetch project folders')
 
   return res.json()
 }
 
-async function getChats(created_by: string) {
+async function getChats(created_by: string, title: string) {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE}/api/users/${created_by}/chats`,
+    `${process.env.NEXT_PUBLIC_API_BASE}/api/users/${created_by}/projects/${title}/chats`,
     {
       cache: 'no-store',
     }
   )
-  if (!res.ok) throw new Error('Failed to fetch chats')
+  if (!res.ok) throw new Error('Failed to fetch project chats')
 
   return res.json()
 }
 
-export async function Sidebar({ userUsername }: { userUsername: string }) {
+export async function Sidebar({
+  userUsername,
+  projectTitle,
+}: {
+  userUsername: string
+  projectTitle: string
+}) {
   const session = await getServerSession(authOptions)
 
-  const folders: FolderType[] = await getFolders(userUsername)
-  const chats: ChatType[] = await getChats(userUsername)
+  const folders: FolderType[] = await getFolders(userUsername, projectTitle)
+  const chats: ChatType[] = await getChats(userUsername, projectTitle)
 
-  const folderCreatedByCurrentUser = userUsername === session?.user.username
+  const projectCreatedByCurrentUser = userUsername === session?.user.username
 
   return (
     <aside className={styles.sidebarContainer}>
       <div className={styles.sidebar} id='sidebar'>
         <div className={styles.sidebarContent}>
-          <div className={styles.sidebarContentTop}>
-            <div className={styles.sidebarHeader}>
+          <div className={styles.sidebarHeader}>
+            <div className={styles.sidebarHeaderTop}>
               <Suspense
                 fallback={
                   <button type='button' className={styles.sidebarCloseButton}>
@@ -66,12 +72,12 @@ export async function Sidebar({ userUsername }: { userUsername: string }) {
                 <HideSidebarButton />
               </Suspense>
               <Link
-                href={`/${userUsername}`}
+                href={`/${userUsername}/${projectTitle}`}
                 className={styles.sidebarHeaderTitle}
               >
-                {userUsername}
+                {projectTitle}
               </Link>
-              {folderCreatedByCurrentUser && (
+              {projectCreatedByCurrentUser && (
                 <Suspense
                   fallback={
                     <button type='button' className={styles.addButton}>
@@ -106,7 +112,7 @@ export async function Sidebar({ userUsername }: { userUsername: string }) {
               </Suspense>
             </div>
           </div>
-          <div className={styles.sidebarChats}>
+          <div className={styles.sidebarMain}>
             {folders.map((folder) => (
               <Folder
                 key={folder._id}

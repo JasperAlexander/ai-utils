@@ -8,7 +8,7 @@ import { SidebarButtonSkeleton } from './sidebarButtonSkeleton'
 import { FolderTitleSkeleton } from './folderTitleSkeleton'
 import { ChatRowSkeleton } from './chatRowSkeleton'
 import { getServerSession } from 'next-auth'
-import { authOptions } from '../../api/auth/[...nextauth]/route'
+import { authOptions } from '../../../api/auth/[...nextauth]/route'
 
 async function getFolder(id: string) {
   const res = await fetch(
