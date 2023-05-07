@@ -1,5 +1,11 @@
 # ai-chat
 
+## 1.4.0
+
+### Minor Changes
+
+- bd04c8b: Added profile page, settings pages, dockerfiles and route handlers.
+
 ## 1.3.2
 
 ### Patch Changes
