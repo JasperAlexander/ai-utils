@@ -9,15 +9,9 @@ An app that allows users to chat with AI using the OpenAI API. Features:
 - Categorize chats.
 - Save chats to a MongoDB database.
 
-## Installation
+## Getting started
 
-Install the dependencies by running one of the following commands, depending on your package manager.
-
-```sh
-pnpm install
-```
-
-## Usage
+### Using docker
 
 1. Add the missing variables to the .env.example file.
 
@@ -27,13 +21,37 @@ pnpm install
 mv .env.example .env.local
 ```
 
-3. Run one of the following commands depending on your package manager to run this app.
+3. Run the following command in the root directory (ai-utils).
+
+```sh
+docker-compose up
+```
+
+4. Go to [http://localhost:3000/](http://localhost:3000/) to start chatting.
+
+### Using manual setup
+
+1. Install the dependencies by running the following command in the ai-utils directory.
+
+```sh
+pnpm install
+```
+
+2. Go to the ai-chat directory and add the missing variables to the .env.example file.
+
+3. Rename .env.example to .env.local. You can do this by running the following command in the root directory of this app.
+
+```sh
+mv .env.example .env.local
+```
+
+4. Run the following command to run ai-chat.
 
 ```sh
 pnpm run dev
 ```
 
-4. Go to [http://localhost:3000/](http://localhost:3000/) to start chatting.
+5. Go to [http://localhost:3000/](http://localhost:3000/) to start chatting.
 
 ## Contributing
 
