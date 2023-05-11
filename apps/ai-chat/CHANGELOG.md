@@ -1,5 +1,11 @@
 # ai-chat
 
+## 1.5.0
+
+### Minor Changes
+
+- c887e8b: Added notifications. Renamed project title to name. Added settings pages. Fixed issues.
+
 ## 1.4.0
 
 ### Minor Changes
