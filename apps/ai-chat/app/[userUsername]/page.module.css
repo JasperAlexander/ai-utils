@@ -34,10 +34,21 @@
 
 .primaryButton {
     background-color: var(--color-btn-bg);
-    color: var(--color-text-default);
+    color: var(--color-btn-text);
     border: 1px solid var(--color-btn-border);
     border-radius: 8px;
-    padding: 8px;
+    padding: 4px 12px;
+    width: max-content;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 500;
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+    appearance: none;
+    position: relative;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .primaryButton:hover {
@@ -45,10 +56,14 @@
     background-color: var(--color-btn-hover-bg);
 }
 
-.primaryButton:active,
-.primaryButton:focus-within {
+.primaryButton:active {
     border-color: var(--color-btn-active-border);
     background-color: var(--color-button-active);
+}
+
+.primaryButton:disabled {
+    pointer-events: none;
+    opacity: 0.8;
 }
 
 .avatar {
@@ -96,7 +111,7 @@
     align-items: center;
 }
 
-.projectTitle:hover {
+.projectName:hover {
     text-decoration-line: underline;
     text-decoration-thickness: 1px;
 }
@@ -105,4 +120,36 @@
     font-size: 14px;
     line-height: 16px;
     color: var(--color-btn-hover-border);
+}
+
+/* hideSidebarButton.tsx */
+.hideSidebarButton {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-btn-hover-border);
+    background-color: var(--color-canvas-subtle);
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+}
+
+.hideSidebarButton:hover {
+    background-color: var(--color-btn-hover-bg);
+    color: var(--color-btn-hover-border);
+}
+
+.hideSidebarButtonSvg {
+    width: 16px;
+    height: 16px;
+}
+
+/* resizer.tsx */
+.resizer {
+    position: absolute;
+    z-index: 1;
+    inset: 0px -4px;
+    cursor: col-resize;
+    background-color: transparent;
 }

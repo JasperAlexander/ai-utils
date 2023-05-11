@@ -2,14 +2,15 @@
 
 import styles from './page.module.css'
 import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 export default function Page() {
   const router = useRouter()
   const session = useSession()
+  if (!session) redirect('/')
 
-  const [title, setTitle] = useState('')
+  const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [visibility, setVisibility] = useState('private')
 
@@ -18,14 +19,14 @@ export default function Page() {
   const [submitted, setSubmitted] = useState(false)
 
   useEffect(() => {
-    if (title === '') return
+    if (name === '') return
     const timeout = setTimeout(async () => {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE}/api/validate/project`,
         {
           method: 'POST',
           body: JSON.stringify({
-            title: title,
+            name: name,
             description: description,
             visibility: visibility,
             created_by: session.data?.user.username,
@@ -40,7 +41,7 @@ export default function Page() {
       setUsernameChecked(true)
     }, 500)
     return () => clearTimeout(timeout)
-  }, [title, description, visibility, session.data?.user.username])
+  }, [name, description, visibility, session.data?.user.username])
 
   return (
     <div className={styles.page}>
@@ -56,22 +57,22 @@ export default function Page() {
             <label className={styles.inputLabel}>Title</label>
             <input
               type='text'
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               className={styles.textInput}
             />
             {usernameChecked ? (
-              title === '' ? (
+              name === '' ? (
                 <span className={styles.inputStatusError}>
                   Project name must not be blank
                 </span>
               ) : usernameTaken ? (
                 <span className={styles.inputStatusError}>
-                  The project title already exists on this user
+                  The project name already exists on this user
                 </span>
               ) : (
                 <span className={styles.inputStatusSuccess}>
-                  The project title is available
+                  The project name is available
                 </span>
               )
             ) : (
@@ -122,7 +123,7 @@ export default function Page() {
                 {
                   method: 'POST',
                   body: JSON.stringify({
-                    title,
+                    name,
                     description,
                     private: visibility === 'private' ? true : false,
                     created_by: session.data?.user.username,
@@ -130,10 +131,10 @@ export default function Page() {
                 }
               )
               await response.json()
-              router.push(`/${session.data?.user.username}/${title}`)
+              router.push(`/${session.data?.user.username}/${name}`)
             }}
             disabled={
-              !usernameChecked || title === '' || usernameTaken || submitted
+              !usernameChecked || name === '' || usernameTaken || submitted
             }
             className={styles.primaryButton}
           >

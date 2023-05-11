@@ -1,17 +1,24 @@
 import styles from './page.module.css'
 import { Fragment, ReactNode } from 'react'
 import { Sidebar } from './sidebar'
+import { getServerSession } from 'next-auth'
+import { redirect } from 'next/navigation'
+import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 
-export default function Layout({
+export default async function Layout({
   children,
   params,
 }: {
   children: ReactNode
   params: {
     userUsername: string
-    projectTitle: string
+    projectName: string
   }
 }) {
+  const session = await getServerSession(authOptions)
+  const settingsOfCurrentUser = params.userUsername === session?.user.username
+  if (!settingsOfCurrentUser) redirect(`/${params.userUsername}`)
+
   return (
     <Fragment>
       {/* @ts-ignore */}

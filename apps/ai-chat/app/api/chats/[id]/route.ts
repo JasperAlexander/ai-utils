@@ -34,17 +34,17 @@ export async function PATCH(
     const request = await req.json()
     
     const updates: UpdateChatType = {}
-    if(request.title) updates.title = request.title
-    if(request.folder_id) updates.folder_id = request.folder_id
+    if(typeof request.title !== 'undefined') updates.title = request.title
+    if(typeof request.folder_id !== 'undefined') updates.folder_id = request.folder_id
     updates.updated_at = new Date().toString()
 
-    const inserted = await chatsCollection.updateOne({
+    const upserted = await chatsCollection.updateOne({
         // @ts-ignore
         _id: params.id
     }, {
         $set: updates
     })
-    return new Response(JSON.stringify(inserted.upsertedId))
+    return new Response(JSON.stringify(upserted.upsertedId))
 }
 
 export async function DELETE(

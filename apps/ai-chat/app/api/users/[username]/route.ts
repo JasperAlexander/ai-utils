@@ -32,17 +32,17 @@ export async function PATCH(
     const request = await req.json()
     
     const updates: UpdateUserType = {}
-    if(request.email) updates.email = request.email
-    if(request.name) updates.name = request.name
-    if(request.username) updates.username = request.username
-    if(request.bio) updates.bio = request.bio
-    if(request.image) updates.image = request.image
+    if(typeof request.email !== 'undefined') updates.email = request.email
+    if(typeof request.name !== 'undefined') updates.name = request.name
+    if(typeof request.username !== 'undefined') updates.username = request.username
+    if(typeof request.bio !== 'undefined') updates.bio = request.bio
+    if(typeof request.image !== 'undefined') updates.image = request.image
     updates.updated_at = new Date().toString()
 
-    const inserted = await usersCollection.updateOne({
+    const upserted = await usersCollection.updateOne({
         username: params.username
     }, {
         $set: updates
     })
-    return new Response(JSON.stringify(inserted.upsertedId))
+    return new Response(JSON.stringify(upserted.upsertedId))
 }

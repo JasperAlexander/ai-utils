@@ -33,14 +33,14 @@ export async function PATCH(
     const request = await req.json()
     
     const updates: UpdateFolderType = {}
-    if(request.title) updates.title = request.title
+    if(typeof request.title !== 'undefined') updates.title = request.title
     updates.updated_at = new Date().toString()
 
-    const inserted = await foldersCollection.updateOne({
+    const upserted = await foldersCollection.updateOne({
         // @ts-ignore
         _id: params.id
     }, {
         $set: updates
     })
-    return new Response(JSON.stringify(inserted.upsertedId))
+    return new Response(JSON.stringify(upserted.upsertedId))
 }

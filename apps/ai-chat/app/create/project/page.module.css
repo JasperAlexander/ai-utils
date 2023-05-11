@@ -95,11 +95,21 @@
 
 .primaryButton {
     background-color: var(--color-btn-bg);
-    color: var(--color-text-default);
+    color: var(--color-btn-text);
     border: 1px solid var(--color-btn-border);
     border-radius: 8px;
-    padding: 8px;
+    padding: 4px 12px;
     width: max-content;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 500;
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+    appearance: none;
+    position: relative;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .primaryButton:hover {
@@ -107,8 +117,7 @@
     background-color: var(--color-btn-hover-bg);
 }
 
-.primaryButton:active,
-.primaryButton:focus-within {
+.primaryButton:active {
     border-color: var(--color-btn-active-border);
     background-color: var(--color-button-active);
 }

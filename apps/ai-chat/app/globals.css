@@ -1,4 +1,6 @@
 :root {
+  --color-primary-fg: rgb(63, 185, 80);
+
   --color-success-fg: rgb(63, 185, 80);
   --color-success-emphasis: rgb(35, 134, 54);
   --color-success-subtle: rgba(46, 160, 67, 0.15);
@@ -32,6 +34,7 @@
     --color-svg-muted: rgb(125, 133, 144);
 
     --color-canvas-subtle: rgb(22, 27, 34);
+    --color-canvas-inset: rgb(1, 4, 9);
     --color-fg-muted: rgb(125, 133, 144);
   }
 }
@@ -44,6 +47,7 @@
 
 :focus-visible {
   outline: 1px solid var(--color-btn-hover-border);
+  outline-offset: -1px;
 }
 
 html,
@@ -72,6 +76,73 @@ svg {
   user-select: none;
 }
 
+input,
+select,
+textarea,
+button {
+  font-family: inherit;
+  font-size: 14px;
+  line-height: inherit;
+}
+
+input[type=text],
+textarea {
+  padding: 4px 8px;
+  background-color: var(--color-canvas-inset);
+  border: 1px solid var(--color-border-default);
+  border-radius: 8px;
+  max-width: 100%;
+  position: relative;
+}
+
+input[type=radio] {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background-color: var(--color-canvas-inset);
+  border: 1px solid var(--color-border-default);
+  border-radius: 8px;
+}
+
+input[type=radio]:checked {
+  position: relative;
+}
+
+input[type=radio]:checked:before {
+  content: '';
+  display: block;
+  width: 12px;
+  height: 12px;
+  position: absolute;
+  inset: 1px;
+  background: none var(--color-primary-fg);
+  border-radius: 8px;
+}
+
+input[type=checkbox] {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background-color: var(--color-canvas-inset);
+  border: 1px solid var(--color-border-default);
+  border-radius: 4px;
+}
+
+input[type=checkbox]:checked {
+  position: relative;
+}
+
+input[type=checkbox]:checked:before {
+  content: '';
+  display: block;
+  width: 12px;
+  height: 12px;
+  position: absolute;
+  inset: 1px;
+  background: none var(--color-primary-fg);
+  border-radius: 2px;
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
@@ -80,6 +151,7 @@ svg {
 
 /* Tooltip */
 .styles-module_tooltip__mnnfp {
+  background-color: var(--color-btn-active-border);
   visibility: hidden;
   width: max-content;
   position: absolute;

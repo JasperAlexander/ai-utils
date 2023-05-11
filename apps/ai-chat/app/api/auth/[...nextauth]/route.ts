@@ -21,7 +21,7 @@ export const authOptions: NextAuthOptions = {
     callbacks: {
         async signIn({ user, profile }) {
             const client = await mongoDBClient
-            await client.connect()
+            // await client.connect()
             const db = client.db('ai-chat')
             const usersCollection = db.collection('users')
         
@@ -41,7 +41,7 @@ export const authOptions: NextAuthOptions = {
             //     username = newUsername
             // }
         
-            // Check if user with same email adress already exists
+            // Check if user with same email address already exists
             const checkUserEmail = await usersCollection.findOne({
                 email: user.email,
             })
@@ -73,9 +73,9 @@ export const authOptions: NextAuthOptions = {
                 email: session.user.email,
             })
         
-            session.user._id = userData?._id
-            session.user.username = userData?.username
-            session.user.image = userData?.image
+            session.user._id = userData!._id
+            session.user.username = userData!.username
+            session.user.image = userData!.image
         
             return session
         },

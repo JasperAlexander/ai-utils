@@ -14,17 +14,17 @@ export async function PATCH(
     const request = await req.json()
     
     const updates: UpdateMessageType = {}
-    if(request.content) updates.content = request.content
-    if(request.children) updates.children = request.children
+    if(typeof request.content !== 'undefined') updates.content = request.content
+    if(typeof request.children !== 'undefined') updates.children = request.children
     updates.updated_at = new Date().toString()
 
-    const inserted = await messagesCollection.updateOne({
+    const upserted = await messagesCollection.updateOne({
         // @ts-ignore
         _id: params.id
     }, {
         $set: updates
     })
-    return new Response(JSON.stringify(inserted.upsertedId))
+    return new Response(JSON.stringify(upserted.upsertedId))
 }
 
 export async function DELETE(

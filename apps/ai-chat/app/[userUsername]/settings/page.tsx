@@ -1,8 +1,5 @@
 import styles from './page.module.css'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import { UserType } from '@/types'
-import { redirect } from 'next/navigation'
 
 async function getUser(username: string) {
   const res = await fetch(
@@ -21,15 +18,11 @@ export default async function Page({
 }: {
   params: { userUsername: string }
 }) {
-  const session = await getServerSession(authOptions)
-  const settingsOfCurrentUser = params.userUsername === session?.user.username
-  if (!settingsOfCurrentUser) redirect(`/${params.userUsername}`)
-
   const user: UserType = await getUser(params.userUsername)
 
   return (
     <div className={styles.page}>
-      <h2 className={styles.title}>Settings of user {params.userUsername}</h2>
+      <h2 className={styles.title}>Settings of {params.userUsername}</h2>
     </div>
   )
 }

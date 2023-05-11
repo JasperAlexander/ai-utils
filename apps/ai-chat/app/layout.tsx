@@ -1,9 +1,8 @@
 import './globals.css'
 import styles from './page.module.css'
-import { ReactNode, Suspense } from 'react'
+import { ReactNode } from 'react'
 import { Inter } from 'next/font/google'
 import { Header } from './header'
-import { HeaderSkeleton } from './headerSkeleton'
 import { getServerSession } from 'next-auth'
 import { Providers } from './providers'
 import { authOptions } from './api/auth/[...nextauth]/route'
@@ -29,10 +28,8 @@ export default async function RootLayout({
     <html lang='en' className={inter.className}>
       <body>
         <Providers session={session}>
-          <Suspense fallback={<HeaderSkeleton />}>
-            {/* @ts-ignore */}
-            <Header />
-          </Suspense>
+          {/* @ts-ignore */}
+          <Header />
           <div className={styles.layout}>{children}</div>
         </Providers>
       </body>

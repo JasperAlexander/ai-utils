@@ -1,3 +1,8 @@
+/* layout.tsx */
+.main {
+    width: 100%;
+}
+
 /* page.tsx */
 .page {
     padding: 32px;
@@ -21,6 +26,7 @@
     --pane-max-width-diff: 511px;
     --pane-max-width: calc(100vw - var(--pane-max-width-diff));
     width: 100%;
+    font-size: 14px;
 }
 
 .sidebarContent {
@@ -43,28 +49,6 @@
     align-items: center;
     padding: 16px;
     gap: 16px;
-}
-
-.sidebarCloseButton {
-    display: flex;
-    flex-shrink: 0;
-    align-items: center;
-    justify-content: center;
-    color: var(--color-btn-hover-border);
-    background-color: var(--color-canvas-subtle);
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-}
-
-.sidebarCloseButton:hover {
-    background-color: var(--color-btn-hover-bg);
-    color: var(--color-btn-hover-border);
-}
-
-.sidebarCloseButtonSvg {
-    width: 16px;
-    height: 16px;
 }
 
 .sidebarHeaderTitle {

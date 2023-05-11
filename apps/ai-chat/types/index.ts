@@ -1,4 +1,4 @@
-// users
+// Users
 export interface UserType {
     _id: string
     email: string
@@ -19,10 +19,39 @@ export interface UpdateUserType {
     updated_at?: string
 }
 
-// projects
+// Notifications
+export interface NotificationType {
+    _id: string
+    project_created_by: string
+    project_name: string
+    type: string
+    read: boolean
+    created_by: string
+    updated_at: string
+}
+
+export interface UpdateNotificationType {
+    user_id?: string
+    reference_type?: string
+    reference_id?: string
+    type?: string
+    read?: boolean
+    updated_at?: string
+}
+
+// Collaborators
+export interface CollaboratorType {
+    _id: string
+    username: string
+    role: string
+    status: string
+    updated_at: string
+}
+
+// Projects
 export interface ProjectType {
     _id: string
-    title: string
+    name: string
     description: string
     visibility: string
     created_by: string
@@ -31,13 +60,13 @@ export interface ProjectType {
 }
 
 export interface UpdateProjectType {
-    title?: string
+    name?: string
     description?: string
     visibility?: string
     updated_at?: string
 }
 
-// folders
+// Folders
 export interface FolderType {
     _id: string
     title: string
@@ -51,7 +80,7 @@ export interface UpdateFolderType {
     updated_at?: string
 }
 
-// chats
+// Chats
 export interface ChatType {
     _id: string
     title: string
@@ -67,7 +96,7 @@ export interface UpdateChatType {
     updated_at?: string
 }
 
-// messages
+// Messages
 export interface MessageType {
     _id: string
     chat_id: string

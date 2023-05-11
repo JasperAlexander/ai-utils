@@ -18,11 +18,25 @@ if (process.env.NODE_ENV === 'development') {
   if (!globalWithMongo._mongoClientPromise) {
     client = new MongoClient(uri, options)
     globalWithMongo._mongoClientPromise = client.connect()
+
+    ;(async function() {
+      const client = await globalWithMongo._mongoClientPromise
+      const database = client.db('ai-chat')
+      const usersCollection = database.collection('users')
+      await usersCollection.createIndex({ username: "text" })
+    })()
   }
   mongoDBClient = globalWithMongo._mongoClientPromise
 } else {
   client = new MongoClient(uri, options)
   mongoDBClient = client.connect()
+  
+  ;(async function() {
+    const client = await mongoDBClient
+    const database = client.db('ai-chat')
+    const usersCollection = database.collection('users')
+    await usersCollection.createIndex({ username: "text" })
+  })()
 }
 
 export { mongoDBClient }
