@@ -1,5 +1,3 @@
-'use client'
-
 import styles from './page.module.css'
 import { Form } from './form'
 import { FolderType } from '@/types'
