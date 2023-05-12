@@ -1,5 +1,11 @@
 # ai-chat
 
+## 1.5.1
+
+### Patch Changes
+
+- 068507e: Added modal for adding collaborators.
+
 ## 1.5.0
 
 ### Minor Changes
