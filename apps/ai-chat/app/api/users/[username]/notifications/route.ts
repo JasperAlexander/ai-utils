@@ -70,7 +70,7 @@ export async function GET(
             created_by: 1,
             updated_at: 1
         } }
-    ]).toArray()
+    ]).sort({ updated_at: -1 }).toArray()
 
     return new Response(JSON.stringify(notifications))
 }

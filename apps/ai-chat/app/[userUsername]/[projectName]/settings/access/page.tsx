@@ -1,9 +1,9 @@
 import styles from './page.module.css'
 import Link from 'next/link'
-import { Form } from './form'
 import { CollaboratorType, ProjectType } from '@/types'
 import { Suspense } from 'react'
 import { relativeTimeFormat } from '@/utils/relativeTimeFormat'
+import { AddCollaboratorButton } from './addCollaboratorButton'
 
 async function getProject(username: string, name: string) {
   const res = await fetch(
@@ -45,17 +45,28 @@ export default async function Page({
 
   return (
     <div className={styles.page}>
-      <div className={styles.header}>
-        <h1 className={styles.title}>Collaborators</h1>
+      <div className={styles.pageHeader}>
+        <div className={styles.pageHeaderLeft}>
+          <h1 className={styles.title}>Collaborators</h1>
+        </div>
+        <div>
+          <Suspense
+            fallback={
+              <button type='button' className={styles.primaryButton}>
+                Add collaborator
+              </button>
+            }
+          >
+            <AddCollaboratorButton project={project} />
+          </Suspense>
+        </div>
       </div>
       <div className={styles.main}>
-        <Form project={project} />
-
         <table className={styles.table}>
           <thead className={styles.tableHeader}>
             <tr className={styles.tableHeaderRow}>
               <th className={styles.tableHeaderRowCell}>Name</th>
-              <th className={styles.tableHeaderRowCell}>Role</th>
+              <th className={styles.tableHeaderRowCell}>Status</th>
               <th className={styles.tableHeaderRowCell}>Last update</th>
             </tr>
           </thead>
@@ -82,8 +93,10 @@ export default async function Page({
                   <td className={styles.tableBodyRowData}>
                     <div className={styles.tableBodyRowDataContent}>
                       <span className={styles.tableBodyRowDataContentSpan}>
-                        {collaborator.role.charAt(0).toUpperCase() +
-                          collaborator.role.slice(1)}
+                        {collaborator.status === 'pending'
+                          ? 'Pending invite'
+                          : collaborator.role.charAt(0).toUpperCase() +
+                            collaborator.role.slice(1)}
                       </span>
                     </div>
                   </td>

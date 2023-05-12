@@ -33,7 +33,7 @@ export default async function Page() {
     <main className={styles.main}>
       <div className={styles.page}>
         <div className={styles.pageHeader}>
-          <div>
+          <div className={styles.pageHeaderLeft}>
             <h2>Notifications</h2>
           </div>
         </div>

@@ -243,6 +243,10 @@
     padding-left: 32px !important;
 }
 
+.searchbarInput::placeholder {
+    color: var(--color-btn-hover-border);
+}
+
 /* addButton.tsx */
 .addButton {
     display: flex;

@@ -143,6 +143,25 @@ input[type=checkbox]:checked:before {
   border-radius: 2px;
 }
 
+dialog {
+  width: 640px;
+  max-width: 90%;
+  max-height: 80vh;
+  translate: -50% -50%;
+  top: 50%;
+  left: 50%;
+  border: 1px solid var(--color-border-default);
+  border-radius: 16px;
+  background-color: var(--color-background-default);
+  box-shadow: 0 0 18px rgba(0, 0, 0, .4);
+  padding: 24px;
+  outline: none !important;
+}
+
+dialog::backdrop {
+  background-color: rgba(1, 4, 9, 0.8);
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
