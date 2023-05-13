@@ -1,23 +1,4 @@
 /* page.tsx */
-/* .page {
-    width: 100%;
-    padding: 32px;
-    max-width: 768px;
-}
-
-.pageHeader {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    border-bottom: 1px solid var(--color-border-default);
-    padding: 0px 0px 16px;
-}
-
-.pageHeaderLeft {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-} */
 .page {
     display: flex;
     flex-direction: column;

@@ -41,11 +41,18 @@ export interface UpdateNotificationType {
 
 // Collaborators
 export interface CollaboratorType {
-    _id: string
-    username: string
-    role: string
-    status: string
+    _id: string 
+    username: string 
+    role: string 
+    status: string 
+    created_by: string 
     updated_at: string
+}
+
+export interface UpdateCollaboratorType {
+    role?: string
+    status?: string
+    updated_at?: string
 }
 
 // Projects

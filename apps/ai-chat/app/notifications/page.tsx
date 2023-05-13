@@ -8,6 +8,7 @@ import { Suspense } from 'react'
 import { relativeTimeFormat } from '@/utils/relativeTimeFormat'
 import { MarkAsReadButton } from './markAsReadButton'
 import { DeleteNotificationButton } from './deleteNotificationButton'
+import { NotificationLink } from './notificationLink'
 
 async function getNotifications(username: string) {
   const res = await fetch(
@@ -58,15 +59,25 @@ export default async function Page() {
                       >
                         <path d='M2 5.5a3.5 3.5 0 1 1 5.898 2.549 5.508 5.508 0 0 1 3.034 4.084.75.75 0 1 1-1.482.235 4 4 0 0 0-7.9 0 .75.75 0 0 1-1.482-.236A5.507 5.507 0 0 1 3.102 8.05 3.493 3.493 0 0 1 2 5.5ZM11 4a3.001 3.001 0 0 1 2.22 5.018 5.01 5.01 0 0 1 2.56 3.012.749.749 0 0 1-.885.954.752.752 0 0 1-.549-.514 3.507 3.507 0 0 0-2.522-2.372.75.75 0 0 1-.574-.73v-.352a.75.75 0 0 1 .416-.672A1.5 1.5 0 0 0 11 5.5.75.75 0 0 1 11 4Zm-5.5-.5a2 2 0 1 0-.001 3.999A2 2 0 0 0 5.5 3.5Z'></path>
                       </svg>
-                      <Link
-                        href={`/${notification.project_created_by}/${notification.project_name}`}
-                        className={`${styles.tableBodyRowDataContentLink} ${
-                          notification.read && styles.notificationRead
-                        }`}
-                      >
-                        {notification.type === 'collaboration' &&
-                          `You're invited by ${notification.created_by} to collaborate on ${notification.project_name}`}
-                      </Link>
+                      {notification.type === 'collaboration' && (
+                        <Suspense
+                          fallback={
+                            <Link
+                              href={`/${notification.project_created_by}/${notification.project_name}/invitations`}
+                              className={`${
+                                styles.tableBodyRowDataContentLink
+                              } ${
+                                notification.read && styles.notificationRead
+                              }`}
+                            >
+                              You're invited by {notification.created_by} to
+                              collaborate on {notification.project_name}
+                            </Link>
+                          }
+                        >
+                          <NotificationLink notification={notification} />
+                        </Suspense>
+                      )}
                     </div>
                   </td>
                   <td className={styles.tableBodyRowData}>

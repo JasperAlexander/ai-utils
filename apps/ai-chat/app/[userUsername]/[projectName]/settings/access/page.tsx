@@ -95,6 +95,8 @@ export default async function Page({
                       <span className={styles.tableBodyRowDataContentSpan}>
                         {collaborator.status === 'pending'
                           ? 'Pending invite'
+                          : collaborator.status === 'declined'
+                          ? 'Declined invite'
                           : collaborator.role.charAt(0).toUpperCase() +
                             collaborator.role.slice(1)}
                       </span>

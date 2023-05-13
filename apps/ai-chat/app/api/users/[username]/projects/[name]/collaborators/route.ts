@@ -29,19 +29,38 @@ export async function GET(
                 from: "users",
                 localField: "user_id",
                 foreignField: "_id",
-                as: "user"
+                as: "invitee"
             }
         },
-        { $unwind: "$user" },
+        { $unwind: "$invitee" },
+        {
+            $lookup: {
+                from: "users",
+                localField: "user_id",
+                foreignField: "_id",
+                as: "inviter"
+            }
+        },
+        { $unwind: "$inviter" },
         {
             $addFields: {
-                "user.role": "$role",
-                "user.status": "$status",
-                "user.updated_at": "$updated_at"
+                "collaborator._id": "$_id",
+                "collaborator.username": "$invitee.username",
+                "collaborator.role": "$role",
+                "collaborator.status": "$status",
+                "collaborator.created_by": "$inviter.username",
+                "collaborator.updated_at": "$updated_at"
             }
         },
-        { $replaceRoot: { newRoot: "$user" } },
-        { $project: { _id: 1, username: 1, role: 1, status: 1, updated_at: 1 } }
+        { $replaceRoot: { newRoot: "$collaborator" } },
+        { $project: { 
+            _id: 1, 
+            username: 1, 
+            role: 1, 
+            status: 1, 
+            created_by: 1, 
+            updated_at: 1 
+        } }
     ]).toArray()
 
     return new Response(JSON.stringify(collaborators))

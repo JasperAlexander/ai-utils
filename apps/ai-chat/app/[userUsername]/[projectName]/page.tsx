@@ -1,7 +1,7 @@
 import styles from './page.module.css'
 import Link from 'next/link'
 import { Fragment, Suspense } from 'react'
-import { FolderType, ProjectType } from '@/types'
+import { CollaboratorType, FolderType, ProjectType } from '@/types'
 import { relativeTimeFormat } from '@/utils/relativeTimeFormat'
 import { ShowSidebarButton } from './showSidebarButton'
 import { getServerSession } from 'next-auth'
@@ -32,6 +32,18 @@ async function getFolders(username: string, name: string) {
   return res.json()
 }
 
+async function getCollaborators(username: string, name: string) {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE}/api/users/${username}/projects/${name}/collaborators`,
+    {
+      cache: 'no-store',
+    }
+  )
+  if (!res.ok) throw new Error('Failed to fetch collaborators')
+
+  return res.json()
+}
+
 export default async function Page({
   params,
 }: {
@@ -50,8 +62,20 @@ export default async function Page({
     params.userUsername,
     params.projectName
   )
+  const collaborators: CollaboratorType[] = await getCollaborators(
+    params.userUsername,
+    params.projectName
+  )
 
-  const projectOfCurrentUser = session?.user.username === params.userUsername
+  const collaboratorOfProject =
+    session &&
+    collaborators.some(
+      (collaborator) =>
+        collaborator.username === session.user.username &&
+        collaborator.status !== 'pending'
+    )
+  const projectOfCurrentUser =
+    session && session.user.username === params.userUsername
 
   return (
     <Fragment>
@@ -85,7 +109,7 @@ export default async function Page({
             </div>
             <div>
               <Suspense>
-                {projectOfCurrentUser && (
+                {(projectOfCurrentUser || collaboratorOfProject) && (
                   <Link
                     href={`/${params.userUsername}/${params.projectName}/settings`}
                     className={styles.primaryButton}
