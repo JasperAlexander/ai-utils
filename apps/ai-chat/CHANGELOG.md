@@ -1,5 +1,11 @@
 # ai-chat
 
+## 1.5.2
+
+### Patch Changes
+
+- a480e36: Updated collaboration invitation functionality. Bumped dependencies version.
+
 ## 1.5.1
 
 ### Patch Changes
