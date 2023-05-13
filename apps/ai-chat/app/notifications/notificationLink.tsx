@@ -28,7 +28,7 @@ export function NotificationLink({
         )
       }}
     >
-      You're invited by {notification.created_by} to collaborate on{' '}
+      You{`'`}re invited by {notification.created_by} to collaborate on
       {notification.project_name}
     </Link>
   )

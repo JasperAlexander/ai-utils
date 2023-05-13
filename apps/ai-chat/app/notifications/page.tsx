@@ -70,7 +70,7 @@ export default async function Page() {
                                 notification.read && styles.notificationRead
                               }`}
                             >
-                              You're invited by {notification.created_by} to
+                              You{`'`}re invited by {notification.created_by} to
                               collaborate on {notification.project_name}
                             </Link>
                           }
