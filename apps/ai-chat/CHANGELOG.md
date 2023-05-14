@@ -1,5 +1,11 @@
 # ai-chat
 
+## 1.5.3
+
+### Patch Changes
+
+- cadad45: Added starring functionality and trending page.
+
 ## 1.5.2
 
 ### Patch Changes
