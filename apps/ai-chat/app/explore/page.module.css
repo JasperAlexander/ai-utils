@@ -5,9 +5,97 @@
     align-items: center;
     flex-direction: column;
     padding: 32px;
-    gap: 8px;
+    gap: 16px;
 }
 
 .title {
     color: var(--color-text-default);
+}
+
+.subTitle,
+.description {
+    color: var(--color-btn-hover-border);
+}
+
+.table {
+    width: 100%;
+    border: 1px solid var(--color-border-default);
+    border-radius: 8px;
+    border-spacing: 0px;
+    overflow: hidden;
+    table-layout: fixed;
+}
+
+.tableHeader {
+    height: 40px;
+    background-color: var(--color-canvas-subtle);
+}
+
+.tableHeaderRow {
+    color: var(--color-btn-hover-border);
+    font-size: 12px;
+    text-align: left;
+}
+
+.tableHeaderRow :nth-child(1) {
+    width: 60%;
+}
+
+.tableHeaderRowCell {
+    padding-left: 16px;
+}
+
+.tableBodyRow {
+    height: 40px;
+    font-size: 14px;
+}
+
+.tableBodyRow:hover {
+    background-color: rgba(177, 186, 196, 0.12);
+}
+
+.tableBodyRowData {
+    padding: 8px 16px;
+    border-top: 1px solid var(--color-border-default);
+    gap: 8px;
+}
+
+.tableBodyRowDataContent {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-right: 16px;
+}
+
+.tableBodyRowDataContentTop {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.projectTitle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tableBodyRowDataContentSvg {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    color: var(--color-btn-hover-border);
+}
+
+.tableBodyRowDataContentLink {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--color-text-default);
+}
+
+.tableBodyRowDataContentSpan {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--color-fg-muted);
 }

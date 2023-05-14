@@ -125,7 +125,7 @@ export default function Page() {
                   body: JSON.stringify({
                     name,
                     description,
-                    private: visibility === 'private' ? true : false,
+                    visibility,
                     created_by: session.data?.user.username,
                   }),
                 }

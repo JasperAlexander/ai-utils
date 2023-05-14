@@ -36,6 +36,8 @@
     --color-canvas-subtle: rgb(22, 27, 34);
     --color-canvas-inset: rgb(1, 4, 9);
     --color-fg-muted: rgb(125, 133, 144);
+
+    --color-starred: rgb(227, 179, 65);
   }
 }
 

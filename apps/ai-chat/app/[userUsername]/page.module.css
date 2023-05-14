@@ -42,8 +42,9 @@
     font-size: 14px;
     line-height: 20px;
     font-weight: 500;
-    display: inline-block;
-    vertical-align: middle;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     cursor: pointer;
     appearance: none;
     position: relative;
@@ -64,6 +65,25 @@
 .primaryButton:disabled {
     pointer-events: none;
     opacity: 0.8;
+}
+
+.primaryButtonSvg {
+    width: 16px;
+    height: 16px;
+    color: var(--color-fg-muted);
+}
+
+.primaryButtonNumber {
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    background-color: var(--color-button-hover);
+    font-size: 12px;
+    line-height: 20px;
+}
+
+.starredSvg {
+    color: var(--color-starred);
 }
 
 .avatar {
@@ -89,6 +109,41 @@
     color: var(--color-btn-hover-border);
 }
 
+.tabs {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--color-border-default);
+}
+
+.tab {
+    padding: 8px;
+    border-bottom: 2px solid transparent;
+}
+
+.tabActive {
+    border-bottom-color: var(--color-primary-fg);
+}
+
+.tabContent {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    border-radius: 8px;
+    transition-property: background-color;
+    transition-duration: 0.2s;
+}
+
+.tabContent:hover {
+    background-color: rgba(177, 186, 196, 0.12);
+}
+
+.tabSvg {
+    width: 16px;
+    height: 16px;
+    color: var(--color-fg-muted);
+}
+
 .projects {
     display: flex;
     flex-grow: 1;
@@ -109,6 +164,8 @@
 .projectBottom {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    gap: 8px;
 }
 
 .projectName:hover {

@@ -55,6 +55,21 @@ export interface UpdateCollaboratorType {
     updated_at?: string
 }
 
+// Stars
+export interface ProjectOfStarType {
+    _id: string 
+    name: string
+    description: string
+    created_by: string 
+    created_at: string
+}
+
+export interface UserOfStarType {
+    _id: string 
+    username: string
+    created_at: string
+}
+
 // Projects
 export interface ProjectType {
     _id: string
@@ -71,6 +86,17 @@ export interface UpdateProjectType {
     description?: string
     visibility?: string
     updated_at?: string
+}
+
+export interface TrendingProjectType {
+    _id: string
+    name: string
+    description: string
+    visibility: string
+    stars: string
+    created_by: string
+    updated_at: string
+    created_at: string
 }
 
 // Folders

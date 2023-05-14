@@ -104,8 +104,9 @@
     font-size: 14px;
     line-height: 20px;
     font-weight: 500;
-    display: inline-block;
-    vertical-align: middle;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     cursor: pointer;
     appearance: none;
     position: relative;
@@ -126,6 +127,12 @@
 .primaryButton:disabled {
     pointer-events: none;
     opacity: 0.8;
+}
+
+.primaryButtonSvg {
+    width: 16px;
+    height: 16px;
+    color: var(--color-fg-muted);
 }
 
 .footer {
