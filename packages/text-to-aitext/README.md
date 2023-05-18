@@ -15,12 +15,9 @@ pnpm add text-to-aitext
 Use text-to-aitext in a Node.js server. In Next.js 13, you can make a route handler with the following code.
 
 ```tsx
-import { NextResponse } from 'next/server'
 import { textToAIText } from 'text-to-aitext'
 
-export const config = {
-  runtime: 'edge',
-}
+export const runtime = 'edge'
 
 export async function POST(req: Request) {
   const body = await req.json()

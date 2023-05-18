@@ -5,6 +5,7 @@ This repository (which uses [Turborepo](https://turbo.build/)) contains the foll
 - [file-to-text](packages/file-to-text/README.md): Convert files to plain text.
 - [text-to-aitext](packages/text-to-aitext/README.md): Convert text to AI-generated text.
 - [text-to-chunks](packages/text-to-chunks/README.md): Split text into multiple chunks.
+- [text-to-embeddings](packages/text-to-embeddings/README.md): Convert text to vector embeddings.
 
 Additionally, it contains the following applications that utilize these packages:
 

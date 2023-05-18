@@ -15,12 +15,9 @@ pnpm add text-to-embeddings
 Use text-to-embeddings in a Node.js server. In Next.js 13, you can make a route handler with the following code.
 
 ```tsx
-import { NextResponse } from 'next/server'
 import { textToEmbeddings } from 'text-to-embeddings'
 
-export const config = {
-  runtime: 'edge',
-}
+export const runtime = 'edge'
 
 export async function POST(req: Request) {
   const body = await req.json()
