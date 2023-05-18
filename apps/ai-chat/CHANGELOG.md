@@ -1,5 +1,12 @@
 # ai-chat
 
+## 1.5.4
+
+### Patch Changes
+
+- Updated dependencies [d806838]
+  - text-to-aitext@1.0.4
+
 ## 1.5.3
 
 ### Patch Changes
