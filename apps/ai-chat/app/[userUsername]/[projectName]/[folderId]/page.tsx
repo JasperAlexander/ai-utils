@@ -47,8 +47,7 @@ export default async function FolderPage({
   const folder: FolderType = await getFolder(params.folderId)
   const chats: ChatType[] = await getChats(params.folderId)
 
-  const folderCreatedByCurrentUser =
-    folder?.created_by === session?.user.username
+  const folderCreatedByCurrentUser = folder?.created_by === session?.user._id
 
   return (
     <div className={styles.page}>

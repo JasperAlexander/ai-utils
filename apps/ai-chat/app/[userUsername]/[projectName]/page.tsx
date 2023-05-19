@@ -105,6 +105,7 @@ export default async function Page({
       <Sidebar
         userUsername={params.userUsername}
         projectName={params.projectName}
+        project={project}
       />
 
       <main className={styles.main}>

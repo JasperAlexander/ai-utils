@@ -2,9 +2,9 @@ import styles from './page.module.css'
 
 export default function Loading() {
   return (
-    <div className={styles.chatPage}>
-      <div className={styles.chatPageHeader}>
-        <span className={styles.chatPageHeaderTitle}>Chat</span>
+    <div className={styles.page}>
+      <div className={styles.pageHeader}>
+        <span className={styles.pageHeaderTitle}>Chat</span>
       </div>
     </div>
   )

@@ -1,6 +1,6 @@
 import styles from './page.module.css'
 import Link from 'next/link'
-import { ChatType, FolderType } from '@/types'
+import { ChatType, FolderType, ProjectType } from '@/types'
 import { Resizer } from '../resizer'
 import { Chat } from './chat'
 import { Folder } from './folder'
@@ -38,9 +38,11 @@ async function getChats(created_by: string, name: string) {
 export async function Sidebar({
   userUsername,
   projectName,
+  project,
 }: {
   userUsername: string
   projectName: string
+  project: ProjectType
 }) {
   const session = await getServerSession(authOptions)
 
@@ -87,7 +89,7 @@ export async function Sidebar({
                     </button>
                   }
                 >
-                  <AddButton folders={folders} />
+                  <AddButton project={project} folders={folders} />
                 </Suspense>
               )}
             </div>

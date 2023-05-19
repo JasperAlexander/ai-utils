@@ -61,7 +61,7 @@ export default async function ChatPage({
   )
 
   const currentUserAllowedToChat =
-    chat.created_by === session?.user.username ||
+    chat.created_by === session?.user._id ||
     collaborators.some(
       (collaborator) => collaborator.username === session?.user.username
     )

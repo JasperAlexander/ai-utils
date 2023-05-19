@@ -3,15 +3,20 @@
 import styles from './page.module.css'
 import { Fragment, useEffect, useState } from 'react'
 import { Tooltip } from 'react-tooltip'
-import { useParams, useRouter } from 'next/navigation'
-import { FolderType } from '@/types'
+import { useRouter } from 'next/navigation'
+import { FolderType, ProjectType } from '@/types'
 import { createPortal } from 'react-dom'
 import { useSession } from 'next-auth/react'
 
-export function AddButton({ folders }: { folders: FolderType[] }) {
+export function AddButton({
+  project,
+  folders,
+}: {
+  project: ProjectType
+  folders: FolderType[]
+}) {
   const router = useRouter()
   const session = useSession()
-  const params = useParams()
 
   const [tooltipMenuOpen, setTooltipMenuOpen] = useState(false)
   const [documentReady, setDocumentReady] = useState(false)
@@ -70,8 +75,8 @@ export function AddButton({ folders }: { folders: FolderType[] }) {
                         {
                           method: 'POST',
                           body: JSON.stringify({
-                            part_of: params.projectName,
-                            created_by: session.data?.user.username,
+                            part_of: project._id,
+                            created_by: session.data?.user._id,
                           }),
                         }
                       )
@@ -85,7 +90,7 @@ export function AddButton({ folders }: { folders: FolderType[] }) {
                         method: 'POST',
                         body: JSON.stringify({
                           folder_id: folderId,
-                          created_by: session.data?.user.username,
+                          created_by: session.data?.user._id,
                         }),
                       }
                     )
@@ -114,7 +119,7 @@ export function AddButton({ folders }: { folders: FolderType[] }) {
                       {
                         method: 'POST',
                         body: JSON.stringify({
-                          created_by: session.data?.user.username,
+                          created_by: session.data?.user._id,
                         }),
                       }
                     )
