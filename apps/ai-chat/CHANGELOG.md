@@ -1,5 +1,11 @@
 # ai-chat
 
+## 1.5.6
+
+### Patch Changes
+
+- 37e0029: Replaced chat by item in schemas.
+
 ## 1.5.5
 
 ### Patch Changes
