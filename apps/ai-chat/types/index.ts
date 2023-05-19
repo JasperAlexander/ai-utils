@@ -113,9 +113,10 @@ export interface UpdateFolderType {
     updated_at?: string
 }
 
-// Chats
-export interface ChatType {
+// Items
+export interface ItemType {
     _id: string
+    type: string
     title: string
     folder_id: string
     created_by: string
@@ -123,7 +124,7 @@ export interface ChatType {
     created_at: string
 }
 
-export interface UpdateChatType {
+export interface UpdateItemType {
     title?: string
     folder_id?: string
     updated_at?: string
@@ -132,7 +133,7 @@ export interface UpdateChatType {
 // Messages
 export interface MessageType {
     _id: string
-    chat_id: string
+    item_id: string
     role: string
     content: string
     parent: MessageType | string | null

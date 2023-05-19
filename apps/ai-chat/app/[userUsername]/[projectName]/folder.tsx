@@ -17,8 +17,8 @@ export function Folder({
   const params = useParams()
   const router = useRouter()
 
-  function onDrop(chatId: string) {
-    fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/chats/${chatId}`, {
+  function onDrop(itemId: string) {
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/items/${itemId}`, {
       method: 'PATCH',
       body: JSON.stringify({
         folder_id: folderId,
@@ -43,8 +43,8 @@ export function Folder({
   }
   const handleDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault()
-    const chatId = e.dataTransfer.getData('chatId')
-    if (onDrop) onDrop(chatId)
+    const itemId = e.dataTransfer.getData('itemId')
+    if (onDrop) onDrop(itemId)
     setDraggedOver(false)
   }
 

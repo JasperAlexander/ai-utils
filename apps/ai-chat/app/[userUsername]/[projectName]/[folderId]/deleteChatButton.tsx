@@ -1,11 +1,11 @@
 'use client'
 
 import styles from './page.module.css'
-import { ChatType } from '@/types'
+import { ItemType } from '@/types'
 import { Fragment, useState } from 'react'
 import { Tooltip } from 'react-tooltip'
 
-export function DeleteChatButton({ chat }: { chat: ChatType }) {
+export function DeleteChatButton({ item }: { item: ItemType }) {
   const [removeChat, setRemoveChat] = useState(false)
   const [removeChatTimer, setRemoveChatTimer] = useState<NodeJS.Timeout>()
 
@@ -24,7 +24,7 @@ export function DeleteChatButton({ chat }: { chat: ChatType }) {
             setRemoveChat(true)
           }
         }}
-        data-tooltip-id={`rmchat-tooltip-${chat._id}`}
+        data-tooltip-id={`rmchat-tooltip-${item._id}`}
       >
         {removeChat ? (
           <svg
@@ -46,7 +46,7 @@ export function DeleteChatButton({ chat }: { chat: ChatType }) {
         )}
       </button>
       <Tooltip
-        id={`rmchat-tooltip-${chat._id}`}
+        id={`rmchat-tooltip-${item._id}`}
         content={removeChat ? 'Cancel within 5 sec' : 'Remove chat'}
         place='bottom'
       />

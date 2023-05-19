@@ -85,7 +85,7 @@ export function Message({
   useEffect(() => {
     if (removeMessage) {
       const timer = setTimeout(async () => {
-        await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/chats/${_id}`, {
+        await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/items/${_id}`, {
           method: 'DELETE',
         })
         setRemoveMessage(false)
@@ -132,7 +132,7 @@ export function Message({
     // const newResponse = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/messages`, {
     //   method: 'POST',
     //   body: JSON.stringify({
-    //     chat_id: params.chatId,
+    //     item_id: params.itemId,
     //     role: 'assistant',
     //     content: 'Testing',
     //     parent: _id,
@@ -143,7 +143,7 @@ export function Message({
     //   ...messages,
     //   {
     //     _id: newInsertedId,
-    //     chat_id: params.chatId,
+    //     item_id: params.itemId,
     //     role: 'assistant',
     //     content: 'Testing',
     //     parent: _id,
@@ -192,7 +192,7 @@ export function Message({
       {
         method: 'POST',
         body: JSON.stringify({
-          chat_id: params.chatId,
+          item_id: params.itemId,
           role: 'assistant',
           content: lastMessage,
           parent: _id,
@@ -212,7 +212,7 @@ export function Message({
           ...messages,
           {
             _id: insertedId,
-            chat_id: params.chatId,
+            item_id: params.itemId,
             role: 'assistant',
             content: lastMessage,
             parent: _id,
@@ -346,7 +346,7 @@ export function Message({
                       // const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/messages`, {
                       //   method: 'POST',
                       //   body: JSON.stringify({
-                      //     chat_id: params.chatId,
+                      //     item_id: params.itemId,
                       //     role: 'user',
                       //     content: newMessageContent,
                       //     parent: parent,
@@ -357,7 +357,7 @@ export function Message({
                       //   ...messages,
                       //   {
                       //     _id: insertedId,
-                      //     chat_id: params.chatId,
+                      //     item_id: params.itemId,
                       //     role: 'user',
                       //     content: newMessageContent,
                       //     parent: parent,

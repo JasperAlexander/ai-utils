@@ -1,4 +1,4 @@
-import { UpdateChatType } from '@/types'
+import { UpdateItemType } from '@/types'
 import { mongoDBClient } from '@/utils/mongodb'
 import { BSON, WithId } from 'mongodb'
 
@@ -10,14 +10,14 @@ export async function GET(
 ) {
     const client = await mongoDBClient
     const database = client.db('ai-chat')
-    const chatsCollection = database.collection('chats')
+    const itemsCollection = database.collection('items')
     
-    const chat: WithId<BSON.Document> | null = await chatsCollection.findOne({ 
+    const item: WithId<BSON.Document> | null = await itemsCollection.findOne({ 
         // @ts-ignore
         _id: params.id
     })
 
-    const res = JSON.stringify(chat)
+    const res = JSON.stringify(item)
     return new Response(res)
 }
 
@@ -29,16 +29,16 @@ export async function PATCH(
 ) {
     const client = await mongoDBClient
     const database = client.db('ai-chat')
-    const chatsCollection = database.collection('chats')
+    const itemsCollection = database.collection('items')
     
     const request = await req.json()
     
-    const updates: UpdateChatType = {}
+    const updates: UpdateItemType = {}
     if(typeof request.title !== 'undefined') updates.title = request.title
     if(typeof request.folder_id !== 'undefined') updates.folder_id = request.folder_id
     updates.updated_at = new Date().toString()
 
-    const upserted = await chatsCollection.updateOne({
+    const upserted = await itemsCollection.updateOne({
         // @ts-ignore
         _id: params.id
     }, {
@@ -55,9 +55,9 @@ export async function DELETE(
 ) {
     const client = await mongoDBClient
     const database = client.db('ai-chat')
-    const chatsCollection = database.collection('chats')
+    const itemsCollection = database.collection('items')
     
-    const deleted = await chatsCollection.deleteOne({
+    const deleted = await itemsCollection.deleteOne({
         // @ts-ignore
         _id: params.id
     })

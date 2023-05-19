@@ -21,19 +21,19 @@ export async function GET(
         const foldersCollection = database.collection('folders')
 
         const folders = await foldersCollection.find({ 
-            part_of: project.name 
+            part_of: project._id 
         }).toArray()
 
         if(folders) {
             const folderIds = folders.map((folder) => folder._id)
 
-            const chatsCollection = database.collection('chats')
+            const itemsCollection = database.collection('items')
 
-            const chats = await chatsCollection.find({ 
+            const items = await itemsCollection.find({ 
                 folder_id: { $in: folderIds } 
             }).toArray()
 
-            return new Response(JSON.stringify(chats))
+            return new Response(JSON.stringify(items))
         }
     }
 }

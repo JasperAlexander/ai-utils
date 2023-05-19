@@ -3,14 +3,14 @@
 import styles from './page.module.css'
 import { useRouter } from 'next/navigation'
 import { Fragment, useState } from 'react'
-import { ChatType } from '@/types'
+import { ItemType } from '@/types'
 import { Tooltip } from 'react-tooltip'
 
-export function EditChatTitleButton({ chat }: { chat: ChatType }) {
+export function EditChatTitleButton({ item }: { item: ItemType }) {
   const router = useRouter()
 
   const [editingChatTitle, setEditingChatTitle] = useState(false)
-  const [tempChatTitle, setTempChatTitle] = useState(chat.title)
+  const [tempChatTitle, setTempChatTitle] = useState(item.title)
 
   return (
     <Fragment>
@@ -18,7 +18,7 @@ export function EditChatTitleButton({ chat }: { chat: ChatType }) {
         type='button'
         onClick={() => {
           if (editingChatTitle) {
-            fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/chats/${chat._id}`, {
+            fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/items/${item._id}`, {
               method: 'PATCH',
               body: JSON.stringify({
                 title: tempChatTitle,
@@ -31,7 +31,7 @@ export function EditChatTitleButton({ chat }: { chat: ChatType }) {
         className={`${styles.chatEditButton} ${
           editingChatTitle && styles.chatEditButtonActive
         }`}
-        data-tooltip-id={`editchatname-tooltip-${chat._id}`}
+        data-tooltip-id={`editchatname-tooltip-${item._id}`}
       >
         {editingChatTitle ? (
           <svg
@@ -52,7 +52,7 @@ export function EditChatTitleButton({ chat }: { chat: ChatType }) {
         )}
       </button>
       <Tooltip
-        id={`editchatname-tooltip-${chat._id}`}
+        id={`editchatname-tooltip-${item._id}`}
         content={editingChatTitle ? 'Save chat name' : 'Edit chat name'}
         place='bottom'
       />

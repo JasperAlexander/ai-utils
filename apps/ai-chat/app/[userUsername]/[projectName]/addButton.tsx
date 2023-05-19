@@ -85,10 +85,11 @@ export function AddButton({
                     }
 
                     await fetch(
-                      `${process.env.NEXT_PUBLIC_API_BASE}/api/chats`,
+                      `${process.env.NEXT_PUBLIC_API_BASE}/api/items`,
                       {
                         method: 'POST',
                         body: JSON.stringify({
+                          type: 'chat',
                           folder_id: folderId,
                           created_by: session.data?.user._id,
                         }),

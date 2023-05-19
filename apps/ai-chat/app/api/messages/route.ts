@@ -9,7 +9,7 @@ export async function POST(req: Request) {
     const request = await req.json()
 
     const inserted: InsertOneResult<Document> = await messagesCollection.insertOne({
-        chat_id: request.chat_id,
+        item_id: request.item_id,
         role: request.role,
         content: request.content,
         parent: request.parent,

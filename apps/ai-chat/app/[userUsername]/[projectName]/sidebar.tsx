@@ -1,6 +1,6 @@
 import styles from './page.module.css'
 import Link from 'next/link'
-import { ChatType, FolderType, ProjectType } from '@/types'
+import { ItemType, FolderType, ProjectType } from '@/types'
 import { Resizer } from '../resizer'
 import { Chat } from './chat'
 import { Folder } from './folder'
@@ -23,14 +23,14 @@ async function getFolders(created_by: string, name: string) {
   return res.json()
 }
 
-async function getChats(created_by: string, name: string) {
+async function getItems(created_by: string, name: string) {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE}/api/users/${created_by}/projects/${name}/chats`,
+    `${process.env.NEXT_PUBLIC_API_BASE}/api/users/${created_by}/projects/${name}/items`,
     {
       cache: 'no-store',
     }
   )
-  if (!res.ok) throw new Error('Failed to fetch project chats')
+  if (!res.ok) throw new Error('Failed to fetch project items')
 
   return res.json()
 }
@@ -47,7 +47,7 @@ export async function Sidebar({
   const session = await getServerSession(authOptions)
 
   const folders: FolderType[] = await getFolders(userUsername, projectName)
-  const chats: ChatType[] = await getChats(userUsername, projectName)
+  const items: ItemType[] = await getItems(userUsername, projectName)
 
   const projectCreatedByCurrentUser = userUsername === session?.user.username
 
@@ -123,14 +123,14 @@ export async function Sidebar({
                   title={folder.title}
                 >
                   <Suspense>
-                    {chats
-                      .filter((chat) => chat.folder_id === folder._id)
-                      .map((chat) => (
+                    {items
+                      .filter((item) => item.folder_id === folder._id)
+                      .map((item) => (
                         <Chat
-                          key={chat._id}
-                          id={chat._id}
-                          title={chat.title}
-                          folderId={chat.folder_id}
+                          key={item._id}
+                          id={item._id}
+                          title={item.title}
+                          folderId={item.folder_id}
                         />
                       ))}
                   </Suspense>

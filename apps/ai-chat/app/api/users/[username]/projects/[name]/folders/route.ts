@@ -21,7 +21,7 @@ export async function GET(
         const foldersCollection = database.collection('folders')
 
         const folders = await foldersCollection.find({ 
-            part_of: project.name 
+            part_of: project._id 
         }).toArray()
 
         return new Response(JSON.stringify(folders))

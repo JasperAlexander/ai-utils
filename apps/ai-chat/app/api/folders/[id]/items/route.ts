@@ -8,11 +8,11 @@ export async function GET(
 ) {
     const client = await mongoDBClient
     const database = client.db('ai-chat')
-    const chatsCollection = database.collection('chats')
+    const itemsCollection = database.collection('items')
 
-    const chats = await chatsCollection.find({
+    const items = await itemsCollection.find({
         folder_id: params.id
     }).toArray()
 
-    return new Response(JSON.stringify(chats))
+    return new Response(JSON.stringify(items))
 }

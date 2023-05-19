@@ -10,7 +10,7 @@ export async function GET(
     const database = client.db('ai-chat')
     const messagesCollection = database.collection('messages')
     const messages: WithId<BSON.Document>[] = await messagesCollection.find({ 
-        chat_id: params.id
+        item_id: params.id
     }).toArray()
 
     return new Response(JSON.stringify(messages))

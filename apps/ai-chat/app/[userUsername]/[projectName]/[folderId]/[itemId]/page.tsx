@@ -1,26 +1,26 @@
 import styles from './page.module.css'
-import { ChatType, CollaboratorType, MessageType } from '@/types'
+import { ItemType, CollaboratorType, MessageType } from '@/types'
 import { ShowSidebarButton } from '../../showSidebarButton'
 import { Suspense } from 'react'
 import { Messages } from './messages'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 
-async function getChat(chat_id: string) {
+async function getItem(id: string) {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE}/api/chats/${chat_id}`,
+    `${process.env.NEXT_PUBLIC_API_BASE}/api/items/${id}`,
     {
       cache: 'no-store',
     }
   )
-  if (!res.ok) throw new Error('Failed to fetch chat')
+  if (!res.ok) throw new Error('Failed to fetch item')
 
   return res.json()
 }
 
-async function getMessages(chat_id: string) {
+async function getMessages(id: string) {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE}/api/chats/${chat_id}/messages`,
+    `${process.env.NEXT_PUBLIC_API_BASE}/api/items/${id}/messages`,
     {
       cache: 'no-store',
     }
@@ -48,20 +48,20 @@ export default async function ChatPage({
   params: {
     userUsername: string
     projectName: string
-    chatId: string
+    itemId: string
   }
 }) {
   const session = await getServerSession(authOptions)
 
-  const chat: ChatType = await getChat(params.chatId)
-  const messages: MessageType[] = await getMessages(params.chatId)
+  const item: ItemType = await getItem(params.itemId)
+  const messages: MessageType[] = await getMessages(params.itemId)
   const collaborators: CollaboratorType[] = await getCollaborators(
     params.userUsername,
     params.projectName
   )
 
   const currentUserAllowedToChat =
-    chat.created_by === session?.user._id ||
+    item.created_by === session?.user._id ||
     collaborators.some(
       (collaborator) => collaborator.username === session?.user.username
     )
@@ -87,7 +87,7 @@ export default async function ChatPage({
             <ShowSidebarButton />
           </Suspense>
 
-          <span className={styles.pageHeaderTitle}>{chat.title}</span>
+          <span className={styles.pageHeaderTitle}>{item.title}</span>
         </div>
       </div>
 

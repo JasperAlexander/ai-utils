@@ -16,12 +16,12 @@ export function Chat({
 }) {
   const params = useParams()
 
-  function onDragStart(chatId: string) {
+  function onDragStart(itemId: string) {
     // Implement any visual effect or state update while dragging
   }
 
   const handleDragStart = (e: DragEvent<HTMLLIElement>) => {
-    e.dataTransfer.setData('chatId', id)
+    e.dataTransfer.setData('itemId', id)
     onDragStart(id)
   }
 

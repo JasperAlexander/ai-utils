@@ -71,7 +71,7 @@ export function Messages({
       {
         method: 'POST',
         body: JSON.stringify({
-          chat_id: params.chatId,
+          item_id: params.itemId,
           role: 'user',
           content: message + fileTexts,
           parent: lastItemInPath?._id || null,
@@ -83,7 +83,7 @@ export function Messages({
       ...messages,
       {
         _id: insertedId,
-        chat_id: params.chatId,
+        item_id: params.itemId,
         role: 'user',
         content: message + fileTexts,
         parent: lastItemInPath?._id || null,
@@ -98,7 +98,7 @@ export function Messages({
     // const newResponse = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/messages`, {
     //   method: 'POST',
     //   body: JSON.stringify({
-    //     chat_id: params.chatId,
+    //     item_id: params.itemId,
     //     role: 'assistant',
     //     content: 'Testing',
     //     parent: insertedId,
@@ -109,7 +109,7 @@ export function Messages({
     //   ...newMessages,
     //   {
     //     _id: newInsertedId,
-    //     chat_id: params.chatId,
+    //     item_id: params.itemId,
     //     role: 'assistant',
     //     content: 'Testing',
     //     parent: insertedId,
@@ -158,7 +158,7 @@ export function Messages({
       {
         method: 'POST',
         body: JSON.stringify({
-          chat_id: params.chatId,
+          item_id: params.itemId,
           role: 'assistant',
           content: lastMessage,
           parent: insertedId,
@@ -178,7 +178,7 @@ export function Messages({
           ...newMessages,
           {
             _id: newInsertedId,
-            chat_id: params.chatId,
+            item_id: params.itemId,
             role: 'assistant',
             content: lastMessage,
             parent: insertedId,
