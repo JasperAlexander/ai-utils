@@ -1,5 +1,11 @@
 # ai-chat
 
+## 1.5.5
+
+### Patch Changes
+
+- 5035d1f: Fixed data inconsistency issue and chatpage loading style issue.
+
 ## 1.5.4
 
 ### Patch Changes
