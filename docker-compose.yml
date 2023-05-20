@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   app:
-    container_name: ai-chat
+    container_name: ai-chat-frontend
     build: 
       context: .
       dockerfile: ./apps/ai-chat/Dockerfile
@@ -12,19 +12,34 @@ services:
       - db
     environment:
       - MONGODB_URI=mongodb://db:27017
+      - WEAVIATE_HOST=weaviate:8080
     env_file:
       - ./apps/ai-chat/.env.local
 
   db:
-    container_name: ai-chat-db
+    container_name: ai-chat-mongodb
+    image: mongo:6.0
     build:
       context: .
-      dockerfile: ./databases/mongodb/Dockerfile
     ports:
       - '27017:27017'
     volumes:
-      - db_data:/data/db
+      - db_data_1:/data/db
+
+  weaviate:
+    container_name: ai-chat-weaviate
+    image: semitechnologies/weaviate:1.19.3
+    ports:
+      - 8080:8080
+    environment:
+      QUERY_DEFAULTS_LIMIT: 25
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
+      PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
+      DEFAULT_VECTORIZER_MODULE: 'none'
+      CLUSTER_HOSTNAME: 'node1'
+    volumes:
+      - db_data_2:/var/lib/weaviate
 
 volumes:
-  db_data:
-
+  db_data_1:
+  db_data_2:
