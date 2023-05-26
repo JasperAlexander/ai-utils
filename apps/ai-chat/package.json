@@ -1,6 +1,6 @@
 {
   "name": "ai-chat",
-  "version": "1.5.6",
+  "version": "1.6.0",
   "description": "An app that allows users to chat with AI using the OpenAI API.",
   "author": "Jasper Alexander",
   "private": true,
