@@ -90,6 +90,7 @@ export function AddButton({
                         method: 'POST',
                         body: JSON.stringify({
                           type: 'chat',
+                          title: 'New chat',
                           folder_id: folderId,
                           created_by: session.data?.user._id,
                         }),
@@ -120,6 +121,7 @@ export function AddButton({
                       {
                         method: 'POST',
                         body: JSON.stringify({
+                          part_of: project._id,
                           created_by: session.data?.user._id,
                         }),
                       }

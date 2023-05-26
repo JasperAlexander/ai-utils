@@ -37,7 +37,7 @@ export async function PATCH(
     if(typeof request.username !== 'undefined') updates.username = request.username
     if(typeof request.bio !== 'undefined') updates.bio = request.bio
     if(typeof request.image !== 'undefined') updates.image = request.image
-    updates.updated_at = new Date().toString()
+    updates.updated_at = new Date()
 
     const upserted = await usersCollection.updateOne({
         username: params.username

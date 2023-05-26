@@ -1,16 +1,15 @@
-/* layout.tsx */
+/* page.tsx */
 .main {
     display: flex;
     flex-grow: 1;
     flex-direction: column;
-    height: calc(100vh - 56px);
+    min-height: calc(100vh - 56px);
     position: relative;
-    overflow: hidden;
 }
 
-/* page.tsx */
 .page {
     display: flex;
+    flex-wrap: wrap;
     padding: 32px;
     gap: 16px;
 }
@@ -50,6 +49,8 @@
     position: relative;
     white-space: nowrap;
     overflow: hidden;
+    /* Todo: fix layout */
+    flex-shrink: 0;
 }
 
 .primaryButton:hover {
@@ -88,6 +89,10 @@
 
 .avatar {
     border-radius: 150px;
+    width: 100%;
+    max-width: 300px;
+    height: 100%;
+    max-height: 300px;
 }
 
 .userNames {

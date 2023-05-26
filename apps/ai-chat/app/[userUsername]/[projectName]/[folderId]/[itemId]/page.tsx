@@ -42,7 +42,7 @@ async function getCollaborators(username: string, name: string) {
   return res.json()
 }
 
-export default async function ChatPage({
+export default async function Page({
   params,
 }: {
   params: {
@@ -92,10 +92,18 @@ export default async function ChatPage({
       </div>
 
       <Suspense>
-        <Messages
-          currentUserAllowedToChat={currentUserAllowedToChat}
-          messages={messages}
-        />
+        {item.type === 'chat' ? (
+          <Messages
+            currentUserAllowedToChat={currentUserAllowedToChat}
+            messages={messages}
+          />
+        ) : (
+          item.type === 'document' && (
+            <div className={styles.document}>
+              <span>This is a document</span>
+            </div>
+          )
+        )}
       </Suspense>
     </div>
   )

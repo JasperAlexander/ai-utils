@@ -2,7 +2,7 @@ import styles from './page.module.css'
 import Link from 'next/link'
 import { ItemType, FolderType, ProjectType } from '@/types'
 import { Resizer } from '../resizer'
-import { Chat } from './chat'
+import { Item } from './item'
 import { Folder } from './folder'
 import { Searchbar } from './searchbar'
 import { AddButton } from './addButton'
@@ -117,21 +117,12 @@ export async function Sidebar({
           <div className={styles.sidebarMain}>
             <Suspense>
               {folders.map((folder) => (
-                <Folder
-                  key={folder._id}
-                  folderId={folder._id}
-                  title={folder.title}
-                >
+                <Folder key={folder._id} folder={folder}>
                   <Suspense>
                     {items
                       .filter((item) => item.folder_id === folder._id)
                       .map((item) => (
-                        <Chat
-                          key={item._id}
-                          id={item._id}
-                          title={item.title}
-                          folderId={item.folder_id}
-                        />
+                        <Item key={item._id} item={item} />
                       ))}
                   </Suspense>
                 </Folder>

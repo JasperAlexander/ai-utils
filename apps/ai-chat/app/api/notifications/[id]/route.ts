@@ -18,7 +18,7 @@ export async function PATCH(
     if(typeof request.reference_id !== 'undefined') updates.reference_id = request.reference_id
     if(typeof request.type !== 'undefined') updates.type = request.type
     if(typeof request.read !== 'undefined') updates.read = request.read
-    updates.updated_at = new Date().toString()
+    updates.updated_at = new Date()
 
     const upserted = await notificationsCollection.updateOne({
         // @ts-ignore

@@ -4,61 +4,103 @@ import styles from './page.module.css'
 import Link from 'next/link'
 import { ReactNode, DragEvent, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
+import { FolderType } from '@/types'
+import { fileToText } from 'file-to-text'
 
 export function Folder({
-  folderId,
-  title,
   children,
+  folder,
 }: {
-  folderId: string | undefined
-  title: string
   children: ReactNode
+  folder: FolderType
 }) {
   const params = useParams()
   const router = useRouter()
-
-  function onDrop(itemId: string) {
-    fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/items/${itemId}`, {
-      method: 'PATCH',
-      body: JSON.stringify({
-        folder_id: folderId,
-      }),
-    })
-    router.refresh()
-  }
+  const session = useSession()
 
   const [isOpen, setIsOpen] = useState(true)
   const toggleFolder = () => {
     setIsOpen(!isOpen)
   }
-
   const [draggedOver, setDraggedOver] = useState(false)
-  const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
+
+  const onDragOver = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault()
     setDraggedOver(true)
   }
-  const handleDragLeave = (e: DragEvent<HTMLDivElement>) => {
+
+  const onDragLeave = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault()
     setDraggedOver(false)
   }
-  const handleDrop = (e: DragEvent<HTMLDivElement>) => {
+
+  const onDragEnd = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault()
-    const itemId = e.dataTransfer.getData('itemId')
-    if (onDrop) onDrop(itemId)
     setDraggedOver(false)
+  }
+
+  const onDrop = async (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+
+    const itemId = e.dataTransfer.getData('itemId')
+    if (itemId === '') {
+      if (e.dataTransfer.files.length === 0) return
+      ;[...e.dataTransfer.files].map(async (file) => {
+        if (
+          !file.type.startsWith('text/') &&
+          ![
+            'application/pdf',
+            'application/json',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+          ].includes(file.type)
+        )
+          return
+
+        const fileContent = await fileToText(file)
+
+        await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/items`, {
+          method: 'POST',
+          body: JSON.stringify({
+            type: 'document',
+            title: file.name,
+            content: fileContent,
+            folder_id: folder._id,
+            created_by: session.data?.user._id,
+          }),
+        })
+      })
+
+      router.refresh()
+      setDraggedOver(false)
+    } else {
+      const folderId = e.dataTransfer.getData('folderId')
+      if (folderId === folder._id) return
+
+      await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/items/${itemId}`, {
+        method: 'PATCH',
+        body: JSON.stringify({
+          folder_id: folder._id,
+        }),
+      })
+
+      router.refresh()
+      setDraggedOver(false)
+    }
   }
 
   return (
     <div
       className={`${styles.folder} ${draggedOver && styles.folderDraggedOver}`}
-      onDragOver={handleDragOver}
-      onDragLeave={handleDragLeave}
-      onDrop={handleDrop}
+      onDragOver={onDragOver}
+      onDragLeave={onDragLeave}
+      onDragEnd={onDragEnd}
+      onDrop={onDrop}
     >
       <div
         className={styles.folderTitle}
         aria-current={
-          params?.folderId === title && params?.id === undefined
+          params?.folderId === folder.title && params?.id === undefined
             ? 'true'
             : 'false'
         }
@@ -88,7 +130,7 @@ export function Folder({
           )}
         </button>
         <Link
-          href={`/${params.userUsername}/${params.projectName}/${folderId}`}
+          href={`/${params.userUsername}/${params.projectName}/${folder._id}`}
           className={styles.folderTitleLink}
         >
           {isOpen ? (
@@ -108,7 +150,7 @@ export function Folder({
               <path d='M1.75 1A1.75 1.75 0 0 0 0 2.75v10.5C0 14.216.784 15 1.75 15h12.5A1.75 1.75 0 0 0 16 13.25v-8.5A1.75 1.75 0 0 0 14.25 3H7.5a.25.25 0 0 1-.2-.1l-.9-1.2C6.07 1.26 5.55 1 5 1H1.75Z'></path>
             </svg>
           )}
-          <span className={styles.folderTitleSpan}>{title}</span>
+          <span className={styles.folderTitleSpan}>{folder.title}</span>
         </Link>
       </div>
       {isOpen && <ul className={styles.folderChildren}>{children}</ul>}

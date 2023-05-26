@@ -2,12 +2,13 @@
 
 A Next.js app that allows users to chat with AI using the OpenAI API. Features:
 
-- Add files to your messages. The plain text is extracted and added to the prompt following the OpenAI best practises on seperating instruction and context.
+- Create and collaborate on projects.
+- Chat with files added to the same folder.
+- Add files to your messages.
 - Receive messages in a stream.
 - View messages in markdown with code syntax highlighting.
 - Resend, edit, remove and copy messages.
 - Categorize and save chats (to a MongoDB database).
-- Create and collaborate on projects.
 
 ## Getting started
 

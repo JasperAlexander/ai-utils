@@ -16,7 +16,7 @@ export async function PATCH(
     const updates: UpdateMessageType = {}
     if(typeof request.content !== 'undefined') updates.content = request.content
     if(typeof request.children !== 'undefined') updates.children = request.children
-    updates.updated_at = new Date().toString()
+    updates.updated_at = new Date()
 
     const upserted = await messagesCollection.updateOne({
         // @ts-ignore

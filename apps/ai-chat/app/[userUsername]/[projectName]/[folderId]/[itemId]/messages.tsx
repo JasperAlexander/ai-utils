@@ -7,11 +7,13 @@ import { arrayToTree } from '@/utils/arrayToTree'
 import { Message } from './message'
 import { Tooltip } from 'react-tooltip'
 import { useDropzone } from 'react-dropzone'
-import { getSelectedNodes } from '@/utils/getSelectedNodes'
 import { getLastItemInPath } from '@/utils/getLastItemInPath'
 import { filesToText } from '@/utils/filesToText'
 import { useParams } from 'next/navigation'
-import { useSession } from 'next-auth/react'
+import { addMessageToMessagesTree } from '@/utils/addMessageToMessagesTree'
+import { updateMessageOfMessagesTree } from '@/utils/updateMessageOfMessagesTree'
+import { findDeepestMessageOfMessagesTree } from '@/utils/findDeepestMessageOfMessagesTree'
+import { findHistoryOfMessagesTree } from '@/utils/findHistoryOfMessagesTree'
 
 export function Messages({
   currentUserAllowedToChat,
@@ -21,9 +23,7 @@ export function Messages({
   messages: MessageType[]
 }) {
   const params = useParams()
-  const session = useSession()
 
-  const [localMessages, setLocalMessages] = useState<MessageType[]>([])
   const [localMessagesTree, setLocalMessagesTree] = useState<MessageType[]>([])
   const [selectedChildIndices, setSelectedChildIndices] = useState<{
     [id: string]: number
@@ -48,12 +48,8 @@ export function Messages({
   }, [])
 
   useEffect(() => {
-    setLocalMessages(messages)
-  }, [messages])
-
-  useEffect(() => {
-    setLocalMessagesTree(arrayToTree(localMessages))
-  }, [localMessages])
+    setLocalMessagesTree(arrayToTree(messages))
+  }, [setLocalMessagesTree, messages])
 
   const sendMessage = async (message: string) => {
     const fileTexts = await filesToText(files)
@@ -66,7 +62,7 @@ export function Messages({
       selectedChildIndices
     )
 
-    const response = await fetch(
+    const postUserMessageResponse = await fetch(
       `${process.env.NEXT_PUBLIC_API_BASE}/api/messages`,
       {
         method: 'POST',
@@ -78,82 +74,57 @@ export function Messages({
         }),
       }
     )
-    const insertedId = await response.json()
-    const newMessages = [
-      ...messages,
-      {
-        _id: insertedId,
-        item_id: params.itemId,
-        role: 'user',
-        content: message + fileTexts,
-        parent: lastItemInPath?._id || null,
-        children: [],
-        updated_at: new Date().toString(),
-        created_at: new Date().toString(),
-      },
-    ]
-    setLocalMessages(newMessages)
+    const userMessageInsertedId = await postUserMessageResponse.json()
 
-    // Uncomment the following code to test
-    // const newResponse = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/messages`, {
-    //   method: 'POST',
-    //   body: JSON.stringify({
-    //     item_id: params.itemId,
-    //     role: 'assistant',
-    //     content: 'Testing',
-    //     parent: insertedId,
-    //   }),
-    // })
-    // const newInsertedId = await newResponse.json()
-    // const newMessageArray = [
-    //   ...newMessages,
-    //   {
-    //     _id: newInsertedId,
-    //     item_id: params.itemId,
-    //     role: 'assistant',
-    //     content: 'Testing',
-    //     parent: insertedId,
-    //   },
-    // ]
-    // setMessages(newMessageArray)
+    let messagesTreeWithNewUserMessage = [...localMessagesTree]
+    addMessageToMessagesTree(messagesTreeWithNewUserMessage, {
+      _id: userMessageInsertedId,
+      item_id: params.itemId,
+      role: 'user',
+      content: message + fileTexts,
+      parent: lastItemInPath?._id || null,
+      children: [],
+      updated_at: new Date().toString(),
+      created_at: new Date().toString(),
+    })
+    setLocalMessagesTree(messagesTreeWithNewUserMessage)
 
-    // Comment the following code to test
-    const newMessageTree = arrayToTree(newMessages)
-    const selectedNodes = getSelectedNodes(
-      newMessageTree[0],
-      selectedChildIndices
+    const deepestMessageIdOfMessagesTree = findDeepestMessageOfMessagesTree({
+      messagesTree: localMessagesTree,
+    })
+    const history = findHistoryOfMessagesTree(
+      localMessagesTree,
+      deepestMessageIdOfMessagesTree!
     )
 
-    const promptResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE}/api/openai`,
+    const getAIMessageResponse = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE}/api/langchain/call`,
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          apiUrl: 'https://api.openai.com/v1/chat/completions',
-          user: session.data?.user._id,
-          model: 'gpt-3.5-turbo',
-          prompt: selectedNodes,
-          maxTokens: 32,
-          stream: true,
+          question: message,
+          folderId: params.folderId,
+          history,
         }),
       }
     )
-    if (!promptResponse.ok)
-      throw new Error(`Error fetching data: ${promptResponse.statusText}`)
 
-    const data = promptResponse.body
+    if (!getAIMessageResponse.ok)
+      throw new Error(`Error fetching data: ${getAIMessageResponse.statusText}`)
+
+    const data = getAIMessageResponse.body
     if (!data) return
 
     const reader = data.getReader()
     const decoder = new TextDecoder()
-    let done = false
 
+    let done = false
     let lastMessage = ''
 
-    const newResponse = await fetch(
+    const postAIMessageResponse = await fetch(
       `${process.env.NEXT_PUBLIC_API_BASE}/api/messages`,
       {
         method: 'POST',
@@ -161,11 +132,24 @@ export function Messages({
           item_id: params.itemId,
           role: 'assistant',
           content: lastMessage,
-          parent: insertedId,
+          parent: userMessageInsertedId,
         }),
       }
     )
-    const newInsertedId = await newResponse.json()
+    const AIMessageInsertedId = await postAIMessageResponse.json()
+
+    let messagesTreeWithNewAIMessage = [...messagesTreeWithNewUserMessage]
+    addMessageToMessagesTree(messagesTreeWithNewAIMessage, {
+      _id: AIMessageInsertedId,
+      item_id: params.itemId,
+      role: 'assistant',
+      content: lastMessage,
+      parent: userMessageInsertedId,
+      children: [],
+      updated_at: new Date().toString(),
+      created_at: new Date().toString(),
+    })
+    setLocalMessagesTree(messagesTreeWithNewAIMessage)
 
     while (!done) {
       const { value, done: doneReading } = await reader.read()
@@ -174,25 +158,21 @@ export function Messages({
       if (value) {
         const chunkValue = decoder.decode(value)
         lastMessage = lastMessage + chunkValue
-        const newMessageArray = [
-          ...newMessages,
-          {
-            _id: newInsertedId,
-            item_id: params.itemId,
-            role: 'assistant',
-            content: lastMessage,
-            parent: insertedId,
-            children: [],
-            updated_at: new Date().toString(),
-            created_at: new Date().toString(),
-          },
+
+        let updatedMessagesTreeWithNewAIMessage = [
+          ...messagesTreeWithNewAIMessage,
         ]
-        setLocalMessages(newMessageArray)
+        updateMessageOfMessagesTree(
+          updatedMessagesTreeWithNewAIMessage,
+          AIMessageInsertedId,
+          lastMessage
+        )
+        setLocalMessagesTree(updatedMessagesTreeWithNewAIMessage)
       }
     }
 
-    await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE}/api/messages/${newInsertedId}`,
+    fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE}/api/messages/${AIMessageInsertedId}`,
       {
         method: 'PATCH',
         body: JSON.stringify({
@@ -200,7 +180,6 @@ export function Messages({
         }),
       }
     )
-    // Comment till here if you want to test
   }
 
   const onDrop = useCallback(async (newFiles: File[]) => {
@@ -229,15 +208,13 @@ export function Messages({
   return (
     <Fragment>
       <div className={styles.messages} ref={messagesRef}>
-        {localMessagesTree.map((message, index) => (
+        {localMessagesTree.map((localMessage, index) => (
           <Message
             key={index}
-            index={index}
-            messageTree={localMessagesTree}
-            data={message}
+            localMessage={localMessage}
+            localMessagesTree={localMessagesTree}
+            setLocalMessagesTree={setLocalMessagesTree}
             currentUserAllowedToChat={currentUserAllowedToChat}
-            messages={localMessages}
-            setMessages={setLocalMessages}
             selectedChildIndices={selectedChildIndices}
             setSelectedChildIndices={setSelectedChildIndices}
           />

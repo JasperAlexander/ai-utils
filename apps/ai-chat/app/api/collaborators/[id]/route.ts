@@ -75,7 +75,7 @@ export async function PATCH(
     const updates: UpdateCollaboratorType = {}
     if(typeof request.role !== 'undefined') updates.role = request.role
     if(typeof request.status !== 'undefined') updates.status = request.status
-    updates.updated_at = new Date().toString()
+    updates.updated_at = new Date()
 
     const upserted = await collaboratorsCollection.updateOne({
         // @ts-ignore

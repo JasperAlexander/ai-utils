@@ -36,7 +36,7 @@ export async function PATCH(
     const updates: UpdateItemType = {}
     if(typeof request.title !== 'undefined') updates.title = request.title
     if(typeof request.folder_id !== 'undefined') updates.folder_id = request.folder_id
-    updates.updated_at = new Date().toString()
+    updates.updated_at = new Date()
 
     const upserted = await itemsCollection.updateOne({
         // @ts-ignore

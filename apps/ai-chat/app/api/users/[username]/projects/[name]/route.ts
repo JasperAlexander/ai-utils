@@ -38,7 +38,7 @@ export async function PATCH(
     if(typeof request.name !== 'undefined') updates.name = request.name
     if(typeof request.description !== 'undefined') updates.description = request.description
     if(typeof request.visibility !== 'undefined') updates.visibility = request.visibility
-    updates.updated_at = new Date().toString()
+    updates.updated_at = new Date()
 
     const upserted = await projectsCollection.updateOne({
         created_by: params.username,

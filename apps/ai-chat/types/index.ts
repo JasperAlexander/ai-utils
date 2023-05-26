@@ -16,7 +16,7 @@ export interface UpdateUserType {
     username?: string
     bio?: string
     image?: string
-    updated_at?: string
+    updated_at?: Date
 }
 
 // Notifications
@@ -36,7 +36,7 @@ export interface UpdateNotificationType {
     reference_id?: string
     type?: string
     read?: boolean
-    updated_at?: string
+    updated_at?: Date
 }
 
 // Collaborators
@@ -52,7 +52,7 @@ export interface CollaboratorType {
 export interface UpdateCollaboratorType {
     role?: string
     status?: string
-    updated_at?: string
+    updated_at?: Date
 }
 
 // Stars
@@ -85,7 +85,7 @@ export interface UpdateProjectType {
     name?: string
     description?: string
     visibility?: string
-    updated_at?: string
+    updated_at?: Date
 }
 
 export interface TrendingProjectType {
@@ -110,7 +110,7 @@ export interface FolderType {
 
 export interface UpdateFolderType {
     title?: string
-    updated_at?: string
+    updated_at?: Date
 }
 
 // Items
@@ -127,7 +127,7 @@ export interface ItemType {
 export interface UpdateItemType {
     title?: string
     folder_id?: string
-    updated_at?: string
+    updated_at?: Date
 }
 
 // Messages
@@ -145,5 +145,5 @@ export interface MessageType {
 export interface UpdateMessageType {
     content?: string
     children?: MessageType[]
-    updated_at?: string
+    updated_at?: Date
 }

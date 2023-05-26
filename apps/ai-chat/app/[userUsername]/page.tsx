@@ -69,8 +69,8 @@ export default async function Page({
             <Image
               src={user.image}
               alt='avatar'
-              width={300}
-              height={300}
+              width={0}
+              height={0}
               className={styles.avatar}
             />
           </Suspense>
