@@ -1,5 +1,11 @@
 # ai-chat
 
+## 1.6.0
+
+### Minor Changes
+
+- 5e494e5: Added ability to add files to a folder which will be embedded and used as context for questions in chats in the same folder. Improved performance.
+
 ## 1.5.6
 
 ### Patch Changes
