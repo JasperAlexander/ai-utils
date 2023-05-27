@@ -29,6 +29,9 @@ importers:
       file-to-text:
         specifier: workspace:*
         version: link:../../packages/file-to-text
+      graphql:
+        specifier: ^16.6.0
+        version: 16.6.0
       highlight.js:
         specifier: ^11.8.0
         version: 11.8.0

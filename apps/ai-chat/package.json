@@ -15,6 +15,7 @@
     "@types/marked": "^4.3.1",
     "@types/uuid": "^9.0.1",
     "file-to-text": "workspace:*",
+    "graphql": "^16.6.0",
     "highlight.js": "^11.8.0",
     "langchain": "^0.0.78",
     "marked": "^4.3.0",
