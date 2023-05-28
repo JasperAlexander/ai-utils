@@ -44,104 +44,106 @@ export default function Page() {
   }, [name, description, visibility, session.data?.user.username])
 
   return (
-    <div className={styles.page}>
-      <div className={styles.form}>
-        <div className={styles.header}>
-          <h1 className={styles.title}>Create a project</h1>
-          <span className={styles.description}>
-            A project contains all project files like chats and folders.
-          </span>
-        </div>
-        <div className={styles.formSection}>
-          <div className={styles.inputContainer}>
-            <label className={styles.inputLabel}>Title</label>
-            <input
-              type='text'
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className={styles.textInput}
-            />
-            {usernameChecked ? (
-              name === '' ? (
-                <span className={styles.inputStatusError}>
-                  Project name must not be blank
-                </span>
-              ) : usernameTaken ? (
-                <span className={styles.inputStatusError}>
-                  The project name already exists on this user
-                </span>
+    <main className={styles.main}>
+      <div className={styles.page}>
+        <div className={styles.form}>
+          <div className={styles.header}>
+            <h1 className={styles.title}>Create a project</h1>
+            <span className={styles.description}>
+              A project contains all project files like chats and folders.
+            </span>
+          </div>
+          <div className={styles.formSection}>
+            <div className={styles.inputContainer}>
+              <label className={styles.inputLabel}>Title</label>
+              <input
+                type='text'
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className={styles.textInput}
+              />
+              {usernameChecked ? (
+                name === '' ? (
+                  <span className={styles.inputStatusError}>
+                    Project name must not be blank
+                  </span>
+                ) : usernameTaken ? (
+                  <span className={styles.inputStatusError}>
+                    The project name already exists on this user
+                  </span>
+                ) : (
+                  <span className={styles.inputStatusSuccess}>
+                    The project name is available
+                  </span>
+                )
               ) : (
-                <span className={styles.inputStatusSuccess}>
-                  The project name is available
-                </span>
-              )
-            ) : (
-              ''
-            )}
-          </div>
-          <div className={styles.inputContainer}>
-            <label className={styles.inputLabel}>Description</label>
-            <input
-              type='text'
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              className={styles.textInput}
-            />
-          </div>
-        </div>
-        <div className={styles.formSection}>
-          <div className={styles.checkboxContainer}>
-            <div className={styles.checkboxRow}>
-              <input
-                type='radio'
-                value='private'
-                checked={visibility === 'private'}
-                onChange={(e) => setVisibility(e.target.value)}
-                className={styles.checkboxInput}
-              />
-              <label className={styles.inputLabel}>Private</label>
+                ''
+              )}
             </div>
-            <div className={styles.checkboxRow}>
+            <div className={styles.inputContainer}>
+              <label className={styles.inputLabel}>Description</label>
               <input
-                type='radio'
-                value='public'
-                checked={visibility === 'public'}
-                onChange={(e) => setVisibility(e.target.value)}
-                className={styles.checkboxInput}
+                type='text'
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                className={styles.textInput}
               />
-              <label className={styles.inputLabel}>Public</label>
             </div>
           </div>
-        </div>
-        <div className={styles.footer}>
-          <button
-            type='button'
-            onClick={async () => {
-              setSubmitted(true)
-              const response = await fetch(
-                `${process.env.NEXT_PUBLIC_API_BASE}/api/projects`,
-                {
-                  method: 'POST',
-                  body: JSON.stringify({
-                    name,
-                    description,
-                    visibility,
-                    created_by: session.data?.user.username,
-                  }),
-                }
-              )
-              await response.json()
-              router.push(`/${session.data?.user.username}/${name}`)
-            }}
-            disabled={
-              !usernameChecked || name === '' || usernameTaken || submitted
-            }
-            className={styles.primaryButton}
-          >
-            Create project
-          </button>
+          <div className={styles.formSection}>
+            <div className={styles.checkboxContainer}>
+              <div className={styles.checkboxRow}>
+                <input
+                  type='radio'
+                  value='private'
+                  checked={visibility === 'private'}
+                  onChange={(e) => setVisibility(e.target.value)}
+                  className={styles.checkboxInput}
+                />
+                <label className={styles.inputLabel}>Private</label>
+              </div>
+              <div className={styles.checkboxRow}>
+                <input
+                  type='radio'
+                  value='public'
+                  checked={visibility === 'public'}
+                  onChange={(e) => setVisibility(e.target.value)}
+                  className={styles.checkboxInput}
+                />
+                <label className={styles.inputLabel}>Public</label>
+              </div>
+            </div>
+          </div>
+          <div className={styles.footer}>
+            <button
+              type='button'
+              onClick={async () => {
+                setSubmitted(true)
+                const response = await fetch(
+                  `${process.env.NEXT_PUBLIC_API_BASE}/api/projects`,
+                  {
+                    method: 'POST',
+                    body: JSON.stringify({
+                      name,
+                      description,
+                      visibility,
+                      created_by: session.data?.user.username,
+                    }),
+                  }
+                )
+                await response.json()
+                router.push(`/${session.data?.user.username}/${name}`)
+              }}
+              disabled={
+                !usernameChecked || name === '' || usernameTaken || submitted
+              }
+              className={styles.primaryButton}
+            >
+              Create project
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </main>
   )
 }

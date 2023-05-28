@@ -1,4 +1,13 @@
 /* page.tsx */
+.main {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    height: calc(100vh - 56px);
+    position: relative;
+    overflow: hidden;
+}
+
 .page {
     width: 100%;
     padding: 32px;

@@ -35,3 +35,39 @@
 .signInButton:hover {
     background-color: var(--color-btn-bg);
 }
+
+/* error.tsx */
+.primaryButton {
+    background-color: var(--color-btn-bg);
+    color: var(--color-btn-text);
+    border: 1px solid var(--color-btn-border);
+    border-radius: 8px;
+    padding: 4px 12px;
+    width: max-content;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    appearance: none;
+    position: relative;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.primaryButton:hover {
+    border-color: var(--color-btn-hover-border);
+    background-color: var(--color-btn-hover-bg);
+}
+
+.primaryButton:active {
+    border-color: var(--color-btn-active-border);
+    background-color: var(--color-button-active);
+}
+
+.primaryButton:disabled {
+    pointer-events: none;
+    opacity: 0.8;
+}
