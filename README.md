@@ -7,7 +7,7 @@ This repository (which uses [Turborepo](https://turbo.build/)) contains the foll
 - [text-to-chunks](packages/text-to-chunks/README.md): Split text into multiple chunks.
 - [text-to-embeddings](packages/text-to-embeddings/README.md): Convert text to vector embeddings.
 
-Additionally, it contains the following applications that utilize these packages:
+Additionally, it contains the following applications:
 
 - [ai-chat](apps/ai-chat/README.md): A Next.js 13 application that allows users to chat with AI using the OpenAI API.
 - [file-converter](apps/file-converter/README.md): A Next.js 13 application that converts files to text that can also be shown in markdown styling.
